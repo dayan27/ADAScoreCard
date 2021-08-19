@@ -39,11 +39,10 @@ class ScoreCardController extends Controller
         $from = strtotime($request->from);
         $toformat = date('Y-m-d',$to);
         $fromformat = date('Y-m-d',$from);
-
         $scoreCard->to=$toformat;
         $scoreCard->from=$fromformat;
         $scoreCard->save();
-      
+
 
 
 
@@ -80,7 +79,7 @@ class ScoreCardController extends Controller
           $scoreCard->to=$request->to;
           $scoreCard->from=$request->from;
           $scoreCard->save();
-        
+
     }
 
     /**
@@ -91,7 +90,7 @@ class ScoreCardController extends Controller
      */
     public function destroy(ScoreCard $scoreCard)
     {
-    
+
         $scoreCard->delete;
     }
 }
