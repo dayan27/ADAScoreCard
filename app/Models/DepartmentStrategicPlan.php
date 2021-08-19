@@ -14,9 +14,8 @@ class DepartmentStrategicPlan extends Model
      * @var array
      */
     protected $fillable = [
-       
+       'department_id',
+       'strategic_plan_id',
 
-       
-
-    ];
+        ];
 }

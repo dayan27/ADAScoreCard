@@ -29,12 +29,34 @@ class StrategicPlanController extends Controller
         $request->validate([
             'action'=>'required',
             'term'=>'required',
+            'perspective'=>'required',
             'from'=>'required',
             'to'=>'required',
-            'year'=>'required',
             'phase'=>'required',
 
         ]);
+        $strategicPlan->action=$request->action;
+        $strategicPlan->term=$request->term;
+        $to = strtotime($request->to);
+        $from = strtotime($request->from);
+        $toformat = date('Y-m-d',$to);
+        $fromformat = date('Y-m-d',$from);
+        $strategicPlan->from=$toformat;
+        $strategicPlan->to=$fromformat;
+        $strategicPlan->phase=$request->phase;
+        $strategic
+        $strategicPlan->save();
+        $departmentId=[1,2];
+        $strategicPlan->departments()->sync($departmentId);
+
+        // if( $strategicPlan->save()) {
+        //     return $this->successResponse('successfully saved ',202);
+        // }
+        // else{
+        //     return $this->errorResponse('fail to save',501);
+        // }
+
+
     }
 
     /**

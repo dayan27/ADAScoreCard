@@ -19,8 +19,9 @@ class StrategicPlan extends Model
         'to',
         'from',
         'perspective',
-       
-
-
+    
     ];
+    public function departments(){
+        return $this->belongsToMany(Department::class);
+    }
 }

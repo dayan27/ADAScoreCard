@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -13,7 +14,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        //
+        return Department::all();
     }
 
     /**
@@ -24,7 +25,21 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $department=new Department();
+        $request->validate([
+            'name'=>'required',
+            'phone_no'=>'required',
+            'email'=>'required',
+            'role'=>'required',
+
+        ]);
+        $department->name=$request->name;
+        $department->phone_no=$request->phone_no;
+        $department->email=$request->email;
+        $department->role=$request->role;
+        $department->save();
+
+
     }
 
     /**

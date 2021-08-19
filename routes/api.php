@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PerspectiveController;
 use App\Http\Controllers\ScoreCardController;
+use App\Http\Controllers\StrategicPlanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +23,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResource('/scorecards',ScoreCardController::class);
 Route::apiResource('/perspectives',PerspectiveController::class);
+Route::apiResource('/strategicplans',StrategicPlanController::class);
+
 

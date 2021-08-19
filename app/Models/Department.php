@@ -20,4 +20,7 @@ class Department extends Model
         'phone_no',
         
     ];
+    public function strategicplans(){
+        return $this->belongsToMany(StrategicPlan::class);
+    }
 }
