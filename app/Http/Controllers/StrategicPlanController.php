@@ -32,21 +32,23 @@ class StrategicPlanController extends Controller
             'perspective'=>'required',
             'from'=>'required',
             'to'=>'required',
-            'phase'=>'required',
+            // 'phase'=>'required',
 
         ]);
         $strategicPlan->action=$request->action;
         $strategicPlan->term=$request->term;
+        $strategicPlan->perspective=$request->perspective;
+
         $to = strtotime($request->to);
         $from = strtotime($request->from);
         $toformat = date('Y-m-d',$to);
         $fromformat = date('Y-m-d',$from);
         $strategicPlan->from=$toformat;
         $strategicPlan->to=$fromformat;
-        $strategicPlan->phase=$request->phase;
-        $strategic
+        // $strategicPlan->phase=$request->phase;
+        $strategicPlan->score_card_id=$request->scoreCardId;
         $strategicPlan->save();
-        $departmentId=[1,2];
+        $departmentId=[3,4];
         $strategicPlan->departments()->sync($departmentId);
 
         // if( $strategicPlan->save()) {
