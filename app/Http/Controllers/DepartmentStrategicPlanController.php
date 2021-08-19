@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DepartmentStrategicPlan;
 use Illuminate\Http\Request;
 
 class DepartmentStrategicPlanController extends Controller
@@ -47,7 +48,8 @@ class DepartmentStrategicPlanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return DepartmentStrategicPlan::all();
+
     }
 
     /**
