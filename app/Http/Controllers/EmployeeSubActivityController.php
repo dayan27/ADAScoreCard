@@ -13,7 +13,7 @@ class EmployeeSubActivityController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**

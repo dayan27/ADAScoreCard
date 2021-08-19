@@ -18,7 +18,10 @@ class Department extends Model
         'email',
         'role',
         'phone_no',
-        
+        'manager_id',
+        'yearly_plan_id',
+        'department_id'
+
     ];
     public function strategicplans(){
         return $this->belongsToMany(StrategicPlan::class);

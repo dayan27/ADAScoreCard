@@ -14,7 +14,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        return Employee::all();
     }
 
     /**
@@ -31,6 +31,7 @@ class EmployeeController extends Controller
             'role'=>'required',
             'phone_no'=>'required',
             'gender'=>'required',
+            'department_id'=>'required',
         ]);
 
         Employee::create($request->all());
@@ -62,6 +63,8 @@ class EmployeeController extends Controller
             'role'=>'required',
             'phone_no'=>'required',
             'gender'=>'required',
+            'department_id'=>'required',
+
         ]);
 
         $employee->update($request->all());

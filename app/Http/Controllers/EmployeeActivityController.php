@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmployeeActivity;
 use Illuminate\Http\Request;
 
 class EmployeeActivityController extends Controller
@@ -13,7 +14,7 @@ class EmployeeActivityController extends Controller
      */
     public function index()
     {
-        //
+          return EmployeeActivity::all();
     }
 
     /**
@@ -24,7 +25,15 @@ class EmployeeActivityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $request->validate([
+        'result'=>'required',
+        'time_result'=>'required',
+        'quality_result'=>'required',
+        'quantity_result'=>'required',
+        'term_id'=>'required',
+        'employee_id'=>'required',
+
+      ]);
     }
 
     /**

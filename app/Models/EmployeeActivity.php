@@ -17,8 +17,8 @@ class EmployeeActivity extends Model
        'time_result',
        'quality_result',
        'quantity_result',
-
-      
+       'employee_id',
+       'term_id',
 
    ];
 

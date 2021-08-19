@@ -19,5 +19,6 @@ class Employee extends Model
         'role',
         'phone_no',
         'gender',
+        'department_id'
     ];
 }
