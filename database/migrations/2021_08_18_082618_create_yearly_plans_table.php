@@ -19,7 +19,6 @@ class CreateYearlyPlansTable extends Migration
             $table->string('phase');
             $table->date('to');
             $table->date('from');
-            $table->date('year');
             $table->foreignId('strategic_plan_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             
             $table->timestamps();

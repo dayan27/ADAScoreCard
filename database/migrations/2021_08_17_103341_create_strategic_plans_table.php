@@ -20,6 +20,8 @@ class CreateStrategicPlansTable extends Migration
             $table->string('perspective');
             $table->date('to');
             $table->date('from');
+            $table->string('phase');
+
             $table->foreignId('score_card_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
