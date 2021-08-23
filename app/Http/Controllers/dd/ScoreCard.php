@@ -5,27 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StrategicPlan extends Model
+class ScoreCard extends Model
 {
     use HasFactory;
-      /**
+    
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
         'name',
-        'action',
+        'description',
         'to',
         'from',
-        'perspective',
-    
-    ];
-    public function departments(){
-        return $this->belongsToMany(Department::class);
-    }
-    public function yearlyPlans(){
 
-        return $this->hasMany(yearlyPlans::class);
-    }
+    ];
 }

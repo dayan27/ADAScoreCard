@@ -14,7 +14,7 @@ class StrategicPlanController extends Controller
      */
     public function index()
     {
-        //
+        return StrategicPlan::all();
     }
 
     /**
@@ -48,8 +48,8 @@ class StrategicPlanController extends Controller
         // $strategicPlan->phase=$request->phase;
         $strategicPlan->score_card_id=$request->scoreCardId;
         $strategicPlan->save();
-        $departmentId=[3,4];
-        $strategicPlan->departments()->sync($departmentId);
+        $departmentId=$request->get('depid');
+        $strategicPlan->departments()->attach($departmentId);
 
         // if( $strategicPlan->save()) {
         //     return $this->successResponse('successfully saved ',202);
@@ -67,9 +67,9 @@ class StrategicPlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(StrategicPlan $strategicPlan)
     {
-        //
+        return $strategicPlan;
     }
 
     /**
@@ -81,7 +81,33 @@ class StrategicPlanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      
+        $strategicPlan=StrategicPlan::findorfail($id);
+        //   dd($strategicPlan);
+        $request->validate([
+            'action'=>'required',
+            'term'=>'required',
+            'perspective'=>'required',
+            'from'=>'required',
+            'to'=>'required',
+            // 'phase'=>'required',
+
+        ]);
+        $strategicPlan->action=$request->action;
+        $strategicPlan->term=$request->term;
+        $strategicPlan->perspective=$request->perspective;
+
+        $to = strtotime($request->to);
+        $from = strtotime($request->from);
+        $toformat = date('Y-m-d',$to);
+        $fromformat = date('Y-m-d',$from);
+        $strategicPlan->from=$toformat;
+        $strategicPlan->to=$fromformat;
+        // $strategicPlan->phase=$request->phase;
+        $strategicPlan->score_card_id=$request->scoreCardId;
+        $strategicPlan->save();
+        $departmentId=$request->get('depid');
+        $strategicPlan->departments()->sync($departmentId);
     }
 
     /**
@@ -90,8 +116,8 @@ class StrategicPlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy( StrategicPlan $strategicPlan)
     {
-        //
+        $strategicPlan->delete();
     }
 }

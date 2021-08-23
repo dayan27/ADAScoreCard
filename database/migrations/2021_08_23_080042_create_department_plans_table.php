@@ -19,6 +19,7 @@ class CreateDepartmentPlansTable extends Migration
             $table->integer('quantity_weight');
             $table->integer('time_weight');
             $table->integer('quality_weight');
+
             $table->date('year');
             $table->date('to');
             $table->date('from');
@@ -26,10 +27,7 @@ class CreateDepartmentPlansTable extends Migration
             $table->double('goal');
             $table->foreignId('yearly_plan_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('department_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-
-
-
-
+            $table->foreignId('department_card_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->timestamps();
         });

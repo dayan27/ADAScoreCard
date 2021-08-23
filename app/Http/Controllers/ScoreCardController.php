@@ -42,32 +42,31 @@ class ScoreCardController extends Controller
         $scoreCard->to=$toformat;
         $scoreCard->from=$fromformat;
         $scoreCard->save();
-
-
-
-
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\ScoreCard  $scoreCard
      * @return \Illuminate\Http\Response
      */
     public function show(ScoreCard $scoreCard)
     {
-        return $scoreCard;
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\ScoreCard  $scoreCard
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ScoreCard $scoreCard)
-    {
+    public function update(Request $request, $id)
+    { 
+        $scoreCard=ScoreCard::findorfail($id);
+                // dd($scoreCard);
+
         $request->validate([
             'name'=>'required',
             'to'=>'required',
@@ -85,12 +84,11 @@ class ScoreCardController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\ScoreCard  $scoreCard
      * @return \Illuminate\Http\Response
      */
     public function destroy(ScoreCard $scoreCard)
     {
-
-        $scoreCard->delete;
+        //
     }
 }

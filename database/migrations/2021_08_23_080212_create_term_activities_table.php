@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateYearlyPlansTable extends Migration
+class CreateTermActivitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateYearlyPlansTable extends Migration
      */
     public function up()
     {
-        Schema::create('yearly_plans', function (Blueprint $table) {
+        Schema::create('term_activities', function (Blueprint $table) {
             $table->id();
-            $table->string('action');
-            $table->string('phase');
             $table->date('to');
             $table->date('from');
-            $table->foreignId('strategic_plan_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             
+            $table->foreignId('term_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('department_plan_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ class CreateYearlyPlansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('yearly_plans');
+        Schema::dropIfExists('term_activities');
     }
 }

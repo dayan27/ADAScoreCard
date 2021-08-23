@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateScoreCardsTable extends Migration
+class CreateDepartmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateScoreCardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('score_cards', function (Blueprint $table) {
+        Schema::create('departments', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
-            $table->date('to');
-            $table->date('from');
-            $table->boolean('make_visible');
-
+            $table->string('phone_no');
+            $table->string('email');
+           
+            $table->string('role');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateScoreCardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('score_cards');
+        Schema::dropIfExists('departments');
     }
 }

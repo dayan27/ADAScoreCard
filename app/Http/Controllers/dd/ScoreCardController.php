@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\YearlyPlan;
+use App\Models\ScoreCard;
 use Illuminate\Http\Request;
 
-class YearlyPlanController extends Controller
+class ScoreCardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class YearlyPlanController extends Controller
      */
     public function index()
     {
-        return YearlyPlan::all();
+        return ScoreCard::all();
     }
 
     /**
@@ -25,32 +25,26 @@ class YearlyPlanController extends Controller
      */
     public function store(Request $request)
     {
-        $yearlyPlan=new YearlyPlan();
+        $scoreCard=new ScoreCard();
         $request->validate([
-            'action'=>'required',
-            'budget'=>'required',
-            'to'=>'required',
-            'from'=>'required',
-            'phase'=>'required',
-            // 'year'=>'required',
-
-
+          'name'=>'required',
+          'to'=>'required',
+          'from'=>'required',
+          'description'=>'required'
         ]);
-        $yearlyPlan->action=$request->action;
-        $yearlyPlan->budget=$request->budget;
-        $yearlyPlan->phase=$request->phase;
 
+        $scoreCard->name=$request->name;
+        $scoreCard->description=$request->description;
         $to = strtotime($request->to);
         $from = strtotime($request->from);
         $toformat = date('Y-m-d',$to);
         $fromformat = date('Y-m-d',$from);
-        $yearlyPlan->to=$toformat;
-        $yearlyPlan->from=$fromformat;
-        $yearlyPlan->strategic_plan_id=$request->strategic_plan_id;
-        $year = strtotime($request->to);
-        $yearformat = date('Y-m-d',$year);
-        $yearlyPlan->year=$yearformat;
-        $yearlyPlan->save();
+        $scoreCard->to=$toformat;
+        $scoreCard->from=$fromformat;
+        $scoreCard->save();
+
+
+
 
     }
 
@@ -60,9 +54,9 @@ class YearlyPlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ScoreCard $scoreCard)
     {
-        //
+        return $scoreCard;
     }
 
     /**
@@ -72,9 +66,20 @@ class YearlyPlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ScoreCard $scoreCard)
     {
-        //
+        $request->validate([
+            'name'=>'required',
+            'to'=>'required',
+            'from'=>'required',
+            'description'=>'required'
+          ]);
+          $scoreCard->name=$request->name;
+          $scoreCard->description=$request->description;
+          $scoreCard->to=$request->to;
+          $scoreCard->from=$request->from;
+          $scoreCard->save();
+
     }
 
     /**
@@ -83,8 +88,9 @@ class YearlyPlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ScoreCard $scoreCard)
     {
-        //
+
+        $scoreCard->delete;
     }
 }

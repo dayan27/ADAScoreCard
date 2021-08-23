@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmployeeSubActivitiesTable extends Migration
+class CreateUserSubActivitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateEmployeeSubActivitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('employee_sub_activities', function (Blueprint $table) {
+        Schema::create('user_sub_activities', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->boolean('isAccepeted');
             $table->foreignId('term_sub_activity_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('employee_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('employee_activity_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_activity_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateEmployeeSubActivitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_sub_activities');
+        Schema::dropIfExists('user_sub_activities');
     }
 }

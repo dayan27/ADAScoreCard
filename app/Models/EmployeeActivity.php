@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class EmployeeActivity extends Model
 {
-    use HasFactory;   /**
+    use HasFactory; 
+      /**
     * The attributes that are mass assignable.
     *
     * @var array

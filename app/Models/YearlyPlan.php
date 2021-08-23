@@ -24,4 +24,8 @@ class YearlyPlan extends Model
        
 
     ];
+    public function strategicPlan(){
+
+        return $this->belongsTo(StrategicPlan::class);
+    }
 }

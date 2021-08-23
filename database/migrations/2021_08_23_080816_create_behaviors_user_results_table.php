@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateYearlyEfficienciesTable extends Migration
+class CreateBehaviorsUserResultsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateYearlyEfficienciesTable extends Migration
      */
     public function up()
     {
-        Schema::create('yearly_efficiencies', function (Blueprint $table) {
+        Schema::create('behaviors_user_results', function (Blueprint $table) {
             $table->id();
-            $table->double('result');
-            $table->date('year');
-            $table->foreignId('employee_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-
+            $table->string('title');
+            $table->integer('weight');
+            $table->integer('maximum_score_point');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateYearlyEfficienciesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('yearly_efficiencies');
+        Schema::dropIfExists('behaviors_user_results');
     }
 }
