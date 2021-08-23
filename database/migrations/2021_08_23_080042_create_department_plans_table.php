@@ -20,7 +20,7 @@ class CreateDepartmentPlansTable extends Migration
             $table->integer('time_weight');
             $table->integer('quality_weight');
 
-            $table->date('year');
+            $table->integer('year');
             $table->date('to');
             $table->date('from');
             $table->double('budget');

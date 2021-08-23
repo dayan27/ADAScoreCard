@@ -89,6 +89,6 @@ class ScoreCardController extends Controller
      */
     public function destroy(ScoreCard $scoreCard)
     {
-        //
+        $scoreCard->delete();
     }
 }

@@ -16,7 +16,7 @@ class CreateYearlyEfficienciesTable extends Migration
         Schema::create('yearly_efficiencies', function (Blueprint $table) {
             $table->id();
             $table->double('result');
-            $table->date('year');
+            $table->integer('year');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });

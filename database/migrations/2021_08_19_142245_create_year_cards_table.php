@@ -17,7 +17,6 @@ class CreateYearCardsTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('year');
-
             $table->timestamps();
         });
     }

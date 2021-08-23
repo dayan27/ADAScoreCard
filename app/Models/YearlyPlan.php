@@ -20,10 +20,7 @@ class YearlyPlan extends Model
         'from',
         'phase',
         'year',
-
-       
-
-    ];
+ ];
     public function strategicPlan(){
 
         return $this->belongsTo(StrategicPlan::class);

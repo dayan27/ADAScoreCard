@@ -25,7 +25,8 @@ class CreateTermEfficienciesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
+     *.ol90p0p;0-=
+     =]-h5
      * @return void
      */
     public function down()

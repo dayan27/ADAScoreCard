@@ -18,12 +18,10 @@ class CreateYearlyPlansTable extends Migration
             $table->string('action');
             $table->string('budget');
             $table->boolean('make_visible');
-
-            $table->string('phase');
+           // $table->string('phase');
             $table->date('to');
             $table->date('from');
-            $table->date('year');
-
+            $table->integer('year');
             $table->foreignId('strategic_plan_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('year_card_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
