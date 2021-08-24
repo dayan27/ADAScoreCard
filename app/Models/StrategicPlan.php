@@ -18,7 +18,7 @@ class StrategicPlan extends Model
         'action',
         'to',
         'from',
-        'perspective',
+        'perspective_id',
         'score_card_id',
       
     
@@ -28,9 +28,13 @@ class StrategicPlan extends Model
     }
     public function yearly_plans(){
 
-        return $this->hasMany(yearlyPlans::class);
+        return $this->hasMany(YearlyPlan::class);
     }
     public function score_card(){
         return $this->belongsTo(ScoreCard::class);
+    }
+    public function perspective(){
+       return $this->belongsTo(Perspective::class);
+
     }
 }
