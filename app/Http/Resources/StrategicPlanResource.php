@@ -16,6 +16,9 @@ class StrategicPlanResource extends JsonResource
     {
         return [
             'id'=>$this->id,
+            'name'=>$this->action,
+            'to'=>$this->to,
+
         ];
     }
 }
