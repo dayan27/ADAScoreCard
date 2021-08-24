@@ -15,7 +15,7 @@ class CreateYearCardsTable extends Migration
     {
         Schema::create('year_cards', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            // $table->string('name');
             $table->integer('year');
             $table->timestamps();
         });

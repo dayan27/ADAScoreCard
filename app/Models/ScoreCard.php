@@ -21,4 +21,7 @@ class ScoreCard extends Model
         'from',
 
     ];
+    public function strategic_plans(){
+        return $this->hasMany(StrategicPlan::class);
+    }
 }

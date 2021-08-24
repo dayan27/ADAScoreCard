@@ -28,17 +28,16 @@ class StrategicPlanController extends Controller
         $strategicPlan=new StrategicPlan();
         $request->validate([
             'action'=>'required',
-            'term'=>'required',
-            'perspective'=>'required',
+            // 'term'=>'required',
+           // 'perspective'=>'required',
             'from'=>'required',
             'to'=>'required',
             // 'phase'=>'required',
 
         ]);
         $strategicPlan->action=$request->action;
-        $strategicPlan->term=$request->term;
-        $strategicPlan->perspective=$request->perspective;
-
+        $strategicPlan->phase=$request->phase;
+        $strategicPlan->perspective_id=$request->perspective_id;
         $to = strtotime($request->to);
         $from = strtotime($request->from);
         $toformat = date('Y-m-d',$to);
@@ -87,7 +86,7 @@ class StrategicPlanController extends Controller
         $request->validate([
             'action'=>'required',
             'term'=>'required',
-            'perspective'=>'required',
+             'perspective_id'=>'required',
             'from'=>'required',
             'to'=>'required',
             // 'phase'=>'required',
@@ -95,7 +94,7 @@ class StrategicPlanController extends Controller
         ]);
         $strategicPlan->action=$request->action;
         $strategicPlan->term=$request->term;
-        $strategicPlan->perspective=$request->perspective;
+        $strategicPlan->perspective_id=$request->perspective_id;
 
         $to = strtotime($request->to);
         $from = strtotime($request->from);

@@ -20,9 +20,15 @@ class YearlyPlan extends Model
         'from',
         'phase',
         'year',
+        'year_card_id',
+        'strategic_plan_id',
  ];
     public function strategicPlan(){
 
         return $this->belongsTo(StrategicPlan::class);
+    }
+    public function year_card(){
+
+        return $this->belongsTo(YearCard::class);
     }
 }

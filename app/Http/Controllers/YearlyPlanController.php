@@ -31,14 +31,14 @@ class YearlyPlanController extends Controller
             'budget'=>'required',
             'to'=>'required',
             'from'=>'required',
-            'phase'=>'required',
+            // 'phase'=>'required',
             // 'year'=>'required',
 
 
         ]);
         $yearlyPlan->action=$request->action;
         $yearlyPlan->budget=$request->budget;
-        $yearlyPlan->phase=$request->phase;
+        // $yearlyPlan->phase=$request->phase;
 
         $to = strtotime($request->to);
         $from = strtotime($request->from);
@@ -46,10 +46,11 @@ class YearlyPlanController extends Controller
         $fromformat = date('Y-m-d',$from);
         $yearlyPlan->to=$toformat;
         $yearlyPlan->from=$fromformat;
+        $yearlyPlan->year_card_id=$request->year_card_id;
         $yearlyPlan->strategic_plan_id=$request->strategic_plan_id;
-        $year = strtotime($request->to);
-        $yearformat = date('Y-m-d',$year);
-        $yearlyPlan->year=$yearformat;
+        // $year = strtotime($request->to);
+        // $yearformat = date('Y-m-d',$year);
+        $yearlyPlan->year=$request->year;
         $yearlyPlan->save();
 
     }

@@ -20,7 +20,8 @@ class Department extends Model
         'phone_no',
         'manager_id',
         'yearly_plan_id',
-        'department_id'
+        'department_id',
+        'user_id',
 
     ];
     public function strategicplans(){

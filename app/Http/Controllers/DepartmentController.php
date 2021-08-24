@@ -33,11 +33,12 @@ class DepartmentController extends Controller
             'role'=>'required',
 
         ]);
-        $department->name=$request->name;
-        $department->phone_no=$request->phone_no;
-        $department->email=$request->email;
-        $department->role=$request->role;
-        $department->save();
+        // $department->name=$request->name;
+        // $department->phone_no=$request->phone_no;
+        // $department->email=$request->email;
+        // $department->role=$request->role;
+        // $department->save();
+        Department::create($request->all());
 
 
     }

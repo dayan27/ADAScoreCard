@@ -19,13 +19,18 @@ class StrategicPlan extends Model
         'to',
         'from',
         'perspective',
+        'score_card_id',
+      
     
     ];
     public function departments(){
         return $this->belongsToMany(Department::class);
     }
-    public function yearlyPlans(){
+    public function yearly_plans(){
 
         return $this->hasMany(yearlyPlans::class);
+    }
+    public function score_card(){
+        return $this->belongsTo(ScoreCard::class);
     }
 }

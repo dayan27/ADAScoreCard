@@ -13,7 +13,7 @@ class CreateDepartmentStrategicPlansTable extends Migration
      */
     public function up()
     {
-        Schema::create('department_strategic_plans', function (Blueprint $table) {
+        Schema::create('department_strategic_plan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('department_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('strategic_plan_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();

@@ -4,7 +4,9 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\PerspectiveController;
 use App\Http\Controllers\ScoreCardController;
 use App\Http\Controllers\StrategicPlanController;
+use App\Http\Controllers\YearCardController;
 use App\Http\Controllers\YearlyPlanController;
+use App\Models\YearCard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +28,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::apiResource('/scorecards',ScoreCardController::class);
 Route::apiResource('/departments',DepartmentController::class);
 Route::apiResource('/yearlyplans',YearlyPlanController::class);
+Route::apiResource('/yearcards',YearCardController::class);
+
 
 Route::apiResource('/perspectives',PerspectiveController::class);
 Route::apiResource('/strategicplans',StrategicPlanController::class);

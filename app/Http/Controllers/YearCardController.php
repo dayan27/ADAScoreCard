@@ -14,7 +14,7 @@ class YearCardController extends Controller
      */
     public function index()
     {
-        //
+        return YearCard::all();
     }
 
     /**

@@ -13,4 +13,8 @@ class YearCard extends Model
        
         
  ];
+ public function yearly_plans(){
+     return $this->hasMany(YearlyPlan::class);
+ }
+ 
 }

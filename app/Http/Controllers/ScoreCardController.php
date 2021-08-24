@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\StrategicPlanResource;
 use App\Models\ScoreCard;
 use Illuminate\Http\Request;
+use PhpParser\ErrorHandler\Collecting;
 
 class ScoreCardController extends Controller
 {
@@ -50,9 +52,12 @@ class ScoreCardController extends Controller
      * @param  \App\Models\ScoreCard  $scoreCard
      * @return \Illuminate\Http\Response
      */
-    public function show(ScoreCard $scoreCard)
+    public function show($id)
+
     {
-        //
+        $scoreCard=ScoreCard::find($id);
+        // return ($scoreCard);
+        return StrategicPlanResource::collection($scoreCard->strategic_plans());
     }
 
     /**
