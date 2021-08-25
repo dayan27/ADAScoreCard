@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\StrategicPlanResource;
 use App\Models\ScoreCard;
+use App\Models\StrategicPlan;
 use Illuminate\Http\Request;
 use PhpParser\ErrorHandler\Collecting;
 
@@ -59,6 +60,7 @@ class ScoreCardController extends Controller
         $scoreCard=ScoreCard::find($id);
         // return ($scoreCard);
         return StrategicPlanResource::collection($scoreCard->strategic_plans);
+
     }
 
     /**

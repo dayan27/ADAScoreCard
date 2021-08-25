@@ -23,7 +23,7 @@ class YearlyPlan extends Model
         'year_card_id',
         'strategic_plan_id',
  ];
-    public function strategicPlan(){
+    public function strategic_plan(){
 
         return $this->belongsTo(StrategicPlan::class);
     }
