@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TermSubActivity;
 use Illuminate\Http\Request;
 
 class TermSubActivityController extends Controller
@@ -13,7 +14,7 @@ class TermSubActivityController extends Controller
      */
     public function index()
     {
-        //
+        return TermSubActivity::all();
     }
 
     /**
@@ -24,7 +25,14 @@ class TermSubActivityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title'=>'required',
+            'level'=>'required',
+            'measurment'=>'required',
+            'added_by'=>'required',
+            'term_activity_id'=>'required'
+         ]);
+        return TermSubActivity::create($request->all());
     }
 
     /**
@@ -33,9 +41,9 @@ class TermSubActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(TermSubActivity $termActivity)
     {
-        //
+        return $termActivity;
     }
 
     /**
@@ -45,9 +53,18 @@ class TermSubActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, TermSubActivity $termSubActivity)
     {
-        //
+
+     $request->validate([
+        'title'=>'required',
+        'level'=>'required',
+        'measurment'=>'required',
+        'added_by'=>'required',
+        'term_activity_id'=>'required'
+     ]);
+      $termSubActivity->update($request->all());
+      return $termSubActivity;
     }
 
     /**
@@ -56,8 +73,8 @@ class TermSubActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(TermSubActivity $termSubActivity)
     {
-        //
+        $termSubActivity->delete();
     }
 }

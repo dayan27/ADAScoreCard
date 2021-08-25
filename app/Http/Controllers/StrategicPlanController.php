@@ -50,6 +50,7 @@ class StrategicPlanController extends Controller
         $departmentId=$request->get('depid');
         $strategicPlan->departments()->attach($departmentId);
 
+        return $strategicPlan;
         // if( $strategicPlan->save()) {
         //     return $this->successResponse('successfully saved ',202);
         // }
@@ -80,7 +81,7 @@ class StrategicPlanController extends Controller
      */
     public function update(Request $request, $id)
     {
-      
+
         $strategicPlan=StrategicPlan::findorfail($id);
         //   dd($strategicPlan);
         $request->validate([
@@ -107,6 +108,8 @@ class StrategicPlanController extends Controller
         $strategicPlan->save();
         $departmentId=$request->get('depid');
         $strategicPlan->departments()->sync($departmentId);
+
+        return $strategicPlan;
     }
 
     /**

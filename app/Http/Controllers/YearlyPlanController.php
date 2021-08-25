@@ -53,6 +53,8 @@ class YearlyPlanController extends Controller
         $yearlyPlan->year=$request->year;
         $yearlyPlan->save();
 
+        return $yearlyPlan;
+
     }
 
     /**
@@ -61,9 +63,9 @@ class YearlyPlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(YearlyPlan $yearlyPlan)
     {
-        //
+        return $yearlyPlan;
     }
 
     /**
@@ -73,9 +75,36 @@ class YearlyPlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,YearlyPlan $yearlyPlan)
     {
-        //
+        $request->validate([
+            'action'=>'required',
+            'budget'=>'required',
+            'to'=>'required',
+            'from'=>'required',
+            // 'phase'=>'required',
+            // 'year'=>'required',
+
+
+        ]);
+        $yearlyPlan->action=$request->action;
+        $yearlyPlan->budget=$request->budget;
+        // $yearlyPlan->phase=$request->phase;
+
+        $to = strtotime($request->to);
+        $from = strtotime($request->from);
+        $toformat = date('Y-m-d',$to);
+        $fromformat = date('Y-m-d',$from);
+        $yearlyPlan->to=$toformat;
+        $yearlyPlan->from=$fromformat;
+        $yearlyPlan->year_card_id=$request->year_card_id;
+        $yearlyPlan->strategic_plan_id=$request->strategic_plan_id;
+        // $year = strtotime($request->to);
+        // $yearformat = date('Y-m-d',$year);
+        $yearlyPlan->year=$request->year;
+        $yearlyPlan->save();
+
+        return $yearlyPlan;
     }
 
     /**
@@ -84,8 +113,8 @@ class YearlyPlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(YearlyPlan $yearlyPlan)
     {
-        //
+        $yearlyPlan->delete();
     }
 }

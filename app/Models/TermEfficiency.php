@@ -17,7 +17,8 @@ class TermEfficiency extends Model
         'total_behavior_result',
         'total_term_activity_result',
         'result',
-       
+        'employee_id'
+
 
     ];
 }

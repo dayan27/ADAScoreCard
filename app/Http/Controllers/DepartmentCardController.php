@@ -14,7 +14,7 @@ class DepartmentCardController extends Controller
      */
     public function index()
     {
-        //
+        return DepartmentCard::all();
     }
 
     /**
@@ -25,7 +25,17 @@ class DepartmentCardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(
+            [
+                'year'=>'required',
+                'number_of_term'=>'required',
+                'make_visible'=>'required',
+
+            ]
+            );
+
+            return DepartmentCard::create($request->all());
+
     }
 
     /**
@@ -36,7 +46,7 @@ class DepartmentCardController extends Controller
      */
     public function show(DepartmentCard $departmentCard)
     {
-        //
+        return $departmentCard;
     }
 
     /**
@@ -48,7 +58,17 @@ class DepartmentCardController extends Controller
      */
     public function update(Request $request, DepartmentCard $departmentCard)
     {
-        //
+        $request->validate(
+            [
+                'year'=>'required',
+                'number_of_term'=>'required',
+                'make_visible'=>'required',
+
+            ]
+            );
+
+            $departmentCard->update($request->all());
+            return $departmentCard;
     }
 
     /**
@@ -59,6 +79,6 @@ class DepartmentCardController extends Controller
      */
     public function destroy(DepartmentCard $departmentCard)
     {
-        //
+        $departmentCard->delete();
     }
 }

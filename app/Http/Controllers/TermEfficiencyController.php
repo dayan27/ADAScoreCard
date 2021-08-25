@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TermEfficiency;
 use Illuminate\Http\Request;
 
 class TermEfficiencyController extends Controller
@@ -13,7 +14,7 @@ class TermEfficiencyController extends Controller
      */
     public function index()
     {
-        //
+        return TermEfficiency::all();
     }
 
     /**
@@ -24,7 +25,14 @@ class TermEfficiencyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+
+            'total_behavior_result'=>'required',
+            'total_term_activity_result'=>'required',
+            'result'=>'required',
+            'employee_id'=>'required'
+        ]);
+        TermEfficiency::create($request->all());
     }
 
     /**
@@ -33,9 +41,9 @@ class TermEfficiencyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(TermEfficiency $termEfficiency)
     {
-        //
+      return $termEfficiency;
     }
 
     /**
@@ -45,9 +53,17 @@ class TermEfficiencyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,TermEfficiency $termEfficiency)
     {
-        //
+        $request->validate([
+
+            'total_behavior_result'=>'required',
+            'total_term_activity_result'=>'required',
+            'result'=>'required',
+            'employee_id'=>'required'
+        ]);
+        $termEfficiency->update($request->all());
+        return $termEfficiency;
     }
 
     /**
@@ -56,8 +72,8 @@ class TermEfficiencyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(TermEfficiency $termEfficiency)
     {
-        //
+        $termEfficiency->delete();
     }
 }

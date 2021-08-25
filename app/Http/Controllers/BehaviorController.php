@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Behavior;
 use Illuminate\Http\Request;
 
 class BehaviorController extends Controller
@@ -13,7 +14,7 @@ class BehaviorController extends Controller
      */
     public function index()
     {
-        //
+        return Behavior::all();
     }
 
     /**
@@ -24,7 +25,18 @@ class BehaviorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(
+            [
+                'title'=>'required',
+                'weight'=>'required',
+                'maximum_score_point'=>'required',
+
+            ]
+            );
+
+        return Behavior::create($request->all());
+
+
     }
 
     /**
@@ -33,9 +45,9 @@ class BehaviorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Behavior $behavior)
     {
-        //
+        return $behavior;
     }
 
     /**
@@ -45,9 +57,19 @@ class BehaviorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Behavior $behavior)
     {
-        //
+        $request->validate(
+            [
+                'title'=>'required',
+                'weight'=>'required',
+                'maximum_score_point'=>'required',
+
+            ]
+            );
+
+            return  $behavior->update($request->all());
+         return $behavior;
     }
 
     /**
@@ -56,8 +78,8 @@ class BehaviorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Behavior $behavior)
     {
-        //
+      $behavior->delete();
     }
 }

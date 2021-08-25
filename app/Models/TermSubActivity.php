@@ -18,8 +18,9 @@ class TermSubActivity extends Model
         'level',
         'measurment',
         'added_by',
+        'term_activity_id'
 
-       
+
 
     ];
 }

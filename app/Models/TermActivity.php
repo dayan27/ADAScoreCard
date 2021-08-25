@@ -14,9 +14,11 @@ class TermActivity extends Model
      * @var array
      */
     protected $fillable = [
-       
+
         'to',
         'from',
+        'term_id',
+        'department_plan_id'
 
     ];
 }

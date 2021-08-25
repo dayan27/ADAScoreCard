@@ -44,6 +44,7 @@ class ScoreCardController extends Controller
         $scoreCard->to=$toformat;
         $scoreCard->from=$fromformat;
         $scoreCard->save();
+        return $scoreCard;
     }
 
     /**
@@ -57,7 +58,7 @@ class ScoreCardController extends Controller
     {
         $scoreCard=ScoreCard::find($id);
         // return ($scoreCard);
-        return StrategicPlanResource::collection($scoreCard->strategic_plans());
+        return StrategicPlanResource::collection($scoreCard->strategic_plans);
     }
 
     /**
@@ -68,7 +69,7 @@ class ScoreCardController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    { 
+    {
         $scoreCard=ScoreCard::findorfail($id);
                 // dd($scoreCard);
 
@@ -83,6 +84,7 @@ class ScoreCardController extends Controller
           $scoreCard->to=$request->to;
           $scoreCard->from=$request->from;
           $scoreCard->save();
+          return $scoreCard;
 
     }
 

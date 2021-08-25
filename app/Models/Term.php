@@ -17,7 +17,8 @@ class Term extends Model
         'term_no',
         'title',
         'year',
-        
+        'department_id'
+
 
     ];
 }

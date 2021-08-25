@@ -34,6 +34,8 @@ class EmployeeActivityController extends Controller
         'employee_id'=>'required',
 
       ]);
+
+      return EmployeeActivity::create($request->all());
     }
 
     /**
@@ -42,9 +44,9 @@ class EmployeeActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(EmployeeActivity $employeeActivity)
     {
-        //
+       return $employeeActivity;
     }
 
     /**
@@ -54,9 +56,20 @@ class EmployeeActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,EmployeeActivity $employeeActivity)
     {
-        //
+        $request->validate([
+            'result'=>'required',
+            'time_result'=>'required',
+            'quality_result'=>'required',
+            'quantity_result'=>'required',
+            'term_id'=>'required',
+            'employee_id'=>'required',
+
+          ]);
+
+         $employeeActivity->update($request->all());
+         return $employeeActivity;
     }
 
     /**
@@ -65,8 +78,8 @@ class EmployeeActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(EmployeeActivity $employeeActivity)
     {
-        //
+        $employeeActivity->delete();
     }
 }

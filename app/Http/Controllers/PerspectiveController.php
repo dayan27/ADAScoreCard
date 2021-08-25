@@ -34,6 +34,7 @@ class PerspectiveController extends Controller
         $perspective->title=$request->title;
         $perspective->description=$request->description;
         $perspective->save();
+        return $perspective;
 
     }
 
@@ -65,6 +66,7 @@ class PerspectiveController extends Controller
         $perspective->title=$request->title;
         $perspective->description=$request->description;
         $perspective->save();
+        return $perspective;
     }
 
     /**

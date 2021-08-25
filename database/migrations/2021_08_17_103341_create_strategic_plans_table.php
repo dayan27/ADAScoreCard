@@ -16,12 +16,12 @@ class CreateStrategicPlansTable extends Migration
         Schema::create('strategic_plans', function (Blueprint $table) {
             $table->id();
             $table->string('action');
-            $table->string('perspective');
             $table->date('to');
             $table->date('from');
             $table->string('phase');
 
             $table->foreignId('score_card_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('perspective_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

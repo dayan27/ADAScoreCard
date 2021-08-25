@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Term;
 use Illuminate\Http\Request;
 
 class TermController extends Controller
@@ -13,7 +14,7 @@ class TermController extends Controller
      */
     public function index()
     {
-        //
+        return Term::all();
     }
 
     /**
@@ -24,7 +25,14 @@ class TermController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+
+            'term_no'=>'required',
+            'title'=>'required',
+            'year'=>'required',
+            'department_id'=>'required'
+        ]);
+       return Term::create($request->all());
     }
 
     /**
@@ -33,9 +41,9 @@ class TermController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Term $term)
     {
-        //
+        return $term;
     }
 
     /**
@@ -45,9 +53,17 @@ class TermController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Term $term)
     {
-        //
+        $request->validate([
+
+            'term_no'=>'required',
+            'title'=>'required',
+            'year'=>'required',
+            'department_id'=>'required'
+        ]);
+        $term->update($request->all());
+        return $term;
     }
 
     /**
@@ -56,8 +72,8 @@ class TermController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy( Term $term)
     {
-        //
+        $term->delete();
     }
 }

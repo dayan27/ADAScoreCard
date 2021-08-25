@@ -33,12 +33,8 @@ class DepartmentController extends Controller
             'role'=>'required',
 
         ]);
-        // $department->name=$request->name;
-        // $department->phone_no=$request->phone_no;
-        // $department->email=$request->email;
-        // $department->role=$request->role;
-        // $department->save();
-        Department::create($request->all());
+
+        return Department::create($request->all());
 
 
     }
@@ -49,9 +45,9 @@ class DepartmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Department $department)
     {
-        //
+        return $department;
     }
 
     /**
@@ -61,9 +57,18 @@ class DepartmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Department $department)
     {
-        //
+        $request->validate([
+            'name'=>'required',
+            'phone_no'=>'required',
+            'email'=>'required',
+            'role'=>'required',
+
+        ]);
+
+        $department->update($request->all());
+        return $department;
     }
 
     /**
@@ -72,8 +77,8 @@ class DepartmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Department $department)
     {
-        //
+        $department->delete();
     }
 }

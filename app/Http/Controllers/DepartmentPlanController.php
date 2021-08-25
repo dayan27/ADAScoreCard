@@ -41,7 +41,7 @@ class DepartmentPlanController extends Controller
             ]
             );
 
-            DepartmentPlan::create($request->all());
+            return DepartmentPlan::create($request->all());
     }
 
     /**
@@ -81,6 +81,7 @@ class DepartmentPlanController extends Controller
             );
 
             $departmentPlan->update($request->all());
+            return $departmentPlan;
     }
 
     /**

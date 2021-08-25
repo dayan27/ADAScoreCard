@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmployeeSubActivity;
 use Illuminate\Http\Request;
 
 class EmployeeSubActivityController extends Controller
@@ -13,7 +14,7 @@ class EmployeeSubActivityController extends Controller
      */
     public function index()
     {
-        
+       return EmployeeSubActivity::all();
     }
 
     /**
@@ -24,7 +25,16 @@ class EmployeeSubActivityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title'=>'required',
+            'isAccepeted'=>'required',
+            'term_sub_activity_id'=>'required',
+            'employee_id'=>'required',
+            'employee_activity_id'=>'required',
+
+        ]);
+
+        return  EmployeeSubActivity::create($request->all());
     }
 
     /**
@@ -33,9 +43,9 @@ class EmployeeSubActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(EmployeeSubActivity $employeeSubActivity)
     {
-        //
+        return $employeeSubActivity;
     }
 
     /**
@@ -45,10 +55,22 @@ class EmployeeSubActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, EmployeeSubActivity $employeeSubActivity)
     {
-        //
+        $request->validate([
+            'title'=>'required',
+            'isAccepeted'=>'required',
+            'term_sub_activity_id'=>'required',
+            'employee_id'=>'required',
+            'employee_activity_id'=>'required',
+
+        ]);
+
+        $employeeSubActivity->update($request->all());
+
+        return $employeeSubActivity;
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -56,8 +78,8 @@ class EmployeeSubActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(EmployeeSubActivity $employeeSubActivity)
     {
-        //
+        $employeeSubActivity->delete();
     }
 }

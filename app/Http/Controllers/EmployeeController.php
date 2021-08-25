@@ -34,7 +34,7 @@ class EmployeeController extends Controller
             'department_id'=>'required',
         ]);
 
-        Employee::create($request->all());
+       return Employee::create($request->all());
     }
 
     /**
@@ -68,6 +68,7 @@ class EmployeeController extends Controller
         ]);
 
         $employee->update($request->all());
+        return $employee;
     }
 
     /**

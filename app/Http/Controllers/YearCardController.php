@@ -25,11 +25,11 @@ class YearCardController extends Controller
      */
     public function store(Request $request)
     {
-        $yearCard=new YearCard();
+
         $request->validate([
             'year'=>'required'
         ]);
-        $yearCard->create($request->all());
+        return YearCard::create($request->all());
     }
 
     /**
@@ -56,6 +56,7 @@ class YearCardController extends Controller
             'year'=>'required',
         ]);
         $yearCard->update($request->all());
+        return $yearCard;
     }
 
     /**
@@ -66,6 +67,6 @@ class YearCardController extends Controller
      */
     public function destroy(YearCard $yearCard)
     {
-       return $yearCard->delete();
+        $yearCard->delete();
     }
 }

@@ -14,11 +14,12 @@ class EmployeeSubActivity extends Model
      * @var array
      */
     protected $fillable = [
-        'level',
         'title',
         'isAccepeted',
+         'term_sub_activity_id',
+         'employee_id',
+         'employee_activity_id'
 
-       
 
     ];
 }

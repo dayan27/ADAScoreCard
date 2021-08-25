@@ -19,8 +19,8 @@ class CreateScoreCardsTable extends Migration
             $table->string('description');
             $table->date('to');
             $table->date('from');
-            
-            $table->boolean('make_visible');
+
+            $table->boolean('make_visible')->default(0);
 
             $table->timestamps();
         });
