@@ -75,13 +75,11 @@ class ScoreCardController extends Controller
             }
         }
         $yearCard= array_values(array_unique($yearCard));
-        $departments=Department::all('id','name');
+       // $departments=Department::all('id','name');
        // $departments->makeHidden('id');
-
         return response()->json([
-            'strategic_plans'=>$sps->makeHidden('yearly_plans'),
+            'strategic_plans'=>$sps->makeHidden('yearly_plans','pivot')->load('departments:id'),
             'year_cards'=>$yearCard,
-            'departments'=>$departments
         ],201);
         //return StrategicPlanResource::collection($scoreCard->strategic_plans);
 

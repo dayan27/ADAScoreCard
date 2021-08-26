@@ -32,7 +32,15 @@ class TermActivityController extends Controller
             'department_plan_id'=>'required'
         ]);
 
-        return TermActivity::create($request->all());
+        $data=$request->all();
+
+        $to = strtotime($request->to);
+        $from = strtotime($request->from);
+        $toformat = date('Y-m-d',$to);
+        $fromformat = date('Y-m-d',$from);
+        $data['to']=$toformat;
+        $data['from']=$fromformat;
+        return TermActivity::create($data);
     }
 
     /**
@@ -62,7 +70,15 @@ class TermActivityController extends Controller
             'department_plan_id'=>'required'
         ]);
 
-        $termActivity->update($request->all());
+        $data=$request->all();
+
+        $to = strtotime($request->to);
+        $from = strtotime($request->from);
+        $toformat = date('Y-m-d',$to);
+        $fromformat = date('Y-m-d',$from);
+        $data['to']=$toformat;
+        $data['from']=$fromformat;
+        $termActivity->update($data);
         return $termActivity;
     }
 

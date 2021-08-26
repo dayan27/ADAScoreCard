@@ -47,7 +47,12 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        return $department;
+        $users=$department->users;
+        $department_plans=$department->department_plans;
+        return response()->json([
+               'users'=>$users,
+               'department_plans'=>$department_plans
+        ]) ;
     }
 
     /**

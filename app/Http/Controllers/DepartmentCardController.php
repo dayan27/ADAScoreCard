@@ -29,7 +29,6 @@ class DepartmentCardController extends Controller
             [
                 'year'=>'required',
                 'number_of_term'=>'required',
-                'make_visible'=>'required',
 
             ]
             );
@@ -62,7 +61,6 @@ class DepartmentCardController extends Controller
             [
                 'year'=>'required',
                 'number_of_term'=>'required',
-                'make_visible'=>'required',
 
             ]
             );

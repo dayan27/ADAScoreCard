@@ -1,11 +1,22 @@
 <?php
 
+<<<<<<< HEAD
 use App\Http\Controllers\AuthController;
+=======
+use App\Http\Controllers\ADAController;
+>>>>>>> 24ef5b1966de2d1e5c8f7b38ce8a422ba9287b4e
 use App\Http\Controllers\BehaviorController;
+use App\Http\Controllers\DepartmentCardController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DepartmentPlanController;
+use App\Http\Controllers\UserActivityController;
 use App\Http\Controllers\PerspectiveController;
 use App\Http\Controllers\ScoreCardController;
 use App\Http\Controllers\StrategicPlanController;
+use App\Http\Controllers\TermActivityController;
+use App\Http\Controllers\TermController;
+use App\Http\Controllers\TermSubActivityController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\YearCardController;
 use App\Http\Controllers\YearlyPlanController;
 use App\Models\YearCard;
@@ -35,12 +46,20 @@ Route::post('/logins',[AuthController::class,'login']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('/score_cards',ScoreCardController::class);
 Route::apiResource('/departments',DepartmentController::class);
-Route::apiResource('/yearlyplans',YearlyPlanController::class);
-Route::apiResource('/yearcards',YearCardController::class);
+Route::apiResource('/yearly_plans',YearlyPlanController::class);
+Route::apiResource('/department_plans',DepartmentPlanController::class);
+Route::apiResource('/year_cards',YearCardController::class);
+Route::apiResource('/department_cards',DepartmentCardController::class);
 Route::apiResource('/behaviors',BehaviorController::class);
 
 
 Route::apiResource('/perspectives',PerspectiveController::class);
+Route::apiResource('/users',UserController::class);
+Route::apiResource('/adas',ADAController::class);
+Route::apiResource('/user_activities',UserActivityController::class);
+Route::apiResource('/term_activities',TermActivityController::class);
+Route::apiResource('/term_sub_activities',TermSubActivityController::class);
+Route::apiResource('/terms',TermController::class);
 Route::apiResource('/strategic_plans',StrategicPlanController::class);
 
 Route::get('/logout',[AuthController::class,'logout']);

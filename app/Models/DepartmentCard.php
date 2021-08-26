@@ -15,4 +15,8 @@ class DepartmentCard extends Model
         'number_of_term',
         'make_visible',
     ];
+
+    public function department_plans(){
+        return $this->hasMany(DepartmentPlan::class);
+    }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\YearCard;
+use App\Models\ADA;
 use Illuminate\Http\Request;
 
-class YearCardController extends Controller
+class ADAController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class YearCardController extends Controller
      */
     public function index()
     {
-        return YearCard::all();
+        return ADA::all();
     }
 
     /**
@@ -25,49 +25,40 @@ class YearCardController extends Controller
      */
     public function store(Request $request)
     {
-
-        $request->validate([
-            'year'=>'required'
-        ]);
-        return YearCard::create($request->all());
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\YearCard  $yearCard
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show( $yearCard)
+    public function show($id)
     {
-
-        return YearCard::find($yearCard)->load('yearly_plans');
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\YearCard  $yearCard
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, YearCard $yearCard)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'year'=>'required',
-        ]);
-        $yearCard->update($request->all());
-        return $yearCard;
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\YearCard  $yearCard
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(YearCard $yearCard)
+    public function destroy($id)
     {
-        $yearCard->delete();
+        //
     }
 }

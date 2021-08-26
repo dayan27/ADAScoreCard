@@ -18,7 +18,7 @@ class CreateTermsTable extends Migration
             $table->string('title');
             $table->integer('term_no');
             $table->integer('year');
-            $table->boolean('make_visible');
+            $table->boolean('make_visible')->default(0);
             $table->foreignId('department_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('year_card_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 

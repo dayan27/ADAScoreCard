@@ -17,7 +17,9 @@ class Term extends Model
         'term_no',
         'title',
         'year',
-        'department_id'
+        'department_id',
+        'make_visible',
+        'year_card_id'
 
 
     ];

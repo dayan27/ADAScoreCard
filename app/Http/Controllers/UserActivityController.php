@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EmployeeActivity;
+use App\Models\UserActivity;
 use Illuminate\Http\Request;
 
-class EmployeeActivityController extends Controller
+class UserActivityController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class EmployeeActivityController extends Controller
      */
     public function index()
     {
-          return EmployeeActivity::all();
+          return UserActivity::all();
     }
 
     /**
@@ -31,11 +31,11 @@ class EmployeeActivityController extends Controller
         'quality_result'=>'required',
         'quantity_result'=>'required',
         'term_id'=>'required',
-        'employee_id'=>'required',
+        'user_id'=>'required',
 
       ]);
 
-      return EmployeeActivity::create($request->all());
+      return UserActivity::create($request->all());
     }
 
     /**
@@ -44,9 +44,9 @@ class EmployeeActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(EmployeeActivity $employeeActivity)
+    public function show(UserActivity $userActivity)
     {
-       return $employeeActivity;
+       return $userActivity;
     }
 
     /**
@@ -56,7 +56,7 @@ class EmployeeActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,EmployeeActivity $employeeActivity)
+    public function update(Request $request,UserActivity $userActivity)
     {
         $request->validate([
             'result'=>'required',
@@ -68,8 +68,8 @@ class EmployeeActivityController extends Controller
 
           ]);
 
-         $employeeActivity->update($request->all());
-         return $employeeActivity;
+         $userActivity->update($request->all());
+         return $userActivity;
     }
 
     /**
@@ -78,8 +78,8 @@ class EmployeeActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EmployeeActivity $employeeActivity)
+    public function destroy(UserActivity $userActivity)
     {
-        $employeeActivity->delete();
+        $userActivity->delete();
     }
 }
