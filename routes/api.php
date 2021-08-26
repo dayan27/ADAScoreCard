@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BehaviorController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\PerspectiveController;
@@ -26,7 +27,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/score_cards',ScoreCardController::class);
+
+
+Route::post('/logins',[AuthController::class,'login']);
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('/score_cards',ScoreCardController::class);
 Route::apiResource('/departments',DepartmentController::class);
 Route::apiResource('/yearlyplans',YearlyPlanController::class);
 Route::apiResource('/yearcards',YearCardController::class);
@@ -36,4 +43,6 @@ Route::apiResource('/behaviors',BehaviorController::class);
 Route::apiResource('/perspectives',PerspectiveController::class);
 Route::apiResource('/strategic_plans',StrategicPlanController::class);
 
-
+Route::get('/logout',[AuthController::class,'logout']);
+    
+});

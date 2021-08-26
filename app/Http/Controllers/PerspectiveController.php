@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Perspective;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class PerspectiveController extends Controller
 {
@@ -14,6 +15,7 @@ class PerspectiveController extends Controller
      */
     public function index()
     {
+        // return Hash::make('password');
         return Perspective::all();
     }
 
