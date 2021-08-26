@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ADAController;
 use App\Http\Controllers\BehaviorController;
 use App\Http\Controllers\DepartmentCardController;
 use App\Http\Controllers\DepartmentController;
@@ -44,6 +45,7 @@ Route::apiResource('/behaviors',BehaviorController::class);
 
 Route::apiResource('/perspectives',PerspectiveController::class);
 Route::apiResource('/users',UserController::class);
+Route::apiResource('/adas',ADAController::class);
 Route::apiResource('/user_activities',UserActivityController::class);
 Route::apiResource('/term_activities',TermActivityController::class);
 Route::apiResource('/term_sub_activities',TermSubActivityController::class);

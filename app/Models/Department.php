@@ -24,6 +24,10 @@ class Department extends Model
         'user_id',
 
     ];
+
+    protected $hidden=[
+       'pivot'
+    ];
     public function strategicplans(){
         return $this->belongsToMany(StrategicPlan::class);
     }
