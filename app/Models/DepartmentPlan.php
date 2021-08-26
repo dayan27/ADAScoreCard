@@ -23,11 +23,14 @@ class DepartmentPlan extends Model
         'from',
         'budget',
         'goal',
+        'yearly_plan_id',
+        'department_id',
+        'department_card_id',
 
-
-
-
-       
 
     ];
+
+    public function department(){
+        return $this->belongsTo(Department::class);
+    }
 }

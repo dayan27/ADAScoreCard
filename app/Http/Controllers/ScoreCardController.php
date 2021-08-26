@@ -77,9 +77,9 @@ class ScoreCardController extends Controller
         $yearCard= array_values(array_unique($yearCard));
         $departments=Department::all('id','name');
        // $departments->makeHidden('id');
-
+      // return $sps;
         return response()->json([
-            'strategic_plans'=>$sps->makeHidden('yearly_plans'),
+            'strategic_plans'=>$sps->makeHidden('yearly_plans','pivot')->load('departments'),
             'year_cards'=>$yearCard,
             'departments'=>$departments
         ],201);

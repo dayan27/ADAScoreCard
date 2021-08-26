@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EmployeeActivity extends Model
+class UserActivity extends Model
 {
-    use HasFactory; 
+    use HasFactory;
       /**
     * The attributes that are mass assignable.
     *
@@ -18,9 +18,12 @@ class EmployeeActivity extends Model
        'time_result',
        'quality_result',
        'quantity_result',
-       'employee_id',
+       'user_id',
        'term_id',
 
    ];
+   public function user_sub_activities(){
+    return $this->hasMany(UserSubActivity::class);
+}
 
 }

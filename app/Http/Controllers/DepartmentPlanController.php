@@ -25,6 +25,7 @@ class DepartmentPlanController extends Controller
      */
     public function store(Request $request)
     {
+      //  $departmentPlan=new DepartmentPlan();
         $request->validate(
             [
                 'activity'=>'required',
@@ -41,7 +42,15 @@ class DepartmentPlanController extends Controller
             ]
             );
 
-            return DepartmentPlan::create($request->all());
+            $data=$request->all();
+
+            $to = strtotime($request->to);
+            $from = strtotime($request->from);
+            $toformat = date('Y-m-d',$to);
+            $fromformat = date('Y-m-d',$from);
+            $data['to']=$toformat;
+            $data['from']=$fromformat;
+            return DepartmentPlan::create($data);
     }
 
     /**
@@ -80,7 +89,15 @@ class DepartmentPlanController extends Controller
             ]
             );
 
-            $departmentPlan->update($request->all());
+            $data=$request->all();
+
+            $to = strtotime($request->to);
+            $from = strtotime($request->from);
+            $toformat = date('Y-m-d',$to);
+            $fromformat = date('Y-m-d',$from);
+            $data['to']=$toformat;
+            $data['from']=$fromformat;
+            $departmentPlan->update($data);
             return $departmentPlan;
     }
 

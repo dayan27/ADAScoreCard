@@ -27,4 +27,12 @@ class Department extends Model
     public function strategicplans(){
         return $this->belongsToMany(StrategicPlan::class);
     }
+
+    public function users(){
+        return $this->hasMany(User::class);
+    }
+
+    public function department_plans(){
+        return $this->hasMany(DepartmentPlan::class);
+    }
 }

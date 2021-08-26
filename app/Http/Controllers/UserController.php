@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class EmployeeController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return Employee::all();
+        return User::all();
     }
 
     /**
@@ -34,7 +34,7 @@ class EmployeeController extends Controller
             'department_id'=>'required',
         ]);
 
-       return Employee::create($request->all());
+       return User::create($request->all());
     }
 
     /**
@@ -43,9 +43,9 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Employee $employee)
+    public function show(User $user)
     {
-      return $employee;
+      return $user->load('user_activities');
     }
 
     /**
@@ -55,7 +55,7 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employee $employee)
+    public function update(Request $request, User $user)
     {
         $request->validate([
             'first_name'=>'required',
@@ -67,8 +67,8 @@ class EmployeeController extends Controller
 
         ]);
 
-        $employee->update($request->all());
-        return $employee;
+        $user->update($request->all());
+        return $user;
     }
 
     /**
@@ -77,8 +77,8 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Employee $employee)
+    public function destroy(User $user)
     {
-        $employee->delete();
+        $user->delete();
     }
 }

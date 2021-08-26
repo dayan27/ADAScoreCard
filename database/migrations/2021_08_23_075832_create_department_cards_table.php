@@ -17,7 +17,7 @@ class CreateDepartmentCardsTable extends Migration
             $table->id();
             $table->string('year');
             $table->integer('number_of_term');
-            $table->boolean('make_visible');
+            $table->boolean('make_visible')->default(0);
 
             $table->timestamps();
         });

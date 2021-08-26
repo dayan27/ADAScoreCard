@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EmployeeSubActivity extends Model
+class UserSubActivity extends Model
 {
     use HasFactory;
        /**
@@ -17,8 +17,8 @@ class EmployeeSubActivity extends Model
         'title',
         'isAccepeted',
          'term_sub_activity_id',
-         'employee_id',
-         'employee_activity_id'
+         'user_id',
+         'user_activity_id'
 
 
     ];

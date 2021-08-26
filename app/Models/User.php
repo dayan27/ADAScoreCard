@@ -18,8 +18,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'first_name',
+        'last_name',
+        'proffesion',
+        'comment',
+        'phone_no',
         'email',
+        'gender',
         'password',
+        'department_id',
+        'role'
     ];
 
     /**
@@ -40,4 +47,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function departments(){
+        return $this->belongsToMany(Department::class);
+    }
+
+    public function user_activities(){
+        return $this->hasMany(UserActivity::class);
+    }
 }
