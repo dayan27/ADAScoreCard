@@ -45,7 +45,7 @@ class StrategicPlanController extends Controller
         $strategicPlan->from=$toformat;
         $strategicPlan->to=$fromformat;
         // $strategicPlan->phase=$request->phase;
-        $strategicPlan->score_card_id=$request->scoreCardId;
+        $strategicPlan->score_card_id=$request->score_card_id;
         $strategicPlan->save();
         $departmentId=$request->depid;
         $strategicPlan->departments()->attach($departmentId);
@@ -86,17 +86,16 @@ class StrategicPlanController extends Controller
         //   dd($strategicPlan);
         $request->validate([
             'action'=>'required',
-            'term'=>'required',
-             'perspective_id'=>'required',
+            // 'term'=>'required',
+           // 'perspective'=>'required',
             'from'=>'required',
             'to'=>'required',
             // 'phase'=>'required',
 
         ]);
         $strategicPlan->action=$request->action;
-        $strategicPlan->term=$request->term;
+        $strategicPlan->phase=$request->phase;
         $strategicPlan->perspective_id=$request->perspective_id;
-
         $to = strtotime($request->to);
         $from = strtotime($request->from);
         $toformat = date('Y-m-d',$to);
@@ -104,10 +103,10 @@ class StrategicPlanController extends Controller
         $strategicPlan->from=$toformat;
         $strategicPlan->to=$fromformat;
         // $strategicPlan->phase=$request->phase;
-        $strategicPlan->score_card_id=$request->scoreCardId;
+        $strategicPlan->score_card_id=$request->score_card_id;
         $strategicPlan->save();
-        $departmentId=$request->get('depid');
-        $strategicPlan->departments()->sync($departmentId);
+        $departmentId=$request->depid;
+        $strategicPlan->departments()->attach($departmentId);
 
         return $strategicPlan;
     }

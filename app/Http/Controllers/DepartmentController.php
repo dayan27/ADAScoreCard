@@ -47,6 +47,7 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
+        $employees=$department->use;
         return $department;
     }
 

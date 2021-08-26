@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
            // $table->date('date_of_employment');
 
-          //  $table->foreignId('department_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('department_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->rememberToken();
             $table->timestamps();
         });

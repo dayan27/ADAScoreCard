@@ -38,9 +38,10 @@ class YearCardController extends Controller
      * @param  \App\Models\YearCard  $yearCard
      * @return \Illuminate\Http\Response
      */
-    public function show(YearCard $yearCard)
+    public function show( $yearCard)
     {
-        return $yearCard;
+
+        return YearCard::find($yearCard)->load('yearly_plans');
     }
 
     /**
