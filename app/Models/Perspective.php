@@ -16,8 +16,13 @@ class Perspective extends Model
     protected $fillable = [
         'title',
         'description',
-        
 
+
+    ];
+
+    protected $hidden=[
+        'created_at',
+        'updated_at'
     ];
     public function strategic_plans(){
         return $this->hasMany(StrategicPlan::class);

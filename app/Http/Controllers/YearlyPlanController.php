@@ -51,6 +51,8 @@ class YearlyPlanController extends Controller
         // $year = strtotime($request->to);
         // $yearformat = date('Y-m-d',$year);
         $yearlyPlan->year=$request->year;
+        $yearlyPlan->make_visible=0;
+
         $yearlyPlan->save();
 
         return $yearlyPlan;
@@ -102,6 +104,7 @@ class YearlyPlanController extends Controller
         // $year = strtotime($request->to);
         // $yearformat = date('Y-m-d',$year);
         $yearlyPlan->year=$request->year;
+        $yearlyPlan->make_visible=0;
         $yearlyPlan->save();
 
         return $yearlyPlan;

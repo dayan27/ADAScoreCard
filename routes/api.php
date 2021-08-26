@@ -26,7 +26,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/scorecards',ScoreCardController::class);
+Route::apiResource('/score_cards',ScoreCardController::class);
 Route::apiResource('/departments',DepartmentController::class);
 Route::apiResource('/yearlyplans',YearlyPlanController::class);
 Route::apiResource('/yearcards',YearCardController::class);
@@ -34,6 +34,6 @@ Route::apiResource('/behaviors',BehaviorController::class);
 
 
 Route::apiResource('/perspectives',PerspectiveController::class);
-Route::apiResource('/strategicplans',StrategicPlanController::class);
+Route::apiResource('/strategic_plans',StrategicPlanController::class);
 
 

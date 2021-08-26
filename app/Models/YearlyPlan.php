@@ -21,6 +21,7 @@ class YearlyPlan extends Model
         'phase',
         'year',
         'year_card_id',
+        'make_visible',
         'strategic_plan_id',
  ];
     public function strategic_plan(){

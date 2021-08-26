@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ScoreCard extends Model
 {
     use HasFactory;
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +21,12 @@ class ScoreCard extends Model
         'from',
 
     ];
+
+    protected $hidden=[
+        'created_at',
+        'updated_at'
+    ];
+    
     public function strategic_plans(){
         return $this->hasMany(StrategicPlan::class);
     }

@@ -20,8 +20,13 @@ class StrategicPlan extends Model
         'from',
         'perspective_id',
         'score_card_id',
-      
-    
+
+
+    ];
+
+    protected $hidden=[
+        'created_at',
+        'updated_at'
     ];
     public function departments(){
         return $this->belongsToMany(Department::class);

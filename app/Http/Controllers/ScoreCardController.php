@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\StrategicPlanResource;
+use App\Models\Department;
 use App\Models\ScoreCard;
 use App\Models\StrategicPlan;
+use App\Models\YearCard;
 use Illuminate\Http\Request;
 use PhpParser\ErrorHandler\Collecting;
 
@@ -58,8 +60,30 @@ class ScoreCardController extends Controller
 
     {
         $scoreCard=ScoreCard::find($id);
-        // return ($scoreCard);
-        return StrategicPlanResource::collection($scoreCard->strategic_plans);
+        $sps=$scoreCard->strategic_plans;
+
+        $yearCard=[];
+        foreach($sps as $sp) {
+            foreach($sp->yearly_plans as $value) {
+
+                // if(!array_key_exists($value->year_card->id,$yearCard)){
+                //     $yearCard[]=$value->year_card;
+
+                // }
+                $yearCard[]=$value->year_card;
+
+            }
+        }
+        $yearCard= array_values(array_unique($yearCard));
+        $departments=Department::all('id','name');
+       // $departments->makeHidden('id');
+
+        return response()->json([
+            'strategic_plans'=>$sps->makeHidden('yearly_plans'),
+            'year_cards'=>$yearCard,
+            'departments'=>$departments
+        ],201);
+        //return StrategicPlanResource::collection($scoreCard->strategic_plans);
 
     }
 

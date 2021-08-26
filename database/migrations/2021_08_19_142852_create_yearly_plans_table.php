@@ -17,7 +17,7 @@ class CreateYearlyPlansTable extends Migration
             $table->id();
             $table->string('action');
             $table->string('budget');
-            $table->boolean('make_visible');
+            $table->boolean('make_visible')->default(0);
            // $table->string('phase');
             $table->date('to');
             $table->date('from');

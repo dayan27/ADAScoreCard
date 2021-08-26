@@ -14,7 +14,7 @@ class StrategicPlanController extends Controller
      */
     public function index()
     {
-        return StrategicPlan::all();
+        return StrategicPlan::with('departments')->get();
     }
 
     /**
@@ -47,10 +47,10 @@ class StrategicPlanController extends Controller
         // $strategicPlan->phase=$request->phase;
         $strategicPlan->score_card_id=$request->scoreCardId;
         $strategicPlan->save();
-        $departmentId=$request->get('depid');
+        $departmentId=$request->depid;
         $strategicPlan->departments()->attach($departmentId);
 
-        return $strategicPlan;
+        return $strategicPlan->load('departments');
         // if( $strategicPlan->save()) {
         //     return $this->successResponse('successfully saved ',202);
         // }
