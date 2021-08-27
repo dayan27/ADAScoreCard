@@ -4,14 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\StrategicPlanResource;
 use App\Models\Department;
+use App\Models\DepartmentPlan;
+use App\Models\Employee;
 use App\Models\ScoreCard;
 use App\Models\StrategicPlan;
+use App\Models\User;
 use App\Models\YearCard;
 use Illuminate\Http\Request;
 use PhpParser\ErrorHandler\Collecting;
 
 class ScoreCardController extends Controller
 {
+
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -59,6 +66,7 @@ class ScoreCardController extends Controller
     public function show($id)
 
     {
+        $user=auth()->user();
         $scoreCard=ScoreCard::find($id);
         $sps=$scoreCard->strategic_plans;
 
@@ -75,10 +83,40 @@ class ScoreCardController extends Controller
             }
         }
         $yearCard= array_values(array_unique($yearCard));
-       // $departments=Department::all('id','name');
+
+
+        ///////
+        $deptCard=[];
+         $dps=DepartmentPlan::where('department_id' ,$user->department_id)->get();
+        //  return $dps;
+            foreach($dps as $department) {
+
+                // if(!array_key_exists($value->year_card->id,$yearCard)){
+                //     $yearCard[]=$value->year_card;
+
+                // }
+                $deptCard[]=$department->department_card;
+
+
+        }
+        $deptCard= array_values(array_unique($deptCard));
+
+       // return $deptCard;
+
+        ///////
+
+      //  return $user->department_id;
+        // if($user->role='manager'){
+
+        //     $department_plans=DepartmentPlan::where('department_id',$user->department_id);
+        //     }
        // $departments->makeHidden('id');
         return response()->json([
-            'strategic_plans'=>$sps->makeHidden('yearly_plans','pivot')->load('departments:id'),
+           // 'strategic_plans'=>$sps->makeHidden('yearly_plans','pivot')->load('departments:id'),
+            'department_card'=>$user->role=='manager' ? $deptCard:null,
+            'user'=>$user->role=='manager' ? User::where('department_id' ,$user->department_id)
+                                                  ->where('role','!=','manager')->get():null,
+            'strategic_plans'=>$sps->makeHidden('yearly_plans','pivot')->load('departments:id,name'),
             'year_cards'=>$yearCard,
         ],201);
         //return StrategicPlanResource::collection($scoreCard->strategic_plans);
@@ -121,5 +159,14 @@ class ScoreCardController extends Controller
     public function destroy(ScoreCard $scoreCard)
     {
         $scoreCard->delete();
+    }
+
+    public function make_visible($id)
+    {
+       $scoreCard= ScoreCard::find($id);
+       $scoreCard->make_visible=request()->visiblity;
+       $scoreCard->save();
+       return $scoreCard;
+       //$scoreCard->update(['make_visible'=>request()->make_visible]);
     }
 }

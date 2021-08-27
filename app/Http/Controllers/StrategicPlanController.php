@@ -106,9 +106,9 @@ class StrategicPlanController extends Controller
         $strategicPlan->score_card_id=$request->score_card_id;
         $strategicPlan->save();
         $departmentId=$request->depid;
-        $strategicPlan->departments()->attach($departmentId);
+        $strategicPlan->departments()->sync($departmentId);
 
-        return $strategicPlan;
+        return $strategicPlan->load('departments');
     }
 
     /**

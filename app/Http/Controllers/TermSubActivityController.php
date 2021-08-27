@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TermActivity;
 use App\Models\TermSubActivity;
 use Illuminate\Http\Request;
 
@@ -25,14 +26,26 @@ class TermSubActivityController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'title'=>'required',
             'level'=>'required',
             'measurment'=>'required',
             'added_by'=>'required',
-            'term_activity_id'=>'required'
          ]);
-        return TermSubActivity::create($request->all());
+
+         $termActivity=TermActivity::where('department_plan_id',$request->department_plan_id)->first();
+
+         if(!$termActivity){
+             $termActivity=new TermActivity();
+             $termActivity->term_id=$request->term_id;
+             $termActivity->department_plan_id=$request->department_plan_id;
+             $termActivity->save();
+         }
+
+         $data=$request->all();
+         $data['term_activity_id']=$termActivity->id;
+        return TermSubActivity::create($data);
     }
 
     /**

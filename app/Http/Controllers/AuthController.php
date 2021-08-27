@@ -10,8 +10,10 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     public function login(Request $request){
-       $credentials['email']=$request->input('email');
-       $credentials['password']=$request->input('password');
+
+      
+       $credentials['email']=$request->email;
+       $credentials['password']=$request->password;
        if(!Auth::attempt($credentials)){
            return response()->json(
                [
@@ -26,10 +28,9 @@ class AuthController extends Controller
        }
        $token=$user->createToken('auth_token')->plainTextToken;
        return response()->json([
-           'status'=>200,
            'access_token'=>$token,
-           'token_type'=>'Bearer'
-       ]);
+           'user'=>$user->role,
+       ],200);
 
     }
     public function logout(Request $request){

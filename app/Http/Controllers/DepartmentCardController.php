@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\DepartmentCard;
+use App\Models\Term;
+use App\Models\TermSubActivity;
 use Illuminate\Http\Request;
 
 class DepartmentCardController extends Controller
@@ -45,7 +47,35 @@ class DepartmentCardController extends Controller
      */
     public function show(DepartmentCard $departmentCard)
     {
-        return $departmentCard;
+        $term_sub_activities=[];
+        $term_activities=[];
+        $department_plans=$departmentCard->department_plans;
+        // $term_sub_activities=
+           // return $department_plans;
+         foreach ($department_plans as  $department_plan) {
+
+
+            $activity=$department_plan->term_activity;
+             $term_activities[]=$activity;
+           //  $a= $activity->term_sub_activities;
+             $a=TermSubActivity::where('term_activity_id',$activity['id'])->get();
+
+
+
+                foreach ($a as  $term_sub_activity) {
+                    $term_sub_activities[]=$term_sub_activity;
+                }
+
+
+        }
+
+        return response()->json([
+            'department_plans'=>$department_plans,
+            'term_activitis'=> $term_activities,
+            'term_sub_activitis'=> $term_sub_activities,
+            'terms'=>$departmentCard->terms
+
+        ]);
     }
 
     /**
@@ -78,5 +108,14 @@ class DepartmentCardController extends Controller
     public function destroy(DepartmentCard $departmentCard)
     {
         $departmentCard->delete();
+    }
+
+    public function make_visible($id)
+    {
+        $deptCard= DepartmentCard::find($id);
+        $deptCard->make_visible=request()->visiblity;
+        $deptCard->save();
+        return $deptCard;
+
     }
 }

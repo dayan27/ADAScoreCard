@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ScoreCard;
 use App\Models\YearCard;
 use Illuminate\Http\Request;
 
@@ -41,7 +42,8 @@ class YearCardController extends Controller
     public function show( $yearCard)
     {
 
-        return YearCard::find($yearCard)->load('yearly_plans');
+
+       return YearCard::find($yearCard)->yearly_plans;
     }
 
     /**
@@ -69,5 +71,15 @@ class YearCardController extends Controller
     public function destroy(YearCard $yearCard)
     {
         $yearCard->delete();
+    }
+
+
+    public function make_visible($id)
+    {
+        $yearCard= YearCard::find($id);
+        $yearCard->make_visible=request()->visiblity;
+        $yearCard->save();
+        return $yearCard;
+
     }
 }

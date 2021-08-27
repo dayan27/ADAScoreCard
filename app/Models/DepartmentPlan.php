@@ -18,7 +18,6 @@ class DepartmentPlan extends Model
         'quantity_weight',
         'quality_weight',
         'time_weight',
-        'year',
         'to',
         'from',
         'budget',
@@ -32,5 +31,15 @@ class DepartmentPlan extends Model
 
     public function department(){
         return $this->belongsTo(Department::class);
+    }
+
+    public function department_card(){
+
+        return $this->belongsTo(DepartmentCard::class);
+    }
+
+    public function term_activity(){
+
+        return $this->hasOne(TermActivity::class);
     }
 }

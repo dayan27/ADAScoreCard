@@ -50,7 +50,6 @@ class YearlyPlanController extends Controller
         $yearlyPlan->strategic_plan_id=$request->strategic_plan_id;
         // $year = strtotime($request->to);
         // $yearformat = date('Y-m-d',$year);
-        $yearlyPlan->year=$request->year;
         $yearlyPlan->make_visible=0;
 
         $yearlyPlan->save();
@@ -101,9 +100,7 @@ class YearlyPlanController extends Controller
         $yearlyPlan->from=$fromformat;
         $yearlyPlan->year_card_id=$request->year_card_id;
         $yearlyPlan->strategic_plan_id=$request->strategic_plan_id;
-        // $year = strtotime($request->to);
-        // $yearformat = date('Y-m-d',$year);
-        $yearlyPlan->year=$request->year;
+
         $yearlyPlan->make_visible=0;
         $yearlyPlan->save();
 

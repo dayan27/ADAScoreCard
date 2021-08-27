@@ -16,11 +16,19 @@ class Term extends Model
     protected $fillable = [
         'term_no',
         'title',
-        'year',
+        'to',
+        'from',
         'department_id',
         'make_visible',
-        'year_card_id'
+        'department_card_id'
 
 
     ];
+    protected $hidden=[
+        'created_at',
+        'updated_at',
+    ];
+    public function department_card(){
+        return $this->belongsTo(DepartmentCard::class);
+    }
 }

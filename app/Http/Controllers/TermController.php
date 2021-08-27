@@ -29,10 +29,22 @@ class TermController extends Controller
 
             'term_no'=>'required',
             'title'=>'required',
-            'year'=>'required',
-            'department_id'=>'required'
+            'department_id'=>'required',
+            'department_card_id'=>'required',
+            'to'=>'required',
+            'from'=>'required',
+
         ]);
-       return Term::create($request->all());
+
+        $data=$request->all();
+
+        $to = strtotime($request->to);
+        $from = strtotime($request->from);
+        $toformat = date('Y-m-d',$to);
+        $fromformat = date('Y-m-d',$from);
+        $data['to']=$toformat;
+        $data['from']=$fromformat;
+       return Term::create($data);
     }
 
     /**
@@ -59,10 +71,22 @@ class TermController extends Controller
 
             'term_no'=>'required',
             'title'=>'required',
-            'year'=>'required',
-            'department_id'=>'required'
+            'to'=>'required',
+            'from'=>'required',
+            'department_id'=>'required',
+            'department_card_id'=>'required'
         ]);
-        $term->update($request->all());
+
+
+        $data=$request->all();
+
+        $to = strtotime($request->to);
+        $from = strtotime($request->from);
+        $toformat = date('Y-m-d',$to);
+        $fromformat = date('Y-m-d',$from);
+        $data['to']=$toformat;
+        $data['from']=$fromformat;
+        $term->update($data);
         return $term;
     }
 
@@ -75,5 +99,14 @@ class TermController extends Controller
     public function destroy( Term $term)
     {
         $term->delete();
+    }
+
+    public function make_visible($id)
+    {
+        $term= Term::find($id);
+        $term->make_visible=request()->visiblity;
+        $term->save();
+        return $term;
+
     }
 }

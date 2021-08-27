@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ADA;
+use App\Models\Ada;
 use Illuminate\Http\Request;
 
 class ADAController extends Controller
@@ -14,7 +14,7 @@ class ADAController extends Controller
      */
     public function index()
     {
-        return ADA::all();
+        return Ada::first();
     }
 
     /**

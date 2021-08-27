@@ -17,10 +17,11 @@ class CreateTermsTable extends Migration
             $table->id();
             $table->string('title');
             $table->integer('term_no');
-            $table->integer('year');
+            $table->date('to');
+            $table->date('from');
             $table->boolean('make_visible')->default(0);
             $table->foreignId('department_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('year_card_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('department_card_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->timestamps();
         });

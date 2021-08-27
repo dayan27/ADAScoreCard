@@ -23,4 +23,18 @@ class TermSubActivity extends Model
 
 
     ];
+
+    protected $hidden=[
+        'created_at',
+        'updated_at',
+    ];
+    public function term_activities(){
+
+        return $this->belongsTo(TermActivity::class);
+    }
+
+    public function department_plan(){
+
+        return $this->belongsTo(TermActivity::class);
+    }
 }

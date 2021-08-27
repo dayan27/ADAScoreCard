@@ -26,8 +26,13 @@ class Department extends Model
     ];
 
     protected $hidden=[
-       'pivot'
+       'pivot',
+       'updated_at',
+       'created_at'
+
     ];
+
+
     public function strategicplans(){
         return $this->belongsToMany(StrategicPlan::class);
     }

@@ -1,10 +1,7 @@
 <?php
 
-<<<<<<< HEAD
 use App\Http\Controllers\AuthController;
-=======
 use App\Http\Controllers\ADAController;
->>>>>>> 24ef5b1966de2d1e5c8f7b38ce8a422ba9287b4e
 use App\Http\Controllers\BehaviorController;
 use App\Http\Controllers\DepartmentCardController;
 use App\Http\Controllers\DepartmentController;
@@ -40,11 +37,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 
-Route::post('/logins',[AuthController::class,'login']);
+Route::post('/login',[AuthController::class,'login']);
 
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('/score_cards',ScoreCardController::class);
+//visiblity status changing methods
+Route::post('/change_score_card_visiblity/{id}',[ScoreCardController::class,'make_visible']);
+Route::post('/change_year_card_visiblity/{id}',[YearCardController::class,'make_visible']);
+Route::post('/change_department_card_visiblity/{id}',[DepartmentCardController::class,'make_visible']);
+Route::post('/change_term_visiblity/{id}',[TermController::class,'make_visible']);
+
+
 Route::apiResource('/departments',DepartmentController::class);
 Route::apiResource('/yearly_plans',YearlyPlanController::class);
 Route::apiResource('/department_plans',DepartmentPlanController::class);
@@ -63,5 +65,8 @@ Route::apiResource('/terms',TermController::class);
 Route::apiResource('/strategic_plans',StrategicPlanController::class);
 
 Route::get('/logout',[AuthController::class,'logout']);
-    
+
+Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::apiResource('/score_cards',ScoreCardController::class);
 });

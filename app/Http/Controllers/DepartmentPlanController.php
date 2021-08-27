@@ -32,13 +32,13 @@ class DepartmentPlanController extends Controller
                 'quantity_weight'=>'required',
                 'quality_weight'=>'required',
                 'time_weight'=>'required',
-                'year'=>'required',
                 'to'=>'required',
                 'from'=>'required',
                 'budget'=>'required',
                 'goal'=>'required',
                 'yearly_plan_id'=>'required',
-                'department_id'=>'required'
+                'department_id'=>'required',
+                'department_card_id'=>'required'
             ]
             );
 
@@ -79,7 +79,6 @@ class DepartmentPlanController extends Controller
                 'quantity_weight'=>'required',
                 'quality_weight'=>'required',
                 'time_weight'=>'required',
-                'year'=>'required',
                 'to'=>'required',
                 'from'=>'required',
                 'budget'=>'required',

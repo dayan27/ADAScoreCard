@@ -15,10 +15,10 @@ class CreateUserActivitiesTable extends Migration
     {
         Schema::create('user_activities', function (Blueprint $table) {
             $table->id();
-            $table->double('result');
-            $table->double('time_result');
-            $table->double('quality_result');
-            $table->double('quantity_result');
+            $table->double('result')->nullable();
+            $table->double('time_result')->nullable();
+            $table->double('quality_result')->nullable();
+            $table->double('quantity_result')->nullable();
             $table->foreignId('term_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 

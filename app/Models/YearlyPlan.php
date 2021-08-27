@@ -19,11 +19,15 @@ class YearlyPlan extends Model
         'to',
         'from',
         'phase',
-        'year',
         'year_card_id',
         'make_visible',
         'strategic_plan_id',
  ];
+
+ protected $hidden=[
+    'updated_at',
+    'created_at'
+];
     public function strategic_plan(){
 
         return $this->belongsTo(StrategicPlan::class);

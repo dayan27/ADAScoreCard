@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -34,7 +35,9 @@ class UserController extends Controller
             'department_id'=>'required',
         ]);
 
-       return User::create($request->all());
+        $data=$request->all();
+        $data['password']=Hash::make($request->password);
+       return User::create($data);
     }
 
     /**
