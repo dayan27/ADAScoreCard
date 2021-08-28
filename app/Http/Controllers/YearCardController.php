@@ -28,7 +28,8 @@ class YearCardController extends Controller
     {
 
         $request->validate([
-            'year'=>'required'
+            'year'=>'required',
+            'score_card_id'=>'required'
         ]);
         return YearCard::create($request->all());
     }

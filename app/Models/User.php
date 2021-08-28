@@ -55,5 +55,9 @@ class User extends Authenticatable
 
     public function user_activities(){
         return $this->hasMany(UserActivity::class);
+    }  
+    
+    public function user_sub_activities(){
+        return $this->hasMany(UserSubActivity::class);
     }
 }

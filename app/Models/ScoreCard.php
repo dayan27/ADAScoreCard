@@ -26,8 +26,12 @@ class ScoreCard extends Model
         'created_at',
         'updated_at'
     ];
-    
+
     public function strategic_plans(){
         return $this->hasMany(StrategicPlan::class);
+    }
+
+    public function year_cards(){
+        return $this->hasMany(YearCard::class);
     }
 }

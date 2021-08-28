@@ -14,12 +14,15 @@ class UserSubActivity extends Model
      * @var array
      */
     protected $fillable = [
-        'title',
-        'isAccepeted',
-         'term_sub_activity_id',
-         'user_id',
-         'user_activity_id'
+        'term_sub_activity_id',
+        'user_id',
+        'user_activity_id'
 
 
     ];
+
+    public function term_sub_activity(){
+
+        return $this->belongsTo(TermSubActivity::class);
+    }
 }

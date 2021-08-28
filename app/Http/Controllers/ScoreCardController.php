@@ -85,6 +85,7 @@ class ScoreCardController extends Controller
         $yearCard= array_values(array_unique($yearCard));
 
 
+       // return $user;
         ///////
         $deptCard=[];
          $dps=DepartmentPlan::where('department_id' ,$user->department_id)->get();
@@ -114,10 +115,10 @@ class ScoreCardController extends Controller
         return response()->json([
            // 'strategic_plans'=>$sps->makeHidden('yearly_plans','pivot')->load('departments:id'),
             'department_card'=>$user->role=='manager' ? $deptCard:null,
-            'user'=>$user->role=='manager' ? User::where('department_id' ,$user->department_id)
-                                                  ->where('role','!=','manager')->get():null,
+             'user'=>$user->role=='manager' ? User::where('department_id' ,$user->department_id)
+                                                   ->where('role','!=','manager')->get():null,
             'strategic_plans'=>$sps->makeHidden('yearly_plans','pivot')->load('departments:id,name'),
-            'year_cards'=>$yearCard,
+            'year_cards'=>$scoreCard->year_cards,
         ],201);
         //return StrategicPlanResource::collection($scoreCard->strategic_plans);
 

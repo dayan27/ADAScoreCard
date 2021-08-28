@@ -37,4 +37,9 @@ class TermSubActivity extends Model
 
         return $this->belongsTo(TermActivity::class);
     }
+
+    public function user_sub_activities(){
+
+        return $this->hasMany(UserSubActivity::class);
+    }
 }

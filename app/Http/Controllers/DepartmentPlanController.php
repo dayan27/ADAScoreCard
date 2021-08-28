@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\DepartmentPlan;
+use App\Models\StrategicPlan;
+use App\Models\YearlyPlan;
 use Illuminate\Http\Request;
 
 class DepartmentPlanController extends Controller
@@ -50,6 +52,12 @@ class DepartmentPlanController extends Controller
             $fromformat = date('Y-m-d',$from);
             $data['to']=$toformat;
             $data['from']=$fromformat;
+            $yearlyPlanId=$data['yearly_plan_id'];
+
+            $sp=YearlyPlan::find($yearlyPlanId);
+            $data['perspective_id']=$sp->strategic_plan->perspective_id;
+
+            
             return DepartmentPlan::create($data);
     }
 

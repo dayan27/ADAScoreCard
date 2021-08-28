@@ -27,4 +27,8 @@ class Perspective extends Model
     public function strategic_plans(){
         return $this->hasMany(StrategicPlan::class);
     }
+
+    public function department_plans(){
+        return $this->hasMany(DepartmentPlan::class);
+    }
 }

@@ -25,6 +25,7 @@ class DepartmentPlan extends Model
         'yearly_plan_id',
         'department_id',
         'department_card_id',
+        'perspective_id'
 
 
     ];
@@ -41,5 +42,15 @@ class DepartmentPlan extends Model
     public function term_activity(){
 
         return $this->hasOne(TermActivity::class);
+    }  
+    
+    public function user_activities(){
+
+        return $this->hasMany(UserActivity::class);
+    }
+
+    public function perspective(){
+
+        return $this->belongsTo(Perspective::class);
     }
 }

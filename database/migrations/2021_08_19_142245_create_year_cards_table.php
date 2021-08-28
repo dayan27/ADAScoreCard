@@ -15,8 +15,8 @@ class CreateYearCardsTable extends Migration
     {
         Schema::create('year_cards', function (Blueprint $table) {
             $table->id();
-            // $table->string('name');
             $table->integer('year');
+            $table->foreignId('score_card_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

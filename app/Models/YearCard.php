@@ -10,7 +10,7 @@ class YearCard extends Model
     use HasFactory;
     protected $fillable = [
         'year',
-
+        'score_card_id'
 
  ];
  protected $hidden=[
@@ -19,6 +19,11 @@ class YearCard extends Model
 ];
  public function yearly_plans(){
      return $this->hasMany(YearlyPlan::class);
+ }
+
+ public function score_cards(){
+    return $this->belongsTo(ScoreCard::class);
+
  }
 
 }

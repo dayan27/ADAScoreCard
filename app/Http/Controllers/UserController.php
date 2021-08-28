@@ -48,7 +48,11 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-      return $user->load('user_activities');
+       // $user->load('user_activities','user_sub_activities')
+      return response()->json([
+        'user_activities'=>$user->user_activities->load('department_plan','term_activity'),
+        'user_sub_activities'=>$user->user_sub_activities->load('term_sub_activity'),
+    ]);
     }
 
     /**
@@ -83,5 +87,14 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+    }
+
+    public function make_visible($id)
+    {
+        $user= User::find($id);
+        $user->draft_visiblity=request()->visiblity;
+        $user->save();
+        return $user;
+
     }
 }

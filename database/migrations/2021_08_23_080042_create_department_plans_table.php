@@ -24,6 +24,7 @@ class CreateDepartmentPlansTable extends Migration
             $table->date('from');
             $table->double('budget');
             $table->double('goal');
+            $table->foreignId('perspective_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('yearly_plan_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('department_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('department_card_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();

@@ -19,11 +19,19 @@ class UserActivity extends Model
        'quality_result',
        'quantity_result',
        'user_id',
-       'term_id',
+       'term_activity_id',
 
    ];
    public function user_sub_activities(){
     return $this->hasMany(UserSubActivity::class);
+}
+
+public function department_plan(){
+    return $this->belongsTo(DepartmentPlan::class);
+}
+
+public function term_activity(){
+    return $this->belongsTo(TermActivity::class);
 }
 
 }

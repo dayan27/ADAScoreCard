@@ -70,7 +70,7 @@ class DepartmentCardController extends Controller
         }
 
         return response()->json([
-            'department_plans'=>$department_plans,
+            'department_plans'=>$department_plans->load('perspective:id,title'),
             'term_activitis'=> $term_activities,
             'term_sub_activitis'=> $term_sub_activities,
             'terms'=>$departmentCard->terms

@@ -14,6 +14,7 @@ use App\Http\Controllers\TermActivityController;
 use App\Http\Controllers\TermController;
 use App\Http\Controllers\TermSubActivityController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserSubActivityController;
 use App\Http\Controllers\YearCardController;
 use App\Http\Controllers\YearlyPlanController;
 use App\Models\YearCard;
@@ -45,6 +46,7 @@ Route::post('/change_score_card_visiblity/{id}',[ScoreCardController::class,'mak
 Route::post('/change_year_card_visiblity/{id}',[YearCardController::class,'make_visible']);
 Route::post('/change_department_card_visiblity/{id}',[DepartmentCardController::class,'make_visible']);
 Route::post('/change_term_visiblity/{id}',[TermController::class,'make_visible']);
+Route::post('/share_to_department/{id}',[UserController::class,'make_visible']);
 
 
 Route::apiResource('/departments',DepartmentController::class);
@@ -58,7 +60,7 @@ Route::apiResource('/behaviors',BehaviorController::class);
 Route::apiResource('/perspectives',PerspectiveController::class);
 Route::apiResource('/users',UserController::class);
 Route::apiResource('/adas',ADAController::class);
-Route::apiResource('/user_activities',UserActivityController::class);
+Route::apiResource('/user_sub_activities',UserSubActivityController::class);
 Route::apiResource('/term_activities',TermActivityController::class);
 Route::apiResource('/term_sub_activities',TermSubActivityController::class);
 Route::apiResource('/terms',TermController::class);
@@ -67,6 +69,6 @@ Route::apiResource('/strategic_plans',StrategicPlanController::class);
 Route::get('/logout',[AuthController::class,'logout']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-
     Route::apiResource('/score_cards',ScoreCardController::class);
+
 });
