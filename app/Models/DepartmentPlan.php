@@ -42,15 +42,24 @@ class DepartmentPlan extends Model
     public function term_activity(){
 
         return $this->hasOne(TermActivity::class);
-    }  
-    
+    }
+
     public function user_activities(){
 
         return $this->hasMany(UserActivity::class);
     }
 
+    public function terms(){
+
+        return $this->hasMany(Term::class);
+    }
+
     public function perspective(){
 
         return $this->belongsTo(Perspective::class);
+    }
+     public function yearly_plan(){
+
+        return $this->belongsTo(YearlyPlan::class);
     }
 }

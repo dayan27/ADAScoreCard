@@ -20,6 +20,7 @@ class CreateTermsTable extends Migration
             $table->date('to');
             $table->date('from');
             $table->boolean('make_visible')->default(0);
+            $table->text('comment')->nullable();
             $table->foreignId('department_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('department_card_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 

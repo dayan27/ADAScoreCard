@@ -49,14 +49,20 @@ class DepartmentCardController extends Controller
     {
         $term_sub_activities=[];
         $term_activities=[];
+        $yearly_plans=[];
         $department_plans=$departmentCard->department_plans;
         // $term_sub_activities=
            // return $department_plans;
          foreach ($department_plans as  $department_plan) {
-
-
             $activity=$department_plan->term_activity;
-             $term_activities[]=$activity;
+            if($activity){
+
+                $term_activities[]=$activity;
+                // $term_activities;
+            }
+
+
+             $yearly_plans[]=$department_plan->yearly_plan;
            //  $a= $activity->term_sub_activities;
              $a=TermSubActivity::where('term_activity_id',$activity['id'])->get();
 
@@ -72,6 +78,7 @@ class DepartmentCardController extends Controller
         return response()->json([
             'department_plans'=>$department_plans->load('perspective:id,title'),
             'term_activitis'=> $term_activities,
+            'yearly_plans'=> $yearly_plans,
             'term_sub_activitis'=> $term_sub_activities,
             'terms'=>$departmentCard->terms
 

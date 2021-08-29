@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Term;
+use App\Models\TermSubActivity;
 use App\Models\User;
+use App\Models\UserSubActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -55,6 +58,33 @@ class UserController extends Controller
     ]);
     }
 
+
+    public function plan_to_be_selected($id){
+
+        $department_cards=[];
+        $terms=[];
+        $department=User::find($id)->department;
+        $department_plans=$department->department_plans;
+        // $term_sub_activities=
+           // return $department_plans;
+         foreach ($department_plans as  $department_plan) {
+            $terms[]=$department_plan->department_card->terms;
+
+            $department_cards[]=$department_plan->department_card->makeHidden('terms');
+            }
+
+            $department_cards = array_values(array_unique($department_cards));
+            $terms = array_values(array_unique($terms));
+
+
+        return response()->json([
+             'department_plans'=>$department->department_plans->makeHidden('department_card')->load('term_activity.term_sub_activities'),
+             'department_cards'=>$department_cards,
+            'terms'=>$terms,
+
+     ]);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -95,6 +125,28 @@ class UserController extends Controller
         $user->draft_visiblity=request()->visiblity;
         $user->save();
         return $user;
+
+    }
+
+
+    public function send_comment($id)
+    {
+        $term= Term::find($id);
+        $term->comment=request()->comment;
+        $term->save();
+        return $term;
+
+    }
+
+    public function accept_activity(Request $request)
+    {
+        $user_sub_activity= UserSubActivity::find($request->user_sub_activity_id);
+        $term_sub_activity= TermSubActivity::find($request->term_sub_activity_id);
+        $user_sub_activity->level=$request->level;
+        $term_sub_activity->is_accepted=$request->is_accepted;
+        $user_sub_activity->save();
+        $term_sub_activity->save();
+        return response()->json(['successfuly changed'],200);
 
     }
 }

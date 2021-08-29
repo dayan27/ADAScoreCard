@@ -49,14 +49,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function departments(){
-        return $this->belongsToMany(Department::class);
+    public function department(){
+        return $this->belongsTo(Department::class);
     }
 
     public function user_activities(){
         return $this->hasMany(UserActivity::class);
-    }  
-    
+    }
+
     public function user_sub_activities(){
         return $this->hasMany(UserSubActivity::class);
     }

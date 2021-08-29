@@ -113,4 +113,19 @@ class UserSubActivityController extends Controller
     {
         $UserSubActivity->delete();
     }
+
+    public function giveActivityResult(){
+
+     foreach (request()->datas as  $data) {
+
+        $userActivity=UserActivity::find($data['user_activity_id']);
+        $userActivity->time_result=$data['time_result'];
+        $userActivity->quality_result=$data['quality_result'];
+        $userActivity->quantity_result=$data['quantity_result'];
+        $userActivity->save();
+
+     }
+
+    }
+
 }

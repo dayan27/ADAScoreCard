@@ -36,4 +36,9 @@ class YearlyPlan extends Model
 
         return $this->belongsTo(YearCard::class);
     }
+
+    public function department_plans(){
+
+        return $this->hasMany(DepartmentPlan::class);
+    }
 }

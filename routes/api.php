@@ -47,6 +47,10 @@ Route::post('/change_year_card_visiblity/{id}',[YearCardController::class,'make_
 Route::post('/change_department_card_visiblity/{id}',[DepartmentCardController::class,'make_visible']);
 Route::post('/change_term_visiblity/{id}',[TermController::class,'make_visible']);
 Route::post('/share_to_department/{id}',[UserController::class,'make_visible']);
+Route::post('/send_comment/{id}',[UserController::class,'send_comment']);
+Route::post('/accept_activity',[UserController::class,'accept_activity']);
+Route::get('/select/{id}',[UserController::class,'plan_to_be_selected']);
+
 
 
 Route::apiResource('/departments',DepartmentController::class);
