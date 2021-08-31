@@ -25,33 +25,16 @@ class TermController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+ 
 
-            'term_no'=>'required',
-            'title'=>'required',
-            'department_id'=>'required',
-            'department_card_id'=>'required',
-            'to'=>'required',
-            'from'=>'required',
 
-        ]);
-
-        $data=$request->all();
-
-        $to = strtotime($request->to);
-        $from = strtotime($request->from);
-        $toformat = date('Y-m-d',$to);
-        $fromformat = date('Y-m-d',$from);
-        $data['to']=$toformat;
-        $data['from']=$fromformat;
-       return Term::create($data);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuate\Http\Response
      */
     public function show(Term $term)
     {

@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     public function login(Request $request){
 
-      
+
        $credentials['email']=$request->email;
        $credentials['password']=$request->password;
        if(!Auth::attempt($credentials)){
@@ -22,14 +22,15 @@ class AuthController extends Controller
                ]
                );
        }
-       $user=User::where('email',$credentials['email'])->first();
-       if(!Hash::check($credentials['password'], $user->password)){
-          return 'unable to login';
+       $user=User::where('email',$credentials['email'])
+       ->where('is_active',1)->first();
+       if(!$user){
+          return 'U are Not Allowed';
        }
        $token=$user->createToken('auth_token')->plainTextToken;
        return response()->json([
            'access_token'=>$token,
-           'user'=>$user->role,
+           'user'=>$user,
        ],200);
 
     }

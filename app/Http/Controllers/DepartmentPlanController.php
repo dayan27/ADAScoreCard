@@ -54,10 +54,10 @@ class DepartmentPlanController extends Controller
             $data['from']=$fromformat;
             $yearlyPlanId=$data['yearly_plan_id'];
 
-            $sp=YearlyPlan::find($yearlyPlanId);
-            $data['perspective_id']=$sp->strategic_plan->perspective_id;
+            $yp=YearlyPlan::find($yearlyPlanId);
+            $data['perspective_id']=$yp->strategic_plan->perspective_id;
 
-            
+
             return DepartmentPlan::create($data);
     }
 

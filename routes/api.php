@@ -46,14 +46,21 @@ Route::post('/change_score_card_visiblity/{id}',[ScoreCardController::class,'mak
 Route::post('/change_year_card_visiblity/{id}',[YearCardController::class,'make_visible']);
 Route::post('/change_department_card_visiblity/{id}',[DepartmentCardController::class,'make_visible']);
 Route::post('/change_term_visiblity/{id}',[TermController::class,'make_visible']);
+
+// user controller methods
+Route::apiResource('/users',UserController::class)->except('delete');
 Route::post('/share_to_department/{id}',[UserController::class,'make_visible']);
 Route::post('/send_comment/{id}',[UserController::class,'send_comment']);
 Route::post('/accept_activity',[UserController::class,'accept_activity']);
 Route::get('/select/{id}',[UserController::class,'plan_to_be_selected']);
+Route::get('/deactivate_user/{id}',[UserController::class,'make_deactive']);
 
 
 
 Route::apiResource('/departments',DepartmentController::class);
+Route::post('/assign_manager/{id}',[DepartmentController::class,'assignManager']);
+
+
 Route::apiResource('/yearly_plans',YearlyPlanController::class);
 Route::apiResource('/department_plans',DepartmentPlanController::class);
 Route::apiResource('/year_cards',YearCardController::class);
@@ -62,9 +69,12 @@ Route::apiResource('/behaviors',BehaviorController::class);
 
 
 Route::apiResource('/perspectives',PerspectiveController::class);
-Route::apiResource('/users',UserController::class);
 Route::apiResource('/adas',ADAController::class);
+
+//user sub Activity related routes
 Route::apiResource('/user_sub_activities',UserSubActivityController::class);
+Route::post('/give_activity_result',[ UserSubActivityController::class, 'giveActivityResult']);
+
 Route::apiResource('/term_activities',TermActivityController::class);
 Route::apiResource('/term_sub_activities',TermSubActivityController::class);
 Route::apiResource('/terms',TermController::class);

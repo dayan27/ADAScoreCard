@@ -17,7 +17,7 @@ class CreateBehaviorsTable extends Migration
             $table->id();
             $table->string('title');
             $table->integer('weight');
-            $table->integer('maximum_score_point');
+            $table->integer('maximum_score_point')->nullable();
             $table->timestamps();
         });
     }

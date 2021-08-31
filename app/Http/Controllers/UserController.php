@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DepartmentPlanResource;
+use App\Models\DepartmentCard;
 use App\Models\Term;
 use App\Models\TermSubActivity;
 use App\Models\User;
@@ -51,11 +53,13 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-       // $user->load('user_activities','user_sub_activities')
-      return response()->json([
-        'user_activities'=>$user->user_activities->load('department_plan','term_activity'),
-        'user_sub_activities'=>$user->user_sub_activities->load('term_sub_activity'),
-    ]);
+        $department=$user->department;
+        $department_plans=$department->department_plans;
+       return DepartmentPlanResource::collection($department_plans);
+    //    return response()->json([
+    //     'department_plans'=>$department_plans->load('user_activities.user_sub_activities'),
+    //    // 'user_sub_activities'=>$user->user_sub_activities->load('term_sub_activity'),
+    // ]);
     }
 
 
@@ -65,22 +69,36 @@ class UserController extends Controller
         $terms=[];
         $department=User::find($id)->department;
         $department_plans=$department->department_plans;
-        // $term_sub_activities=
-           // return $department_plans;
-         foreach ($department_plans as  $department_plan) {
-            $terms[]=$department_plan->department_card->terms;
 
-            $department_cards[]=$department_plan->department_card->makeHidden('terms');
+         foreach ($department_plans as  $department_plan) {
+
+            $department_cards[]=$department_plan->department_card;
+            foreach ($department_plan->department_card->terms as  $term) {
+
+              $terms[]=$term;
             }
+        }
 
             $department_cards = array_values(array_unique($department_cards));
-            $terms = array_values(array_unique($terms));
+            $years=[];
+            foreach ($department_cards as  $value) {
+                $years[]=$value->year;
+                if (max($years)) {
+                    $id=$value->id;
+                }
+            }
+
+            $terms =array_values(array_unique($terms));
 
 
         return response()->json([
-             'department_plans'=>$department->department_plans->makeHidden('department_card')->load('term_activity.term_sub_activities'),
-             'department_cards'=>$department_cards,
-            'terms'=>$terms,
+             'department_plans'=>$department_plans->where('department_card_id', $id)->values() ->makeHidden('department_card')
+
+             ->load('term_activity.term_sub_activities') ,
+           //  'department_cards'=>$department_cards,
+             'terms'=> array_filter($terms,function($term) use($id){
+                 return $term['department_card_id']=$id;
+             }) ,
 
      ]);
     }
@@ -101,22 +119,21 @@ class UserController extends Controller
             'phone_no'=>'required',
             'gender'=>'required',
             'department_id'=>'required',
-
         ]);
 
-        $user->update($request->all());
+        $data=$request->all();
+        $data['password']=Hash::make($request->password);
+        $user->update($data);
         return $user;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
+    public function make_deactive($id)
     {
-        $user->delete();
+        $user= User::find($id);
+        $user->is_active=request()->is_active;
+        $user->save();
+        return $user;
+
     }
 
     public function make_visible($id)

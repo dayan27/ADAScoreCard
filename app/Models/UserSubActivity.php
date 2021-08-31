@@ -18,7 +18,6 @@ class UserSubActivity extends Model
         'user_id',
         'user_activity_id'
 
-
     ];
 
     public function term_sub_activity(){

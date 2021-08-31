@@ -18,7 +18,6 @@ class Department extends Model
         'email',
         'role',
         'phone_no',
-        'manager_id',
         'yearly_plan_id',
         'department_id',
         'user_id',
@@ -43,5 +42,10 @@ class Department extends Model
 
     public function department_plans(){
         return $this->hasMany(DepartmentPlan::class);
+    }
+
+    public function department_planss(){
+        $dc=DepartmentCard::latest()->first();
+        return $this->hasMany(DepartmentPlan::class)->where('department_card',$dc->id);
     }
 }

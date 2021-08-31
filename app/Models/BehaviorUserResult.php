@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BehaviorEmployeeResult extends Model
+class BehaviorUserResult extends Model
 {
     use HasFactory;
         /**
@@ -13,10 +13,10 @@ class BehaviorEmployeeResult extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'result_scale',
-        'result',
-        
-        
-    ];
+    // protected $fillable = [
+    //     'result_scale',
+    //     'result',
+
+
+    // ];
 }

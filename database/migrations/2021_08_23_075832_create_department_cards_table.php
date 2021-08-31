@@ -16,6 +16,8 @@ class CreateDepartmentCardsTable extends Migration
         Schema::create('department_cards', function (Blueprint $table) {
             $table->id();
             $table->string('year');
+            $table->date('from');
+            $table->date('to');
             $table->integer('number_of_term');
             $table->boolean('make_visible')->default(0);
 

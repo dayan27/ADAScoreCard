@@ -13,11 +13,14 @@ class CreateBehaviorsUserResultsTable extends Migration
      */
     public function up()
     {
-        Schema::create('behaviors_user_results', function (Blueprint $table) {
+        Schema::create('behaviors_user_result', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->integer('weight');
-            $table->integer('maximum_score_point');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('behavior_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('term_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('department_card')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->integer('result_scale');
+            $table->integer('result');
             $table->timestamps();
         });
     }

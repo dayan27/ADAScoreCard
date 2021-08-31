@@ -86,4 +86,9 @@ class DepartmentController extends Controller
     {
         $department->delete();
     }
+
+    public function assignManager($department_id){
+
+        Department::find($department_id)->update(['user_id'=>request()->user_id]);
+    }
 }

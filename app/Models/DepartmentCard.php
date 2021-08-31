@@ -13,7 +13,8 @@ class DepartmentCard extends Model
     protected $fillable = [
         'year',
         'number_of_term',
-        'make_visible',
+        'from',
+        'to'
     ];
 
     protected $hidden=[

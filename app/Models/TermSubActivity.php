@@ -28,7 +28,7 @@ class TermSubActivity extends Model
         'created_at',
         'updated_at',
     ];
-    public function term_activities(){
+    public function term_activity(){
 
         return $this->belongsTo(TermActivity::class);
     }
