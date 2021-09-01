@@ -16,7 +16,11 @@ class Behavior extends Model
     protected $fillable = [
         'title',
         'weight',
-        'maximum_score_point',
-        
+
     ];
+
+    public function users(){
+        return $this->belongsToMany(User::class);
+    }
+
 }

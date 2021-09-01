@@ -74,6 +74,7 @@ Route::apiResource('/adas',ADAController::class);
 //user sub Activity related routes
 Route::apiResource('/user_sub_activities',UserSubActivityController::class);
 Route::post('/give_activity_result',[ UserSubActivityController::class, 'giveActivityResult']);
+Route::post('/give_behavior_result',[ UserSubActivityController::class, 'giveBehaviorResult']);
 
 Route::apiResource('/term_activities',TermActivityController::class);
 Route::apiResource('/term_sub_activities',TermSubActivityController::class);

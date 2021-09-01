@@ -55,11 +55,50 @@ class UserController extends Controller
     {
         $department=$user->department;
         $department_plans=$department->department_plans;
-       return DepartmentPlanResource::collection($department_plans);
-    //    return response()->json([
-    //     'department_plans'=>$department_plans->load('user_activities.user_sub_activities'),
-    //    // 'user_sub_activities'=>$user->user_sub_activities->load('term_sub_activity'),
-    // ]);
+        $dps=[];
+        $all=[];
+
+        foreach ($department_plans as  $dp) {
+            $dps['id']=$dp->id;
+            $dps['activity']=$dp->activity;
+            foreach ($dp->user_activities as $ua) {
+                $dps['user_activity']=$dp->$ua;
+                 $quality=[];
+                 $quantity=[];
+                 $time=[];
+                foreach ($ua->user_sub_activities as  $usa) {
+
+
+                     //      return $usa->term_sub_activity;
+                   if ($usa->term_sub_activity->measurment == 'quality') {
+                     $quality[]=$usa;
+                   }
+
+                  else if ($usa->term_sub_activity->measurment == 'time') {
+                    $time[]=$usa;
+                  }
+
+                 else if ($usa->term_sub_activity->measurment == 'quantity') {
+                   $quantity[]=$usa;
+                 }
+                }
+                $dps['user_activity']['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
+
+
+
+          }
+          $all[]=$dps;
+
+        }
+        return $all;
+      // return DepartmentPlanResource::collection($department_plans);
+     // $activities= $department_plans->user_sub_activities;
+       return response()->json([
+        'department_plans'=>$department_plans->load('user_activities.user_sub_activities')
+       // 'user_sub_activities'=>$user->user_sub_activities->load('term_sub_activity'),
+       //'department_plans'=>$department_plans,
+      // 'activities'=>$activities
+    ]);
     }
 
 
@@ -70,31 +109,83 @@ class UserController extends Controller
         $department=User::find($id)->department;
         $department_plans=$department->department_plans;
 
-         foreach ($department_plans as  $department_plan) {
+        //  foreach ($department_plans as  $department_plan) {
 
-            $department_cards[]=$department_plan->department_card;
-            foreach ($department_plan->department_card->terms as  $term) {
+        //     $department_cards[]=$department_plan->department_card;
+        //     foreach ($department_plan->department_card->terms as  $term) {
 
-              $terms[]=$term;
+        //       $terms[]=$term;
+        //     }
+        // }
+
+        //     $department_cards = array_values(array_unique($department_cards));
+        //     $years=[];
+        //     foreach ($department_cards as  $value) {
+        //         $years[]=$value->year;
+        //         if (max($years)) {
+        //             $id=$value->id;
+        //         }
+        //     }
+
+        //     $terms =array_values(array_unique($terms));
+
+            ///////////////////////////
+            $dps=[];
+            $all=[];
+
+       foreach ($department_plans as $dp) {
+      //  return $dp->term_activity;
+
+          $dps['id']=$dp->id;
+           $dps['activity']=$dp->activity;
+
+           $dps['term_activities']['term_sub_activities']=null;
+
+
+           if ($dp->term_activity) {
+           // $tsas= $ta->term_sub_activities;
+           $dps['term_activities']=$dp->term_activity;
+
+           $quality=[];
+           $quantity=[];
+           $time=[];
+
+          foreach ($dp->term_activity->term_sub_activities as  $tsa) {
+
+
+
+             if ($tsa->measurment == 'quality') {
+               $quality[]=$tsa;
+             }
+
+            else if ($tsa->measurment == 'time') {
+              $time[]=$tsa;
             }
+
+           else if ($tsa->measurment == 'quantity') {
+             $quantity[]=$tsa;
+           }
+
+          }
+       $dps['term_activities']['term_sub_activities']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
+        //   return $dps['term_activities']['term_sub_activities'];
+
+
+     // return $dps;
+
         }
 
-            $department_cards = array_values(array_unique($department_cards));
-            $years=[];
-            foreach ($department_cards as  $value) {
-                $years[]=$value->year;
-                if (max($years)) {
-                    $id=$value->id;
-                }
-            }
 
-            $terms =array_values(array_unique($terms));
-
+           $all[]=$dps;
+       }
+       return $all;
+       /////////////////
 
         return response()->json([
-             'department_plans'=>$department_plans->where('department_card_id', $id)->values() ->makeHidden('department_card')
+            'departments'=>$all,
+            //  'department_plans'=>$department_plans->where('department_card_id', $id)->values() ->makeHidden('department_card')
 
-             ->load('term_activity.term_sub_activities') ,
+            //  ->load('term_activity.term_sub_activities') ,
            //  'department_cards'=>$department_cards,
              'terms'=> array_filter($terms,function($term) use($id){
                  return $term['department_card_id']=$id;

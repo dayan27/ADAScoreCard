@@ -29,9 +29,8 @@ class BehaviorController extends Controller
             [
                 'title'=>'required',
                 'weight'=>'required',
-                'maximum_score_point'=>'required',
-
-            ]
+]
+            
             );
 
         return Behavior::create($request->all());
@@ -63,7 +62,6 @@ class BehaviorController extends Controller
             [
                 'title'=>'required',
                 'weight'=>'required',
-                'maximum_score_point'=>'required',
 
             ]
             );

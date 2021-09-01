@@ -92,7 +92,8 @@ class DepartmentPlanController extends Controller
                 'budget'=>'required',
                 'goal'=>'required',
                 'yearly_plan_id'=>'required',
-                'department_id'=>'required'
+                'department_id'=>'required',
+              //  'department_card_id'=>'required'
             ]
             );
 
@@ -104,6 +105,13 @@ class DepartmentPlanController extends Controller
             $fromformat = date('Y-m-d',$from);
             $data['to']=$toformat;
             $data['from']=$fromformat;
+            $yearlyPlanId=$data['yearly_plan_id'];
+
+            $yp=YearlyPlan::find($yearlyPlanId);
+            $data['perspective_id']=$yp->strategic_plan->perspective_id;
+
+
+
             $departmentPlan->update($data);
             return $departmentPlan;
     }
@@ -116,6 +124,7 @@ class DepartmentPlanController extends Controller
      */
     public function destroy(DepartmentPlan $departmentPlan)
     {
+
         $departmentPlan->delete();
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Behavior;
 use App\Models\BehaviorEmployeeResult;
 use App\Models\DepartmentPlan;
+use App\Models\User;
 use App\Models\UserActivity;
 use App\Models\UserSubActivity;
 use Illuminate\Http\Request;
@@ -147,25 +148,30 @@ class UserSubActivityController extends Controller
     }
      public function giveBehaviorResult(){
 
-        foreach (request()->datas as  $data) {
 
-           $behavior= Behavior::find($data['behavior_id']);
-           $behaviors[]=$behavior;
-           $result_scale=$data['result_scale'];
-           $result_scales[]=$result_scale;
+        foreach (request()->datas as  $data) {
+            $term_id=$data['term_id'];
+            $department_card=$data['department_card'];
+
+            $behavior= Behavior::find($data['behavior_id']);
+           $user= User::find($data['user_id']);
+            $result_scale=$data['result_scale'];
+          // $result_scales[]=$result_scale;
            $result=$result_scale * $behavior->weight;
 
           //  $br=new BehaviorEmployeeResult();
 
 
-            $result_scale=$data['result_scale'];
-            $result=$result;
+
+        $user->behaviors()->sync(request('behavior_id'),[
+            'result_scale'=>$result_scale,
+            'result'=>$result,
+            'term_id'=>$term_id,
+            'department_card'=>$department_card
+
+    ]);
         }
 
-        $term_id=request('term_id');
-        $brbehavior_id=request('behavior_id');
-        $user_id=request()->user_id;
-        $department_card=request('department_card');
     }
 
 
