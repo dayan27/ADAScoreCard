@@ -33,6 +33,7 @@ class DepartmentCardController extends Controller
                 'number_of_term'=>'required',
                 'from'=>'required',
                 'to'=>'required',
+                'score_card_id'=>'required'
 
             ]
             );
@@ -54,7 +55,9 @@ class DepartmentCardController extends Controller
            for ($i=0; $i < count($dates)-1 ; $i++) {
            $term=new Term();
            $term->term_no=$i+1;
-           $term->title= 'Term'.$i+1;
+           ////ይገርማል
+
+           $term->title=  $i+1;
            $term->from=$dates[$i];
            $term->to=$dates[$i+1];
            $term->department_card_id=$department_card->id;
@@ -62,6 +65,7 @@ class DepartmentCardController extends Controller
            $term->save();
 
     }
+    return $department_card;
 
 }
 
@@ -140,11 +144,43 @@ function splitDates($from, $to, $parts, $output = "Y-m-d") {
             [
                 'year'=>'required',
                 'number_of_term'=>'required',
+                'from'=>'required',
+                'to'=>'required',
+                'score_card_id'=>'required'
 
             ]
             );
 
-            $departmentCard->update($request->all());
+            $data=$request->all();
+
+            $to = strtotime($request->to);
+            $from = strtotime($request->from);
+            $toformat = date('Y-m-d',$to);
+            $fromformat = date('Y-m-d',$from);
+            $data['to']=$toformat;
+            $data['from']=$fromformat;
+             $departmentCard->update($data);
+
+            $to = $request->to;
+            $from = $request->from;
+             if ($departmentCard->terms) {
+                $departmentCard->terms->delete();
+             }
+           $dates= $this->splitDates($from,$to,$request->number_of_term);
+           for ($i=0; $i < count($dates)-1 ; $i++) {
+           $term=new Term();
+           $term->term_no=$i+1;
+           ////ይገርማል
+
+           $term->title=  $i+1;
+           $term->from=$dates[$i];
+           $term->to=$dates[$i+1];
+           $term->department_card_id=$departmentCard->id;
+           $term->department_id=1;
+           $term->save();
+
+    }
+
             return $departmentCard;
     }
 

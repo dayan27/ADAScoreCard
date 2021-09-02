@@ -81,9 +81,9 @@ Route::apiResource('/term_sub_activities',TermSubActivityController::class);
 Route::apiResource('/terms',TermController::class);
 Route::apiResource('/strategic_plans',StrategicPlanController::class);
 
-Route::get('/logout',[AuthController::class,'logout']);
+Route::apiResource('/score_cards',ScoreCardController::class);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('/score_cards',ScoreCardController::class);
+    Route::post('/logout',[AuthController::class,'logout']);
 
 });

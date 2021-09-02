@@ -17,16 +17,19 @@ class AuthController extends Controller
        if(!Auth::attempt($credentials)){
            return response()->json(
                [
-               'status'=>404,
-               'message'=>'unauthorized',
+               'message'=>'un authenticated',
                ]
-               );
+              ,404 );
        }
        $user=User::where('email',$credentials['email'])
        ->where('is_active',1)->first();
        if(!$user){
-          return 'U are Not Allowed';
-       }
+        return response()->json([
+            'message'=>' unauthorized',
+            ]
+           ,404 );
+
+        }
        $token=$user->createToken('auth_token')->plainTextToken;
        return response()->json([
            'access_token'=>$token,
@@ -35,10 +38,11 @@ class AuthController extends Controller
 
     }
     public function logout(Request $request){
-        $request->user()->currentAccessToken()->delete();
-        return[
-            'message'=>'token revoke',
-        ];
+    //  return  $request->user();
+        $request->user()->tokens()->delete();
+        return response()->json([
+            'message'=>$request->user(),
+        ],200);
 
     }
 }

@@ -62,7 +62,7 @@ class UserController extends Controller
             $dps['id']=$dp->id;
             $dps['activity']=$dp->activity;
             foreach ($dp->user_activities as $ua) {
-                $dps['user_activity']=$dp->$ua;
+              //  $dps['user_activity']=$dp->$ua;
                  $quality=[];
                  $quantity=[];
                  $time=[];
@@ -82,7 +82,8 @@ class UserController extends Controller
                    $quantity[]=$usa;
                  }
                 }
-                $dps['user_activity']['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
+             //   $dps['user_activity']['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
+                $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
 
 
 
@@ -139,7 +140,6 @@ class UserController extends Controller
           $dps['id']=$dp->id;
            $dps['activity']=$dp->activity;
 
-           $dps['term_activities']['term_sub_activities']=null;
 
 
            if ($dp->term_activity) {
@@ -167,11 +167,11 @@ class UserController extends Controller
            }
 
           }
-       $dps['term_activities']['term_sub_activities']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
+         $dps['term_activities']= array('term_sub_activity'=>array('quality'=>$quality,'quantity'=>$quantity,'time'=>$time));
+//$dps['term_sub_activities']['term_sub_activities']=array('quality'=>$quality,'quantity'=>$quantity,'time'=>$time);
         //   return $dps['term_activities']['term_sub_activities'];
 
-
-     // return $dps;
+    //  return $dps;
 
         }
 

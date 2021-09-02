@@ -34,4 +34,8 @@ class ScoreCard extends Model
     public function year_cards(){
         return $this->hasMany(YearCard::class);
     }
+
+    public function department_cards(){
+        return $this->hasMany(DepartmentCard::class);
+    }
 }

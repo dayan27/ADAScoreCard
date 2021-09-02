@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Behavior;
 use App\Models\BehaviorEmployeeResult;
+use App\Models\DepartmentCard;
 use App\Models\DepartmentPlan;
 use App\Models\User;
 use App\Models\UserActivity;
 use App\Models\UserSubActivity;
+use App\Models\YearCard;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Http\Request;
 
 class UserSubActivityController extends Controller
@@ -123,7 +126,6 @@ class UserSubActivityController extends Controller
      foreach (request()->datas as  $data) {
         $department_plan=DepartmentPlan::find($data['department_plan_id']);
 
-
         $userActivity=UserActivity::find($data['user_activity_id']);
 
         $given_time_result=isset($data['time_result']) ? $data['time_result']: 0.0;
@@ -148,32 +150,82 @@ class UserSubActivityController extends Controller
     }
      public function giveBehaviorResult(){
 
-
         foreach (request()->datas as  $data) {
             $term_id=$data['term_id'];
+           // return request()->datas;
             $department_card=$data['department_card'];
 
             $behavior= Behavior::find($data['behavior_id']);
+         //   return $behavior;
            $user= User::find($data['user_id']);
+         //  return $user;
             $result_scale=$data['result_scale'];
           // $result_scales[]=$result_scale;
            $result=$result_scale * $behavior->weight;
 
-          //  $br=new BehaviorEmployeeResult();
-
-
-
-        $user->behaviors()->sync(request('behavior_id'),[
+           $user->behaviors()->attach($data['behavior_id'],[
             'result_scale'=>$result_scale,
             'result'=>$result,
             'term_id'=>$term_id,
             'department_card'=>$department_card
 
-    ]);
+             ]);
+
         }
 
     }
 
+    public function getEfficiency($user_id){
+
+      $user=User::find($user_id);
+      $user_activities=[];
+      foreach ($user->user_activities as  $user_activity) {
+        $department_card_id= $user_activity->term_activity->term->department_card_id;
+
+        if ($department_card_id == request('year')) {
+            $user_activities[]=$user_activity;
 
 
+        }
+      }
+
+       $no_of_term= DepartmentCard::where('year',request('year'))->number_of_term;
+
+       $results=[];
+         for ($term=1; $term <= $no_of_term ; $term+1) {
+
+            foreach ($user_activities as $user_activity) {
+
+                if($user_activity->term_activity->term->term_no == $term){
+
+                    $results[$term]+= $user_activity->result;
+                }
+            }
+         }
+
+
+        $behavior_results=[];
+        for ($term=1; $term <= $no_of_term ; $term+1) {
+            foreach ($user->behaviors->wherePivot('department_card',request('department_card')) as  $behavior) {
+
+                if ($behavior->values->term->term_no == $term) {
+
+                   $behavior_results[$term]+=$behavior->values->result;
+                }
+            }
+
+         }
+
+
+        $this->addResult($results,$behavior_results);
+    }
+
+    public function addResult($a,$b){
+        $r=[];
+        for ($i=0; $i < count($a) ; $i++) {
+
+         $r+=$a[$i]+ $b[$i];
+        }
+    }
 }
+

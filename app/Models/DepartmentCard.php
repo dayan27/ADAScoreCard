@@ -14,7 +14,8 @@ class DepartmentCard extends Model
         'year',
         'number_of_term',
         'from',
-        'to'
+        'to',
+        'score_card_id'
     ];
 
     protected $hidden=[
@@ -28,4 +29,9 @@ class DepartmentCard extends Model
      public function terms(){
         return $this->hasMany(Term::class);
     }
+
+    public function score_cards(){
+        return $this->belongsTo(ScoreCard::class);
+
+     }
 }
