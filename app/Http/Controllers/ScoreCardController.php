@@ -67,10 +67,32 @@ class ScoreCardController extends Controller
     public function show($id)
 
     {
-        // $user=auth()->user();
-        $user=User::find(1);
+         $user= request()->user();
+        // return $user;
+      // $user=User::find(4);
+     //  return response()->json(['user'=>$user]);
         $scoreCard=ScoreCard::find($id);
-        $sps=$scoreCard->strategic_plans;
+
+        $sps=null;
+        if($user->role == 'manager'){
+            $sps=$scoreCard->strategic_plans;
+
+        }else if($user->role == 'employee'){
+
+            if ($scoreCard->make_visible) {
+              //  return $scoreCard->make_visible;
+                $sps=$scoreCard->strategic_plans;
+
+            }
+        }else if( $user->role == 'department head'){
+            if ($scoreCard->make_visible) {
+                $sps=$scoreCard->strategic_plans;
+
+            }
+
+        }
+
+
 
         /*
         $yearCard=[];
@@ -120,7 +142,7 @@ class ScoreCardController extends Controller
            'department_cards'=>$scoreCard->department_cards,
            'users'=>$user->role=='manager' ? User::where('department_id' ,$user->department_id)
                                                    ->where('role','!=','manager')->get():null,
-            'strategic_plans'=>$sps->makeHidden('yearly_plans','pivot')->load('departments:id,name'),
+            'strategic_plans'=>$sps != null ? $sps->makeHidden('yearly_plans','pivot')->load('departments:id,name') : [],
             'year_cards'=>$scoreCard->year_cards,
         ],201);
 

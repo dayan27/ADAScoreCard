@@ -24,7 +24,7 @@ class DepartmentPlan extends Model
         'goal',
         'yearly_plan_id',
         'department_id',
-        // 'department_card_id',
+         'department_card_id',
         'perspective_id'
 
 

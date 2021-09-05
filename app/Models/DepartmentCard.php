@@ -15,7 +15,7 @@ class DepartmentCard extends Model
         'number_of_term',
         'from',
         'to',
-        'score_card_id'
+        'score_card_id',
     ];
 
     protected $hidden=[

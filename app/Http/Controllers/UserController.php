@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\UserSubActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -61,6 +62,9 @@ class UserController extends Controller
         foreach ($department_plans as  $dp) {
             $dps['id']=$dp->id;
             $dps['activity']=$dp->activity;
+            $dps['quantity_weight']=$dp->quantity_weight;
+            $dps['time_weight']=$dp->time_weight;
+            $dps['quality_weight']=$dp->quality_weight;
             foreach ($dp->user_activities as $ua) {
               //  $dps['user_activity']=$dp->$ua;
                  $quality=[];
@@ -70,20 +74,20 @@ class UserController extends Controller
 
 
                      //      return $usa->term_sub_activity;
-                   if ($usa->term_sub_activity->measurment == 'quality') {
+                   if ( Str::lower($usa->term_sub_activity->measurment) == 'quality') {
                      $quality[]=$usa;
                    }
 
-                  else if ($usa->term_sub_activity->measurment == 'time') {
+                  else if ( Str::lower( $usa->term_sub_activity->measurment) == 'time') {
                     $time[]=$usa;
                   }
 
-                 else if ($usa->term_sub_activity->measurment == 'quantity') {
+                 else if (Str::lower( $usa->term_sub_activity->measurment) == 'quantity') {
                    $quantity[]=$usa;
                  }
                 }
-             //   $dps['user_activity']['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
                 $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
+              //  $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
 
 
 
@@ -136,15 +140,18 @@ class UserController extends Controller
 
        foreach ($department_plans as $dp) {
       //  return $dp->term_activity;
-
+       //  return $department_plans;
           $dps['id']=$dp->id;
-           $dps['activity']=$dp->activity;
+          $dps['activity']=$dp->activity;
+          $dps['quantity_weight']=$dp->quantity_weight;
+          $dps['time_weight']=$dp->time_weight;
+          $dps['quality_weight']=$dp->quality_weight;
 
 
-
+        //  $dps['term_activities']=['id'];
            if ($dp->term_activity) {
            // $tsas= $ta->term_sub_activities;
-           $dps['term_activities']=$dp->term_activity;
+           $dps['term_activities']=array('id'=>  $dp->term_activity->id);
 
            $quality=[];
            $quantity=[];
@@ -154,15 +161,15 @@ class UserController extends Controller
 
 
 
-             if ($tsa->measurment == 'quality') {
+             if ( Str::lower( $tsa->measurment) ==  'quality') {
                $quality[]=$tsa;
              }
 
-            else if ($tsa->measurment == 'time') {
+            else if ( Str::lower($tsa->measurment) == 'time') {
               $time[]=$tsa;
             }
 
-           else if ($tsa->measurment == 'quantity') {
+           else if ( Str::lower($tsa->measurment) == 'quantity') {
              $quantity[]=$tsa;
            }
 
@@ -192,6 +199,123 @@ class UserController extends Controller
              }) ,
 
      ]);
+    }
+
+    public function get_user_activity($id){
+
+        $user=User::find($id);
+        $department=$user->department;
+        $department_plans=$department->department_plans;
+        $dps=[];
+        $all=[];
+
+        foreach ($department_plans as  $dp) {
+            $dps['id']=$dp->id;
+            $dps['activity']=$dp->activity;
+            $dps['quantity_weight']=$dp->quantity_weight;
+            $dps['time_weight']=$dp->time_weight;
+            $dps['quality_weight']=$dp->quality_weight;
+
+            foreach ($dp->user_activities as $ua) {
+                $quality=[];
+                $quantity=[];
+                $time=[];
+
+                 $low=array();
+                 $enough=array();
+                 $high=array();
+                 $excellent=array();
+
+                 //quantity
+                 $qlow=array();
+                 $qenough=array();
+                 $qhigh=array();
+                 $qexcellent=array();
+
+                 $tlow=array();
+                 $tenough=array();
+                 $thigh=array();
+                 $texcellent=array();
+                foreach ($ua->user_sub_activities as  $usa) {
+
+
+                     //     return $usa->term_sub_activity;
+                   if ( Str::lower($usa->term_sub_activity->measurment) == 'quality') {
+
+                        if (Str::lower($usa->term_sub_activity->level) == 'low') {
+                        $low[]= $usa;
+                        }else if (Str::lower($usa->term_sub_activity->level) == 'enough') {
+                             $enough[]= $usa;
+
+                        }else if (Str::lower($usa->term_sub_activity->level) == 'high') {
+                             $high[]= $usa;
+                        }else if (Str::lower($usa->term_sub_activity->level) == 'excellent') {
+                            $excellent['excellent']=  $usa;
+
+                        }
+
+
+                   }
+
+
+
+
+
+
+                   else if ( Str::lower( $usa->term_sub_activity->measurment) == 'time') {
+
+
+
+
+                    if (Str::lower($usa->term_sub_activity->level) == 'low') {
+                        $tlow[]= $usa;
+                        }else if (Str::lower($usa->term_sub_activity->level) == 'enough') {
+                             $tenough[]= $usa;
+
+                        }else if (Str::lower($usa->term_sub_activity->level) == 'high') {
+                             $thigh[]= $usa;
+                        }else if (Str::lower($usa->term_sub_activity->level) == 'excellent') {
+                            $texcellent['excellent']=  $usa;
+
+                        }
+
+
+                   }
+
+                  else if (Str::lower( $usa->term_sub_activity->measurment) == 'quantity') {
+
+
+
+
+                    if (Str::lower($usa->term_sub_activity->level) == 'low') {
+                        $qlow[]= $usa;
+                        }else if (Str::lower($usa->term_sub_activity->level) == 'enough') {
+                             $qenough[]= $usa;
+
+                        }else if (Str::lower($usa->term_sub_activity->level) == 'high') {
+                             $qhigh[]= $usa;
+                        }else if (Str::lower($usa->term_sub_activity->level) == 'excellent') {
+                            $qexcellent['excellent']=  $usa;
+
+                        }
+
+
+                 }
+                }
+
+                $quality[]=['low'=>$low ,'enough'=>$enough ,'high'=>$high , 'excellent'=>$excellent];
+                $time[]=['low'=>$tlow ,'enough'=>$tenough ,'high'=>$thigh , 'excellent'=>$texcellent];
+                $quantity[]=['low'=>$qlow ,'enough'=>$qenough ,'high'=>$qhigh , 'excellent'=>$qexcellent];
+                $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
+
+
+
+          }
+
+          $all[]=$dps;
+
+        }
+        return $all;
     }
 
     /**
@@ -250,8 +374,8 @@ class UserController extends Controller
     {
         $user_sub_activity= UserSubActivity::find($request->user_sub_activity_id);
         $term_sub_activity= TermSubActivity::find($request->term_sub_activity_id);
-        $user_sub_activity->level=$request->level;
-        $term_sub_activity->is_accepted=$request->is_accepted;
+        $term_sub_activity->level=$request->level;
+        $user_sub_activity->isAccepeted=$request->is_accepted;
         $user_sub_activity->save();
         $term_sub_activity->save();
         return response()->json(['successfuly changed'],200);

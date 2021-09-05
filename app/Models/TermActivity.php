@@ -29,6 +29,11 @@ class TermActivity extends Model
 
         return $this->belongsTo(DepartmentPlan::class);
     }
+
+    public function term(){
+
+        return $this->belongsTo(Term::class);
+    }
      public function term_sub_activities(){
 
         return $this->hasMany(TermSubActivity::class);

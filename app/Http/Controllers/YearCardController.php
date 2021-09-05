@@ -15,7 +15,7 @@ class YearCardController extends Controller
      */
     public function index()
     {
-        return YearCard::all();
+       return YearCard::all();
     }
 
     /**
@@ -42,9 +42,27 @@ class YearCardController extends Controller
      */
     public function show( $yearCard)
     {
+       $user=auth()->user();
+       $yp=null;
+       $yearCard=YearCard::find($yearCard);
+       if($user->role=='manager'){
+        $yp= $yearCard->yearly_plans;
 
+       }
+       else if($user->role=='employee'){
+           if($yearCard->make_visible){
+            $yp= $yearCard->yearly_plans;
+           }
 
-       return YearCard::find($yearCard)->yearly_plans;
+       }
+       else if($user->role=='department head'){
+        if($yearCard->make_visible){
+         $yp= $yearCard->yearly_plans;
+        }
+
+    }
+
+    return $yp != null ? $yp : [];
     }
 
     /**
@@ -63,12 +81,7 @@ class YearCardController extends Controller
         return $yearCard;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\YearCard  $yearCard
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(YearCard $yearCard)
     {
         $yearCard->delete();

@@ -18,7 +18,7 @@ class CreateBehaviorsUserResultsTable extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('behavior_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('term_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('department_card')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('department_card_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('result_scale');
             $table->integer('result');
             $table->timestamps();

@@ -89,6 +89,9 @@ class DepartmentController extends Controller
 
     public function assignManager($department_id){
 
-        Department::find($department_id)->update(['user_id'=>request()->user_id]);
+       $dept= Department::find($department_id);
+       $dept->user_id=request()->user_id;
+        $dept->save();
+        return $dept;
     }
 }

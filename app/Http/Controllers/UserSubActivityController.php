@@ -153,7 +153,7 @@ class UserSubActivityController extends Controller
         foreach (request()->datas as  $data) {
             $term_id=$data['term_id'];
            // return request()->datas;
-            $department_card=$data['department_card'];
+            $department_card=$data['department_card_id'];
 
             $behavior= Behavior::find($data['behavior_id']);
          //   return $behavior;
@@ -175,13 +175,15 @@ class UserSubActivityController extends Controller
 
     }
 
-    public function getEfficiency($user_id){
+    public function getEfficiency($id){
 
-      $user=User::find($user_id);
+      $user=User::find($id);
+    // return $user->user_activities;
       $user_activities=[];
       foreach ($user->user_activities as  $user_activity) {
-        $department_card_id= $user_activity->term_activity->term->department_card_id;
+      //  return $user->user_activities;
 
+        $department_card_id= $user_activity->term_activity->term->department_card->year;
         if ($department_card_id == request('year')) {
             $user_activities[]=$user_activity;
 
@@ -189,10 +191,10 @@ class UserSubActivityController extends Controller
         }
       }
 
-       $no_of_term= DepartmentCard::where('year',request('year'))->number_of_term;
+       $no_of_term= DepartmentCard::where('year',request('year'))->first()->number_of_term;
 
        $results=[];
-         for ($term=1; $term <= $no_of_term ; $term+1) {
+         for ($term=0; $term < $no_of_term ; $term+1) {
 
             foreach ($user_activities as $user_activity) {
 
@@ -203,21 +205,20 @@ class UserSubActivityController extends Controller
             }
          }
 
-
         $behavior_results=[];
         for ($term=1; $term <= $no_of_term ; $term+1) {
             foreach ($user->behaviors->wherePivot('department_card',request('department_card')) as  $behavior) {
 
-                if ($behavior->values->term->term_no == $term) {
+                if ($behavior->pivot->term->term_no == $term) {
 
-                   $behavior_results[$term]+=$behavior->values->result;
+                   $behavior_results[$term]+=$behavior->pivot->result;
                 }
             }
 
          }
 
 
-        $this->addResult($results,$behavior_results);
+       return $this->addResult($results,$behavior_results);
     }
 
     public function addResult($a,$b){
@@ -226,6 +227,32 @@ class UserSubActivityController extends Controller
 
          $r+=$a[$i]+ $b[$i];
         }
+        return $r;
     }
+    public function getEff(){
+        $user_id=request()->user_id;
+        $user=User::find($user_id);
+        //return $user->load('behaviors')->where('department_card_id',request()->department_card_id);
+        //  $x[]=0;
+      foreach ( $user->behaviors  as $behav) {
+
+        $year=DepartmentCard::find($behav->pivot->department_card_id)->year;
+        if($year==request()->year){
+            $behavor_data[]=$behav;
+        }
+
+      }
+       return $behavor_data;
+      foreach ($user->user_activities as  $user_activity) {
+        $activ[]=null;
+          if($user_activity->department_plan->department_card==request()->year){
+              $activ[]=$user_activity->load('department_Strategic_plan');
+          }
+
+    }
+    //return $activ;
+    }
+
 }
+
 

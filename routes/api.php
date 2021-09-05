@@ -54,6 +54,9 @@ Route::post('/send_comment/{id}',[UserController::class,'send_comment']);
 Route::post('/accept_activity',[UserController::class,'accept_activity']);
 Route::get('/select/{id}',[UserController::class,'plan_to_be_selected']);
 Route::get('/deactivate_user/{id}',[UserController::class,'make_deactive']);
+Route::get('/get_user_activity/{id}',[UserController::class,'get_user_activity']);
+Route::post('/get_eff',[UserSubActivityController::class,'getEff']);
+
 
 
 
@@ -76,14 +79,19 @@ Route::apiResource('/user_sub_activities',UserSubActivityController::class);
 Route::post('/give_activity_result',[ UserSubActivityController::class, 'giveActivityResult']);
 Route::post('/give_behavior_result',[ UserSubActivityController::class, 'giveBehaviorResult']);
 
+
 Route::apiResource('/term_activities',TermActivityController::class);
 Route::apiResource('/term_sub_activities',TermSubActivityController::class);
 Route::apiResource('/terms',TermController::class);
 Route::apiResource('/strategic_plans',StrategicPlanController::class);
 
-Route::apiResource('/score_cards',ScoreCardController::class);
 
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('/score_cards',ScoreCardController::class);
+    Route::apiResource('/yearly_plans',YearlyPlanController::class);
+Route::apiResource('/department_plans',DepartmentPlanController::class);
+Route::apiResource('/year_cards',YearCardController::class);
+Route::post('/get_efficiency/{id}',[UserSubActivityController::class,'getEfficiency']);
     Route::post('/logout',[AuthController::class,'logout']);
 
 });
