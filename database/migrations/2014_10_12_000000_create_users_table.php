@@ -25,7 +25,6 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('draft_visiblity')->default(0);
             $table->boolean('is_active')->default(1);
             $table->foreignId('department_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->rememberToken();

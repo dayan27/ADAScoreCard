@@ -61,6 +61,11 @@ class User extends Authenticatable
        return $this->belongsToMany(Behavior::class)->withPivot('department_card_id','result','result_scale');
     }
 
+    public function terms(){
+        // return $this->belongsToMany(Behavior::class)->as('values')->withPivot('dapartment_card_id','term_id','result');
+        return $this->belongsToMany(Term::class)->withPivot('user_id','term_id','draft_visiblity');
+     }
+
     public function user_sub_activities(){
         return $this->hasMany(UserSubActivity::class);
     }

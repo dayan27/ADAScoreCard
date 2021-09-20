@@ -58,6 +58,9 @@ class UserController extends Controller
         $department_plans=$department->department_plans;
         $dps=[];
         $all=[];
+        //  return $department_plans;
+       // if ($user->pivot->draft_visiblity) {
+
 
         foreach ($department_plans as  $dp) {
             $dps['id']=$dp->id;
@@ -65,6 +68,7 @@ class UserController extends Controller
             $dps['quantity_weight']=$dp->quantity_weight;
             $dps['time_weight']=$dp->time_weight;
             $dps['quality_weight']=$dp->quality_weight;
+         // return   $dp->user_activities;
             foreach ($dp->user_activities as $ua) {
               //  $dps['user_activity']=$dp->$ua;
                  $quality=[];
@@ -72,8 +76,7 @@ class UserController extends Controller
                  $time=[];
                 foreach ($ua->user_sub_activities as  $usa) {
 
-
-                     //      return $usa->term_sub_activity;
+                     //     return $ua->user_sub_activities;
                    if ( Str::lower($usa->term_sub_activity->measurment) == 'quality') {
                      $quality[]=$usa;
                    }
@@ -95,7 +98,9 @@ class UserController extends Controller
           $all[]=$dps;
 
         }
+    //}
         return $all;
+
       // return DepartmentPlanResource::collection($department_plans);
      // $activities= $department_plans->user_sub_activities;
        return response()->json([
@@ -111,6 +116,7 @@ class UserController extends Controller
 
         $department_cards=[];
         $terms=[];
+        //  return User::find($id);
         $department=User::find($id)->department;
         $department_plans=$department->department_plans;
 
@@ -354,9 +360,10 @@ class UserController extends Controller
     public function make_visible($id)
     {
         $user= User::find($id);
-        $user->draft_visiblity=request()->visiblity;
-        $user->save();
-        return $user;
+        $term_id=request('term_id');
+        $user->terms()->attach($term_id,['draft_visiblity'=>request()->visiblity]);
+       // $user->draft_visiblity=;
+        return $user->pivot;
 
     }
 

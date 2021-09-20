@@ -31,4 +31,8 @@ class Term extends Model
     public function department_card(){
         return $this->belongsTo(DepartmentCard::class);
     }
+
+    public function users(){
+        return $this->belongsToMany(User::class)->withPivot('user_id','term_id','draft_visiblity');
+    }
 }
