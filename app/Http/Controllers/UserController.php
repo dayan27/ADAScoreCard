@@ -59,7 +59,7 @@ class UserController extends Controller
         $dps=[];
         $all=[];
         //  return $department_plans;
-       // if ($user->pivot->draft_visiblity) {
+        if ($user->pivot->draft_visiblity) {
 
 
         foreach ($department_plans as  $dp) {
@@ -71,6 +71,9 @@ class UserController extends Controller
          // return   $dp->user_activities;
             foreach ($dp->user_activities as $ua) {
               //  $dps['user_activity']=$dp->$ua;
+              if ($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed) {
+
+
                  $quality=[];
                  $quantity=[];
                  $time=[];
@@ -92,13 +95,13 @@ class UserController extends Controller
                 $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
               //  $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
 
-
+            }
 
           }
           $all[]=$dps;
 
         }
-    //}
+    }
         return $all;
 
       // return DepartmentPlanResource::collection($department_plans);
@@ -145,8 +148,9 @@ class UserController extends Controller
             $all=[];
 
        foreach ($department_plans as $dp) {
-      //  return $dp->term_activity;
-       //  return $department_plans;
+
+        if ($dp->term_activity->term->make_visible && ! $dp->term_activity->term->is_completed ) {
+
           $dps['id']=$dp->id;
           $dps['activity']=$dp->activity;
           $dps['quantity_weight']=$dp->quantity_weight;
@@ -155,7 +159,6 @@ class UserController extends Controller
 
 
         //  $dps['term_activities']=['id'];
-           if ($dp->term_activity) {
            // $tsas= $ta->term_sub_activities;
            $dps['term_activities']=array('id'=>  $dp->term_activity->id);
 
@@ -186,10 +189,13 @@ class UserController extends Controller
 
     //  return $dps;
 
+        $all[]=$dps;
+        }else{
+
         }
 
 
-           $all[]=$dps;
+
        }
        return $all;
        /////////////////
@@ -223,6 +229,9 @@ class UserController extends Controller
             $dps['quality_weight']=$dp->quality_weight;
 
             foreach ($dp->user_activities as $ua) {
+
+                if ($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed) {
+
                 $quality=[];
                 $quantity=[];
                 $time=[];
@@ -314,7 +323,7 @@ class UserController extends Controller
                 $quantity[]=['low'=>$qlow ,'enough'=>$qenough ,'high'=>$qhigh , 'excellent'=>$qexcellent];
                 $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
 
-
+            }
 
           }
 

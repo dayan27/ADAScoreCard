@@ -225,10 +225,12 @@ class UserSubActivityController extends Controller
         $r=[];
         for ($i=0; $i < count($a) ; $i++) {
 
-         $r+=$a[$i]+ $b[$i];
+         $r[$i]+=$a[$i]+ $b[$i];
         }
         return $r;
     }
+
+
     public function getEff(){
         $user_id=request()->user_id;
         $user=User::find($user_id);
