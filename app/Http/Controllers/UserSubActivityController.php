@@ -6,6 +6,7 @@ use App\Models\Behavior;
 use App\Models\BehaviorEmployeeResult;
 use App\Models\DepartmentCard;
 use App\Models\DepartmentPlan;
+use App\Models\TermActivity;
 use App\Models\User;
 use App\Models\UserActivity;
 use App\Models\UserSubActivity;
@@ -60,6 +61,13 @@ class UserSubActivityController extends Controller
           'user_id'=>$request->user_id,
           'user_activity_id'=>$userActivity->id
       ]);
+    }
+    if($saved){
+        $user=User::find($request->user_id);
+        $term_id=TermActivity::find($request->term_activity_id)->term_id;
+        $user->terms()->attach($term_id,['draft_visiblity'=>0]);
+        
+
     }
 
     return $saved;

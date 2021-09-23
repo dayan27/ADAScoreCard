@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\DepartmentPlanResource;
 use App\Models\DepartmentCard;
 use App\Models\Term;
+use App\Models\TermActivity;
 use App\Models\TermSubActivity;
 use App\Models\User;
 use App\Models\UserSubActivity;
@@ -59,9 +60,10 @@ class UserController extends Controller
         $dps=[];
         $all=[];
         //  return $department_plans;
-        if ($user->pivot->draft_visiblity) {
 
-
+       // if ($user->terms()->first()->pivot->draft_visiblity) {
+        //  $term_id=$user->terms()->first()->pivot->term_id;
+        //  $term_visiblity=Term::find($term_id)->make_visible;
         foreach ($department_plans as  $dp) {
             $dps['id']=$dp->id;
             $dps['activity']=$dp->activity;
@@ -101,13 +103,16 @@ class UserController extends Controller
           $all[]=$dps;
 
         }
-    }
+ //  }
         return $all;
 
       // return DepartmentPlanResource::collection($department_plans);
      // $activities= $department_plans->user_sub_activities;
        return response()->json([
-        'department_plans'=>$department_plans->load('user_activities.user_sub_activities')
+
+
+        // 'visiblity'=>$term_visiblity,
+        'department_plans'=>$all
        // 'user_sub_activities'=>$user->user_sub_activities->load('term_sub_activity'),
        //'department_plans'=>$department_plans,
       // 'activities'=>$activities
@@ -369,10 +374,24 @@ class UserController extends Controller
     public function make_visible($id)
     {
         $user= User::find($id);
-        $term_id=request('term_id');
-        $user->terms()->attach($term_id,['draft_visiblity'=>request()->visiblity]);
+
+       return $term_id=TermActivity::find(request()->term_activity_id)->term_id;
+        
+        
+        // $user->terms()->attach($term_id,['draft_visiblity'=>request()->visiblity]);
        // $user->draft_visiblity=;
-        return $user->pivot;
+    //    return request()->visiblity;
+        // $user->terms()->first()->pivot->draft_visiblity=request()->visiblity;
+        // $user->terms()->first()->pivot->save();
+     //return  $user->terms()->first();
+         //return $user->terms()->where('term_id',$term_id)->first();
+        // $model->relation()->sync([$related->id => [ 'duration' => 'someValue'] ], false);
+          //return request()->visiblity;
+        $user->terms()->updateExistingPivot($term_id,['draft_visiblity'=>request()->visiblity]);
+                $user->terms()->first()->pivot->save();
+
+        // =request()->visiblity;$ter
+        return $user->terms()->first()->pivot;
 
     }
 
@@ -397,4 +416,68 @@ class UserController extends Controller
         return response()->json(['successfuly changed'],200);
 
     }
+    public function user_draft($id)
+    {
+        $user=User::find($id);
+        $department=$user->department;
+        $department_plans=$department->department_plans;
+        $dps=[];
+        $all=[];
+        //  return $department_plans;
+        // if ($user->pivot->draft_visiblity) {
+              // return $user->pivot;
+
+        foreach ($department_plans as  $dp) {
+            $dps['id']=$dp->id;
+            $dps['activity']=$dp->activity;
+            $dps['quantity_weight']=$dp->quantity_weight;
+            $dps['time_weight']=$dp->time_weight;
+            $dps['quality_weight']=$dp->quality_weight;
+         // return   $dp->user_activities;
+            foreach ($dp->user_activities as $ua) {
+              //  $dps['user_activity']=$dp->$ua;
+              if ($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed) {
+
+
+                 $quality=[];
+                 $quantity=[];
+                 $time=[];
+                foreach ($ua->user_sub_activities as  $usa) {
+
+                     //     return $ua->user_sub_activities;
+                   if ( Str::lower($usa->term_sub_activity->measurment) == 'quality') {
+                     $quality[]=$usa;
+                   }
+
+                  else if ( Str::lower( $usa->term_sub_activity->measurment) == 'time') {
+                    $time[]=$usa;
+                  }
+
+                 else if (Str::lower( $usa->term_sub_activity->measurment) == 'quantity') {
+                   $quantity[]=$usa;
+                 }
+                }
+                $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
+              //  $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
+
+            }
+
+          }
+          $all[]=$dps;
+
+        }
+  //  }
+        //return $all;
+
+      // return DepartmentPlanResource::collection($department_plans);
+     // $activities= $department_plans->user_sub_activities;
+       return response()->json([
+        'draft_visibity'=>$user->terms()->first()->pivot->draft_visiblity,
+        'department_plans'=>$all
+        //'department_plans'=>$department_plans->load('user_activities.user_sub_activities')
+       // 'user_sub_activities'=>$user->user_sub_activities->load('term_sub_activity'),
+       //'department_plans'=>$department_plans,
+      // 'activities'=>$activities
+    ]);
+}
 }
