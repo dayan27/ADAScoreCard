@@ -33,7 +33,8 @@ class DepartmentCardController extends Controller
                 'number_of_term'=>'required',
                 'from'=>'required',
                 'to'=>'required',
-                'score_card_id'=>'required'
+                'score_card_id'=>'required',
+                'department_id'=>'required'
 
             ]
             );
@@ -95,7 +96,10 @@ function splitDates($from, $to, $parts, $output = "Y-m-d") {
         $term_sub_activities=[];
         $term_activities=[];
         $yearly_plans=[];
+        $department_plans=[];
+
         $department_plans=$departmentCard->department_plans;
+        //return $department_plans;
         // $term_sub_activities=
            // return $department_plans;
          foreach ($department_plans as  $department_plan) {
@@ -120,9 +124,18 @@ function splitDates($from, $to, $parts, $output = "Y-m-d") {
 
                // return collect($term_sub_activities)->values()->load('term_activity');
         }
+        $dep_plan=[];
+        $visblity['departemnet_card_visiblity']=$departmentCard->make_visible;
+        $visblity['is_completeed']=$departmentCard->is_completed;
+
+        array_push($dep_plan,$visblity);
+        array_push($dep_plan,$department_plans->load('perspective:id,title'));
+        // return $dep_plan;
+
 
         return response()->json([
-            'department_plans'=>$department_plans->load('perspective:id,title'),
+            'department_plans'=>$dep_plan,
+
             'term_activitis'=> $term_activities,
             'yearly_plans'=> $yearly_plans,
             'term_sub_activities'=> $term_sub_activities,

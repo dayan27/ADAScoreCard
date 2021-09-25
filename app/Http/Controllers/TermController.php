@@ -27,7 +27,6 @@ class TermController extends Controller
     {
  
 
-
     }
 
     /**
@@ -36,9 +35,11 @@ class TermController extends Controller
      * @param  int  $id
      * @return \Illuate\Http\Response
      */
-    public function show(Term $term)
+    public function show()
     {
-        return $term;
+          
+     return Term::where('department_card_id',$department_card_id)->where('department_id',request()->department_id);
+
     }
 
     /**
@@ -92,4 +93,9 @@ class TermController extends Controller
         return $term;
 
     }
+
+    public function get_terms($department_card_id){
+      return   Term::all()->where('department_card_id',$department_card_id)->where('department_id',request()->department_id);
+        
+ }
 }

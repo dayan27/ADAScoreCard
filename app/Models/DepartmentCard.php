@@ -16,12 +16,13 @@ class DepartmentCard extends Model
         'from',
         'to',
         'score_card_id',
+        'department_id'
     ];
 
     protected $hidden=[
         'created_at',
         'updated_at',
-        'make_visible'
+
     ];
     public function department_plans(){
         return $this->hasMany(DepartmentPlan::class);
@@ -33,5 +34,8 @@ class DepartmentCard extends Model
     public function score_cards(){
         return $this->belongsTo(ScoreCard::class);
 
+     }
+     public function department(){
+         return $this->belongsTo(Department::class);
      }
 }

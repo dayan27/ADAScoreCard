@@ -20,6 +20,8 @@ class CreateDepartmentCardsTable extends Migration
             $table->date('to');
             $table->integer('number_of_term');
             $table->boolean('make_visible')->default(0);
+            $table->boolean('is_completed')->default(0);
+            $table->foreignId('department_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('score_card_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->timestamps();

@@ -60,8 +60,9 @@ class UserController extends Controller
         $dps=[];
         $all=[];
         //  return $department_plans;
+        //return $user->terms()->first()->pivot->draft_visiblity;
 
-       // if ($user->terms()->first()->pivot->draft_visiblity) {
+        // if($user->terms()->first()->pivot->draft_visiblity){
         //  $term_id=$user->terms()->first()->pivot->term_id;
         //  $term_visiblity=Term::find($term_id)->make_visible;
         foreach ($department_plans as  $dp) {
@@ -81,7 +82,14 @@ class UserController extends Controller
                  $time=[];
                 foreach ($ua->user_sub_activities as  $usa) {
 
-                     //     return $ua->user_sub_activities;
+
+                          $term_activity_id =TermSubActivity::find($usa->term_sub_activity_id)->term_activity_id;
+                        $term=  TermActivity::find($term_activity_id)->term;
+                        $term_id=$term->id;
+                        $department_card_id=$term->department_card_id;
+                        $usa['term_id']=$term_id;
+                        $usa['department_card_id']=$department_card_id;
+
                    if ( Str::lower($usa->term_sub_activity->measurment) == 'quality') {
                      $quality[]=$usa;
                    }
@@ -103,7 +111,7 @@ class UserController extends Controller
           $all[]=$dps;
 
         }
- //  }
+  // }
         return $all;
 
       // return DepartmentPlanResource::collection($department_plans);
@@ -117,6 +125,13 @@ class UserController extends Controller
        //'department_plans'=>$department_plans,
       // 'activities'=>$activities
     ]);
+    }
+    /*
+    return user by filtering based on department_id
+    */
+    public function get_user($department_id){
+      return User::where('department_id',$department_id)->get();
+
     }
 
 
@@ -155,6 +170,8 @@ class UserController extends Controller
        foreach ($department_plans as $dp) {
 
         if ($dp->term_activity->term->make_visible && ! $dp->term_activity->term->is_completed ) {
+
+
 
           $dps['id']=$dp->id;
           $dps['activity']=$dp->activity;
@@ -195,25 +212,27 @@ class UserController extends Controller
     //  return $dps;
 
         $all[]=$dps;
+
         }else{
 
         }
-
-
+        $term= $dp->term_activity->term;
 
        }
-       return $all;
+    //    return $term;
+    //    return $all;
        /////////////////
 
         return response()->json([
-            'departments'=>$all,
+            'term'=>$term,
+            'termActivity'=>$all,
             //  'department_plans'=>$department_plans->where('department_card_id', $id)->values() ->makeHidden('department_card')
 
             //  ->load('term_activity.term_sub_activities') ,
            //  'department_cards'=>$department_cards,
-             'terms'=> array_filter($terms,function($term) use($id){
-                 return $term['department_card_id']=$id;
-             }) ,
+            //  'terms'=> array_filter($terms,function($term) use($id){
+            //      return $term['department_card_id']=$id;
+            //  }) ,
 
      ]);
     }
@@ -225,6 +244,27 @@ class UserController extends Controller
         $department_plans=$department->department_plans;
         $dps=[];
         $all=[];
+        $dep_cards=DepartmentCard::all();
+        $coll=[];
+        $all_coll=[];
+
+        foreach ($dep_cards as $dep_card) {
+            $dep_card_id=$dep_card->id;
+
+          $dep_id= $user->department_id;
+          //return Term::all();
+
+            $terms=Term::all()->where('department_id','=',$dep_id)->where('department_card_id',$dep_card_id);
+         $term_coll = $terms->where('department_id',$dep_id)
+                 ->where('department_card_id',$dep_card_id);
+                 $coll['year']=$dep_card->year;
+                 $coll['terms']=$term_coll;
+                array_push($all_coll,$coll) ;
+
+
+        }
+        // return $all_coll;
+
 
         foreach ($department_plans as  $dp) {
             $dps['id']=$dp->id;
@@ -232,8 +272,10 @@ class UserController extends Controller
             $dps['quantity_weight']=$dp->quantity_weight;
             $dps['time_weight']=$dp->time_weight;
             $dps['quality_weight']=$dp->quality_weight;
+            $dps['year']=$dp->department_card->year;
 
             foreach ($dp->user_activities as $ua) {
+                // return $ua;
 
                 if ($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed) {
 
@@ -257,6 +299,10 @@ class UserController extends Controller
                  $thigh=array();
                  $texcellent=array();
                 foreach ($ua->user_sub_activities as  $usa) {
+                  $term_activity_id=TermSubActivity::find($usa->term_sub_activity_id)->term_activity_id;
+                  $term_id= TermActivity::find($term_activity_id)->term->id;
+                  $usa['term_id']=$term_id;
+                    //->term_id ;
 
 
                      //     return $usa->term_sub_activity;
@@ -335,7 +381,13 @@ class UserController extends Controller
           $all[]=$dps;
 
         }
-        return $all;
+
+
+        // return $all;
+        return response()->json([
+            'TermYearCard'=>$all_coll,
+            'TermActivity'=>$all,
+    ]);
     }
 
     /**
@@ -375,9 +427,9 @@ class UserController extends Controller
     {
         $user= User::find($id);
 
-       return $term_id=TermActivity::find(request()->term_activity_id)->term_id;
-        
-        
+        $term_id=TermActivity::find(request()->term_activity_id)->term_id;
+
+
         // $user->terms()->attach($term_id,['draft_visiblity'=>request()->visiblity]);
        // $user->draft_visiblity=;
     //    return request()->visiblity;
@@ -461,8 +513,12 @@ class UserController extends Controller
               //  $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
 
             }
+            $term_activity_id=$ua->term_activity_id;
+
 
           }
+           $term=TermActivity::find($term_activity_id)->term;
+
           $all[]=$dps;
 
         }
@@ -472,7 +528,8 @@ class UserController extends Controller
       // return DepartmentPlanResource::collection($department_plans);
      // $activities= $department_plans->user_sub_activities;
        return response()->json([
-        'draft_visibity'=>$user->terms()->first()->pivot->draft_visiblity,
+        'draft_visiblity'=>$user->terms()->first()->pivot->draft_visiblity,
+        'term'=>$term,
         'department_plans'=>$all
         //'department_plans'=>$department_plans->load('user_activities.user_sub_activities')
        // 'user_sub_activities'=>$user->user_sub_activities->load('term_sub_activity'),

@@ -48,4 +48,7 @@ class Department extends Model
         $dc=DepartmentCard::latest()->first();
         return $this->hasMany(DepartmentPlan::class)->where('department_card',$dc->id);
     }
+    public function department_cards(){
+        return $this->hasMany(DepartmentCard::class);
+    }
 }

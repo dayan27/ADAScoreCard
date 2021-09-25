@@ -57,6 +57,10 @@ Route::get('/deactivate_user/{id}',[UserController::class,'make_deactive']);
 Route::get('/get_user_activity/{id}',[UserController::class,'get_user_activity']);
 Route::post('/get_eff',[UserSubActivityController::class,'getEff']);
 Route::get('/user_draft/{id}',[UserController::class,'user_draft']);
+Route::post('/get_terms/{department_card_id}',[TermController::class,'get_terms']);
+Route::get('/get_employees/{department_id}',[UserController::class,'get_user']);
+
+
 
 
 

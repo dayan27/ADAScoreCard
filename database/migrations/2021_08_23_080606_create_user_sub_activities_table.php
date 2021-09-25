@@ -15,7 +15,7 @@ class CreateUserSubActivitiesTable extends Migration
     {
         Schema::create('user_sub_activities', function (Blueprint $table) {
             $table->id();
-            $table->boolean('isAccepeted')->default(0);
+            $table->integer('isAccepeted')->default(0);
             $table->foreignId('term_sub_activity_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('user_activity_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
