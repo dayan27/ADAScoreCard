@@ -111,7 +111,7 @@ class UserController extends Controller
           $all[]=$dps;
 
         }
-  // }
+
         return $all;
 
       // return DepartmentPlanResource::collection($department_plans);
@@ -126,6 +126,7 @@ class UserController extends Controller
       // 'activities'=>$activities
     ]);
     }
+
     /*
     return user by filtering based on department_id
     */

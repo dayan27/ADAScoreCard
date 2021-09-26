@@ -59,6 +59,8 @@ Route::post('/get_eff',[UserSubActivityController::class,'getEff']);
 Route::get('/user_draft/{id}',[UserController::class,'user_draft']);
 Route::post('/get_terms/{department_card_id}',[TermController::class,'get_terms']);
 Route::get('/get_employees/{department_id}',[UserController::class,'get_user']);
+Route::post('/get_yearly_plans/{score_card_id}',[YearCardController::class,'get_yearly_plan']);
+
 
 
 

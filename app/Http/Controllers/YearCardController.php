@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ScoreCard;
+use App\Models\StrategicPlan;
 use App\Models\YearCard;
 use Illuminate\Http\Request;
 
@@ -94,6 +95,53 @@ class YearCardController extends Controller
         $yearCard->make_visible=request()->visiblity;
         $yearCard->save();
         return $yearCard;
+
+    }
+     /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\YearCard  $yearCard
+     * @return \Illuminate\Http\Response
+     */
+    public function get_yearly_plan( $score_card_id)
+    {
+       $user=auth()->user();
+       $yps_by_score_cards=null;
+        $yp_final=[];
+        $st_plans= StrategicPlan::where('score_card_id',$score_card_id)->get();
+
+        foreach ($st_plans as $st_plan) {
+            //return $st_plan->yearly_plans;
+        //    if($st_plan->departments->first()->department_id==2){
+        //     return $st_plan->departments;
+        // }
+
+           $st_departments= $st_plan->departments;
+           foreach ($st_departments as $st_department) {
+            if($st_department->id==request()->department_id){
+                $yps=$st_plan->yearly_plans;
+                foreach($yps as $yp){
+                    array_push($yp_final,$yp);
+
+
+                }
+
+
+
+            }
+        }
+       // return $yp_final;
+
+          //->department_id;
+        }
+        return $yp_final;
+
+        // $yp_final=[];
+        // foreach ($yps_by_score_cards as $yps_by_score_card) {
+        // return  $strategic_plan_id=$yps_by_score_card->strategic_plans()->id;
+       // }
+
+
 
     }
 }
