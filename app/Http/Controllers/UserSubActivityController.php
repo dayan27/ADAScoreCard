@@ -6,6 +6,7 @@ use App\Models\Behavior;
 use App\Models\BehaviorEmployeeResult;
 use App\Models\DepartmentCard;
 use App\Models\DepartmentPlan;
+use App\Models\Term;
 use App\Models\TermActivity;
 use App\Models\User;
 use App\Models\UserActivity;
@@ -66,7 +67,7 @@ class UserSubActivityController extends Controller
         $user=User::find($request->user_id);
         $term_id=TermActivity::find($request->term_activity_id)->term_id;
         $user->terms()->attach($term_id,['draft_visiblity'=>0]);
-        
+
 
     }
 
@@ -262,6 +263,53 @@ class UserSubActivityController extends Controller
     }
     //return $activ;
     }
+    public function get_result($user_id){
+        $user=User::find($user_id);
+        $dep_id= $user->departement_id;
+        $dep_cards=DepartmentCard::where('department_id',$dep_id);
+        $user_result=[];
+        $terms=[];
+        foreach ($dep_cards as $ $dep_card) {
+           $terms=$dep_card->terms;
+           $term_result=[];
+           $user_result['year']=$dep_card->year;
+           foreach ($terms as $term) {
+               $terms['term_no']=$term->term_no;
+               $terms['term_id']=$term->id;
+
+               $behavior_result=[];
+               $activity_result=[];
+
+               foreach ($user->behaviors as $behavior) {
+                  $current_dep_card_id=$behavior->pivot->department_card_id;
+                  $current_term_id=$behavior->pivot->term_id;
+                  if($current_dep_card_id==request()->department_card_id && $current_term_id==request()->term_id){
+                      $behavior_result=$behavior;
+                  }
+
+               }
+               array_push($term_result,$behavior_result);
+
+               foreach ($user->user_activities as $user_activity) {
+
+                $current_term_id=$user_activity->term_activity->term_id;
+                $current_dep_card_id=Term::find($current_term_id)->department_card_id;
+
+                if($current_dep_card_id==request()->department_card_id && $current_term_id==request()->term_id){
+                  $activity_result=$user_activity->term_activity->department_plan;
+                }
+              }
+              array_push($term_result,$activity_result);
+
+              $array_push($terms,$term_result);
+
+          }
+           array_push($user_result,$terms);
+
+        }
+        return $user_result;
+
+      }
 
 }
 

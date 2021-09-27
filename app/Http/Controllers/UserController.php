@@ -12,6 +12,7 @@ use App\Models\UserSubActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use PhpParser\Node\Stmt\Continue_;
 
 class UserController extends Controller
 {
@@ -141,8 +142,9 @@ class UserController extends Controller
         $department_cards=[];
         $terms=[];
         //  return User::find($id);
-        $department=User::find($id)->department;
-        $department_plans=$department->department_plans;
+          $department=User::find($id)->department;
+            $department_plans=$department->department_plans;
+
 
         //  foreach ($department_plans as  $department_plan) {
 
@@ -170,6 +172,7 @@ class UserController extends Controller
 
        foreach ($department_plans as $dp) {
 
+          //return $dp->term_activity->term->make_visible;
         if ($dp->term_activity->term->make_visible && ! $dp->term_activity->term->is_completed ) {
 
 
@@ -181,7 +184,7 @@ class UserController extends Controller
           $dps['quality_weight']=$dp->quality_weight;
 
 
-        //  $dps['term_activities']=['id'];
+           //$dps['term_activities']=['id'];
            // $tsas= $ta->term_sub_activities;
            $dps['term_activities']=array('id'=>  $dp->term_activity->id);
 
@@ -190,7 +193,6 @@ class UserController extends Controller
            $time=[];
 
           foreach ($dp->term_activity->term_sub_activities as  $tsa) {
-
 
 
              if ( Str::lower( $tsa->measurment) ==  'quality') {
@@ -207,25 +209,28 @@ class UserController extends Controller
 
           }
          $dps['term_activities']= array('term_sub_activity'=>array('quality'=>$quality,'quantity'=>$quantity,'time'=>$time));
-//$dps['term_sub_activities']['term_sub_activities']=array('quality'=>$quality,'quantity'=>$quantity,'time'=>$time);
-        //   return $dps['term_activities']['term_sub_activities'];
+          //$dps['term_sub_activities']['term_sub_activities']=array('quality'=>$quality,'quantity'=>$quantity,'time'=>$time);
+           //   return $dps['term_activities']['term_sub_activities'];
 
-    //  return $dps;
+            //  return $dps;
 
-        $all[]=$dps;
+          $all[]=$dps;
 
-        }else{
+           }else{
 
-        }
-        $term= $dp->term_activity->term;
+          }
+
+         $terms=$dp->term_activity->term;
 
        }
-    //    return $term;
-    //    return $all;
+      // return $terms;
+     // return $terms;
+       //return $terms;
+     // return $all;
        /////////////////
 
         return response()->json([
-            'term'=>$term,
+             'term'=>$terms,
             'termActivity'=>$all,
             //  'department_plans'=>$department_plans->where('department_card_id', $id)->values() ->makeHidden('department_card')
 
@@ -489,36 +494,56 @@ class UserController extends Controller
          // return   $dp->user_activities;
             foreach ($dp->user_activities as $ua) {
               //  $dps['user_activity']=$dp->$ua;
+
               if ($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed) {
 
 
                  $quality=[];
                  $quantity=[];
                  $time=[];
-                foreach ($ua->user_sub_activities as  $usa) {
 
-                     //     return $ua->user_sub_activities;
-                   if ( Str::lower($usa->term_sub_activity->measurment) == 'quality') {
-                     $quality[]=$usa;
-                   }
-
-                  else if ( Str::lower( $usa->term_sub_activity->measurment) == 'time') {
-                    $time[]=$usa;
-                  }
-
-                 else if (Str::lower( $usa->term_sub_activity->measurment) == 'quantity') {
-                   $quantity[]=$usa;
+                 if(!$ua->user_sub_activities->isempty()){
+                     continue;
                  }
-                }
-                $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
+
+                    foreach ($ua->user_sub_activities as  $usa) {
+                        // if(!$usa->term_sub_activity){
+
+                        // }
+
+
+                       if ( Str::lower($usa->term_sub_activity->measurment) == 'quality') {
+                         $quality[]=$usa;
+                       }
+
+                      else if ( Str::lower( $usa->term_sub_activity->measurment) == 'time') {
+                        $time[]=$usa;
+                      }
+
+                     else if (Str::lower( $usa->term_sub_activity->measurment) == 'quantity') {
+                       $quantity[]=$usa;
+                     }
+
+
+
+                    }
+                    $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
+
+
+
+
+
+
               //  $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
 
+
             }
+
             $term_activity_id=$ua->term_activity_id;
 
 
           }
-           $term=TermActivity::find($term_activity_id)->term;
+         //  $term=TermActivity::find($term_activity_id)->term;
 
           $all[]=$dps;
 
@@ -530,7 +555,7 @@ class UserController extends Controller
      // $activities= $department_plans->user_sub_activities;
        return response()->json([
         'draft_visiblity'=>$user->terms()->first()->pivot->draft_visiblity,
-        'term'=>$term,
+       // 'term'=>$term,
         'department_plans'=>$all
         //'department_plans'=>$department_plans->load('user_activities.user_sub_activities')
        // 'user_sub_activities'=>$user->user_sub_activities->load('term_sub_activity'),
