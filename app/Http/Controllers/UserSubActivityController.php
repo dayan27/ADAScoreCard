@@ -45,14 +45,14 @@ class UserSubActivityController extends Controller
     $saved=[];
     foreach ($request->datas as $data) {
 
-      $userActivity=UserActivity::where('department_plan_id',$data['department_plan_id'])->first();
+      $userActivity=UserActivity::where('department_plan_id',$data['department_plan_id'])->where('term_activity_id',$data['term_activity_id'])->first();
 
       if(!$userActivity){
 
           $userActivity=new UserActivity();
           $userActivity->term_activity_id=$data['term_activity_id'];
           $userActivity->department_plan_id=$data['department_plan_id'];
-          $userActivity->user_id=$request->user_id;
+          $userActivity->user_id=$data['user_id'];
           $userActivity->save();
 
       }
@@ -66,7 +66,11 @@ class UserSubActivityController extends Controller
     if($saved){
         $user=User::find($request->user_id);
         $term_id=TermActivity::find($request->term_activity_id)->term_id;
-        $user->terms()->attach($term_id,['draft_visiblity'=>0]);
+        if(!$user->terms()->where('term_id',$term_id)->get()){
+            $user->terms()->attach($term_id,['draft_visiblity'=>0]);
+
+        }
+
 
 
     }

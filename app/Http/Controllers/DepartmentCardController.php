@@ -62,7 +62,7 @@ class DepartmentCardController extends Controller
            $term->from=$dates[$i];
            $term->to=$dates[$i+1];
            $term->department_card_id=$department_card->id;
-           $term->department_id=1;
+           $term->department_id=$request->department_id;
            $term->save();
 
     }
