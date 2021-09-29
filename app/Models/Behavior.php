@@ -15,12 +15,15 @@ class Behavior extends Model
      */
     protected $fillable = [
         'title',
+        'maximum_score_point',
+        'description',
         'weight',
 
     ];
 
     public function users(){
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withPivot('term_id','department_card_id','result_scale','result');
     }
 
 }
+

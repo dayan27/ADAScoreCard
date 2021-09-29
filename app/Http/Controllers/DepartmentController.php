@@ -91,8 +91,22 @@ class DepartmentController extends Controller
     public function assignManager($department_id){
 
        $dept= Department::find($department_id);
+    //    return $dept->user_id;
        $dept->user_id=request()->user_id;
         $dept->save();
         return $dept;
     }
+
+    // public function check_break(){
+    //     $deps=Department::all();
+    //     $all=[];
+    //     foreach($deps as $dep){
+    //         if($dep->id==3){
+    //             continue;
+    //         }
+    //        array_push($all,$dep)  ;
+    //     }
+    //     return $all;
+
+    // }
 }

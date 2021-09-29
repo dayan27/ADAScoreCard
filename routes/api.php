@@ -17,6 +17,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSubActivityController;
 use App\Http\Controllers\YearCardController;
 use App\Http\Controllers\YearlyPlanController;
+use App\Models\DepartmentCard;
 use App\Models\YearCard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -60,6 +61,16 @@ Route::get('/user_draft/{id}',[UserController::class,'user_draft']);
 Route::post('/get_terms/{department_card_id}',[TermController::class,'get_terms']);
 Route::get('/get_employees/{department_id}',[UserController::class,'get_user']);
 Route::post('/get_yearly_plans/{score_card_id}',[YearCardController::class,'get_yearly_plan']);
+Route::get('/get_current_user_activity/{id}',[UserController::class,'get_current_user_activity']);
+Route::get('/give_activity_result/{id}',[UserController::class,'give_activity_result']);
+Route::post('/accepet_current_term/{id}',[UserController::class,'accepet_current_term']);
+Route::post('/complet_department_card/{id}',[DepartmentCardController::class,'complete_dpartment_card']);
+
+
+Route::get('/check_break',[DepartmentController::class,'check_break']);
+
+
+
 
 
 
@@ -84,7 +95,7 @@ Route::apiResource('/adas',ADAController::class);
 
 //user sub Activity related routes
 Route::apiResource('/user_sub_activities',UserSubActivityController::class);
-Route::post('/give_activity_result',[ UserSubActivityController::class, 'giveActivityResult']);
+Route::post('/give_employee_result',[ UserSubActivityController::class, 'giveActivityResult']);
 Route::post('/give_behavior_result',[ UserSubActivityController::class, 'giveBehaviorResult']);
 
 

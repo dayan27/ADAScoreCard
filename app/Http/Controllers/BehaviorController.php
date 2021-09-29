@@ -28,12 +28,16 @@ class BehaviorController extends Controller
         $request->validate(
             [
                 'title'=>'required',
+                'description'=>'required',
                 'weight'=>'required',
 ]
-            
+
             );
 
-        return Behavior::create($request->all());
+         $behav= Behavior::create($request->all());
+         return $behav;
+        // i
+        // return response()->json($behavior,200);
 
 
     }

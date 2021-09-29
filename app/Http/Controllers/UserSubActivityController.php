@@ -135,9 +135,10 @@ class UserSubActivityController extends Controller
     }
 
     public function giveActivityResult(){
-
+     //  return request()->all();
      foreach (request()->datas as  $data) {
         $department_plan=DepartmentPlan::find($data['department_plan_id']);
+
 
         $userActivity=UserActivity::find($data['user_activity_id']);
 
@@ -162,6 +163,8 @@ class UserSubActivityController extends Controller
      }
     }
      public function giveBehaviorResult(){
+        return request()->all();
+
 
         foreach (request()->datas as  $data) {
             $term_id=$data['term_id'];

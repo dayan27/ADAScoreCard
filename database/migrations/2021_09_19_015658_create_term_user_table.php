@@ -18,6 +18,8 @@ class CreateTermUserTable extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('term_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->boolean('draft_visiblity')->default(0);
+            $table->boolean('is_accepeted')->default(0);
+
 
             $table->timestamps();
         });

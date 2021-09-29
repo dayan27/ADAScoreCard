@@ -216,4 +216,11 @@ function splitDates($from, $to, $parts, $output = "Y-m-d") {
         return $deptCard;
 
     }
+    public function complete_dpartment_card($id){
+       $depCard=DepartmentCard::find($id);
+       $depCard->is_completed=request()->is_completed;
+       $depCard->save();
+       return $depCard;
+
+    }
 }

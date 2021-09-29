@@ -16,6 +16,8 @@ class CreateBehaviorsTable extends Migration
         Schema::create('behaviors', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('description');
+
             $table->integer('weight');
             $table->integer('maximum_score_point')->nullable();
             $table->timestamps();
