@@ -223,4 +223,13 @@ function splitDates($from, $to, $parts, $output = "Y-m-d") {
        return $depCard;
 
     }
+    /**
+     * get department cards by score_card and department
+     */
+    public function get_department_card(){
+       return  DepartmentCard::where('score_card_id',request()->score_card_id)
+                        ->where('department_id',request()->department_id)->get();
+
+
+    }
 }

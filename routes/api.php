@@ -65,6 +65,11 @@ Route::get('/get_current_user_activity/{id}',[UserController::class,'get_current
 Route::get('/give_activity_result/{id}',[UserController::class,'give_activity_result']);
 Route::post('/accepet_current_term/{id}',[UserController::class,'accepet_current_term']);
 Route::post('/complet_department_card/{id}',[DepartmentCardController::class,'complete_dpartment_card']);
+Route::post('/get_user_activity_by_year/{id}',[UserController::class,'get_user_activity_by_year']);
+Route::post('/get_department_cards',[DepartmentCardController::class,'get_department_card']);
+Route::get('/get_result/{id}',[UserSubActivityController::class,'get_result']);
+
+
 
 
 Route::get('/check_break',[DepartmentController::class,'check_break']);

@@ -693,17 +693,18 @@ class UserController extends Controller
         $user=User::find($user_id);
         $user->terms()->where('term_id',request()->term_id)->updateExistingPivot(request()->term_id,['is_accepted'=>request()->is_accepted]);
         $user->terms()->first()->pivot->save();
-         if($user->terms()->where('term_id',request()->term_id)->first()->pivot->is_accepted){
-             $behaviors=Behavior::all();
-             //to add a user and behavior inpivot table of behavior_user pivot table
-             foreach ($behaviors as  $behavior) {
-                 $user->behaviors->sync($behavior->id,['term_id'=>request()->term_id,
-                'department_card_id'=>request()->department_card_id]);
-             }
-            }
-           return  $user->behaviors>contains(request()->term_id);
 
-           //  return $user->behaviors();
+        //  if($user->terms()->where('term_id',request()->term_id)->first()->pivot->is_accepted){
+        //      $behaviors=Behavior::all();
+        //      //to add a user and behavior inpivot table of behavior_user pivot table
+        //      foreach ($behaviors as  $behavior) {
+        //          $user->behaviors->sync($behavior->id,['term_id'=>request()->term_id,
+        //         'department_card_id'=>request()->department_card_id]);
+        //      }
+        //     }
+        //    return  $user->behaviors>contains(request()->term_id);
+
+
 
 
     //     if($user->terms()->where('term_id',$term_id)->first()->pivot->is_accepted)
@@ -918,6 +919,7 @@ class UserController extends Controller
 //    return  $user->terms()->get();
    //  if ($user->terms()->pivot->draft_visiblity) {}
            // return $user->pivot;
+           $term=null;
 
      foreach ($user_activities as  $ua) {
 
@@ -925,6 +927,7 @@ class UserController extends Controller
      // return $ua;
 
      if($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed){
+        $term= $ua->term_activity->term;
 
         $dep_plan_id=$ua->department_plan_id;
         $dp=DepartmentPlan::find($dep_plan_id);
@@ -1051,9 +1054,178 @@ class UserController extends Controller
      // return $all;
 
      }
-     return $all;
+    // return $all;
+     return response()->json([
+               'term'=>$term,
+               'termPlan'=>$all,
+
+     ]);
+
+
 
  }
+   public function get_user_activity_by_year($id){
+    $user=User::find($id);
+    $department=$user->department;
+    $department_plans=$department->department_plans;
+    $dps=[];
+    $all=[];
+    $all_coll=[];
+
+     $dep_id=$department->id;
+    $dep_cards=DepartmentCard::all()->where('department_id',$dep_id);
+
+    $coll=[];
+    $all_active=[];
+
+    foreach ($dep_cards as $dep_card) {
+        $dep_card_id=$dep_card->id;
+
+      $dep_id= $user->department_id;
+      //return Term::all();
+
+        $terms=Term::all()->where('department_id','=',$dep_id)->where('department_card_id',$dep_card_id);
+     $term_coll = $terms->where('department_id',$dep_id)
+             ->where('department_card_id',$dep_card_id);
+             $coll['year']=$dep_card->year;
+             $coll['terms']=$term_coll;
+            array_push($all_coll,$coll) ;
+
+
+    }
+    // return $all_coll;
+     $user_activity=UserActivity::where('user_id',$id)->get();
+    foreach ($user_activity as $ua) {
+
+    if($ua->term_activity->term->make_visible ){
+
+        $dep_plan_id=$ua->department_plan_id;
+        $dp=DepartmentPlan::find($dep_plan_id);
+         return $dp;
+        if($dp->departmen_card->department_card_id==request()->department_card_id){
+           continue ;
+        }
+
+        $dps['id']=$dp->id;
+        $dps['activity']=$dp->activity;
+        $dps['quantity_weight']=$dp->quantity_weight;
+        $dps['time_weight']=$dp->time_weight;
+        $dps['quality_weight']=$dp->quality_weight;
+        $dps['year']=$dp->department_card->year;
+
+        foreach ($dp->user_activities as $ua) {
+            // return $ua;
+
+
+
+            $quality=[];
+            $quantity=[];
+            $time=[];
+
+             $low=array();
+             $enough=array();
+             $high=array();
+             $excellent=array();
+
+             //quantity
+             $qlow=array();
+             $qenough=array();
+             $qhigh=array();
+             $qexcellent=array();
+
+             $tlow=array();
+             $tenough=array();
+             $thigh=array();
+             $texcellent=array();
+            foreach ($ua->user_sub_activities as  $usa) {
+              $term_activity_id=TermSubActivity::find($usa->term_sub_activity_id)->term_activity_id;
+              $term_id= TermActivity::find($term_activity_id)->term->id;
+              $usa['term_id']=$term_id;
+                //->term_id ;
+
+
+                 //     return $usa->term_sub_activity;
+               if ( Str::lower($usa->term_sub_activity->measurment) == 'quality') {
+
+                    if (Str::lower($usa->term_sub_activity->level) == 'low') {
+                    $low[]= $usa;
+                    }else if (Str::lower($usa->term_sub_activity->level) == 'enough') {
+                         $enough[]= $usa;
+
+                    }else if (Str::lower($usa->term_sub_activity->level) == 'high') {
+                         $high[]= $usa;
+                    }else if (Str::lower($usa->term_sub_activity->level) == 'excellent') {
+                     //   $excellent['excellent']=  $usa;
+                     $excellent[]=  $usa;
+
+                    }
+
+
+               }
+
+
+
+
+
+
+               else if ( Str::lower( $usa->term_sub_activity->measurment) == 'time') {
+
+
+
+
+                if (Str::lower($usa->term_sub_activity->level) == 'low') {
+                    $tlow[]= $usa;
+                    }else if (Str::lower($usa->term_sub_activity->level) == 'enough') {
+                         $tenough[]= $usa;
+
+                    }else if (Str::lower($usa->term_sub_activity->level) == 'high') {
+                         $thigh[]= $usa;
+                    }else if (Str::lower($usa->term_sub_activity->level) == 'excellent') {
+                      //  $texcellent['excellent']=  $usa;
+                      $texcellent[]=  $usa;
+
+                    }
+
+
+               }
+
+              else if (Str::lower( $usa->term_sub_activity->measurment) == 'quantity') {
+
+              if (Str::lower($usa->term_sub_activity->level) == 'low') {
+                    $qlow[]= $usa;
+                    }else if (Str::lower($usa->term_sub_activity->level) == 'enough') {
+                         $qenough[]= $usa;
+
+                    }else if (Str::lower($usa->term_sub_activity->level) == 'high') {
+                         $qhigh[]= $usa;
+                    }else if (Str::lower($usa->term_sub_activity->level) == 'excellent') {
+                       // $qexcellent['excellent']=  $usa;
+                       $qexcellent[]=  $usa;
+
+
+                    }
+
+
+             }
+            }
+
+            $quality[]=['low'=>$low ,'enough'=>$enough ,'high'=>$high , 'excellent'=>$excellent];
+            $time[]=['low'=>$tlow ,'enough'=>$tenough ,'high'=>$thigh , 'excellent'=>$texcellent];
+            $quantity[]=['low'=>$qlow ,'enough'=>$qenough ,'high'=>$qhigh , 'excellent'=>$qexcellent];
+            $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
+            $all[]=$dps;
+
+
+
+
+
+      }
+    }
+
+  }
+
+
+}
 
 
 

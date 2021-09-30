@@ -95,7 +95,7 @@ class TermController extends Controller
     }
 
     public function get_terms($department_card_id){
-      return   Term::all()->where('department_card_id',$department_card_id)->where('department_id',request()->department_id);
+      return   Term::all()->where('department_card_id',$department_card_id);
 
  }
 }

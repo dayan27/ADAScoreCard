@@ -23,7 +23,7 @@ class CreateTermsTable extends Migration
             $table->boolean('is_completed')->default(0);
             $table->text('comment')->nullable();
             $table->foreignId('department_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('department_card_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('department_card_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->timestamps();
         });

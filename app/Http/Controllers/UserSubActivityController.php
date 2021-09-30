@@ -163,13 +163,12 @@ class UserSubActivityController extends Controller
      }
     }
      public function giveBehaviorResult(){
-        return request()->all();
 
 
         foreach (request()->datas as  $data) {
             $term_id=$data['term_id'];
            // return request()->datas;
-            $department_card=$data['department_card_id'];
+            $department_card_id=$data['department_card_id'];
 
             $behavior= Behavior::find($data['behavior_id']);
          //   return $behavior;
@@ -183,7 +182,7 @@ class UserSubActivityController extends Controller
             'result_scale'=>$result_scale,
             'result'=>$result,
             'term_id'=>$term_id,
-            'department_card'=>$department_card
+            'department_card_id'=>$department_card_id,
 
              ]);
 
@@ -272,11 +271,12 @@ class UserSubActivityController extends Controller
     }
     public function get_result($user_id){
         $user=User::find($user_id);
-        $dep_id= $user->departement_id;
-        $dep_cards=DepartmentCard::where('department_id',$dep_id);
+        $dep_id= $user->department_id;
+         $dep_cards=DepartmentCard::where('department_id',$dep_id)->get();
+        // return $dep_cards;
         $user_result=[];
         $terms=[];
-        foreach ($dep_cards as $ $dep_card) {
+        foreach ($dep_cards as $dep_card) {
            $terms=$dep_card->terms;
            $term_result=[];
            $user_result['year']=$dep_card->year;
@@ -286,16 +286,17 @@ class UserSubActivityController extends Controller
 
                $behavior_result=[];
                $activity_result=[];
-
                foreach ($user->behaviors as $behavior) {
                   $current_dep_card_id=$behavior->pivot->department_card_id;
                   $current_term_id=$behavior->pivot->term_id;
                   if($current_dep_card_id==request()->department_card_id && $current_term_id==request()->term_id){
                       $behavior_result=$behavior;
+                      //return $behavior_result;
                   }
 
                }
                array_push($term_result,$behavior_result);
+               return $term_result;
 
                foreach ($user->user_activities as $user_activity) {
 
@@ -308,7 +309,7 @@ class UserSubActivityController extends Controller
               }
               array_push($term_result,$activity_result);
 
-              $array_push($terms,$term_result);
+              array_push($terms,$term_result);
 
           }
            array_push($user_result,$terms);
