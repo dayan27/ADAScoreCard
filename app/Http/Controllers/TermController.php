@@ -98,4 +98,11 @@ class TermController extends Controller
       return   Term::all()->where('department_card_id',$department_card_id);
 
  }
+ public function make_term_completed($term_id){
+     $term=Term::find($term_id);
+     $term->is_completed=request()->is_completed;
+     $term->save();
+     return $term;
+
+ }
 }

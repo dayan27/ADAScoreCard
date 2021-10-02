@@ -68,6 +68,12 @@ Route::post('/complet_department_card/{id}',[DepartmentCardController::class,'co
 Route::post('/get_user_activity_by_year/{id}',[UserController::class,'get_user_activity_by_year']);
 Route::post('/get_department_cards',[DepartmentCardController::class,'get_department_card']);
 Route::get('/get_result/{id}',[UserSubActivityController::class,'get_result']);
+Route::post('/make_term_completed/{id}',[TermController::class,'make_term_completed']);
+Route::post('/get_behavior_result_by_year/{id}',[UserSubActivityController::class,'get_behavior_result_by_year']);
+Route::post('/get_employee_efficiency/{id}',[UserSubActivityController::class,'get_employee_efficiency']);
+
+
+
 
 
 

@@ -123,6 +123,7 @@ class UserController extends Controller
 
                 $term_id= $term->id;
                    $all[]=$dps;
+                //    array_push($terms_all,$term,$dps);
             }
 
 
@@ -476,6 +477,7 @@ class UserController extends Controller
         /**
          * to get the term number
          */
+      //  return $user_activity;
         $trm=null;
         foreach($user_activity as $ua){
             if($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed){
@@ -508,7 +510,7 @@ class UserController extends Controller
             $dps['quality_weight']=$dp->quality_weight;
             $dps['year']=$dp->department_card->year;
 
-            foreach ($dp->user_activities as $ua) {
+         //   foreach ($dp->user_activities as $ua) {
                 // return $ua;
 
 
@@ -620,7 +622,7 @@ class UserController extends Controller
         }
         //
 
-    }
+    // }
     return response()->json([
         'term'=>$term,
         'termActivity'=>$all,
@@ -745,6 +747,7 @@ class UserController extends Controller
         // $department_plans=$department->department_plans;
         $dps=[];
         $all=[];
+        $term1=null;
        // $term=[];
         //  return $department_plans;
         // if ($user->pivot->draft_visiblity) {
@@ -756,6 +759,7 @@ class UserController extends Controller
         // return $ua;
 
          if ($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed) {
+             $term1=$ua->term_activity->term;
 
            $dep_plan_id=$ua->department_plan_id;
         //   return $dep_plan_id;
@@ -799,6 +803,7 @@ class UserController extends Controller
 
         }
   //  }
+//   return  $term1->id;
 
       // return DepartmentPlanResource::collection($department_plans);
      // $activities= $department_plans->user_sub_activities;
@@ -902,6 +907,14 @@ class UserController extends Controller
 //       // 'activities'=>$activities
 //     ]);
 // }
+/**************
+ *
+ *
+ *give activity result
+ *
+ *
+ */
+/////////////////////////////////////////////////////
  public function give_activity_result($user_id){
     $user=User::find($user_id);
     $id=$user->id;
@@ -914,20 +927,22 @@ class UserController extends Controller
      // $department_plans=$department->department_plans;
      $dps=[];
      $all=[];
+     $all_terms=[];
+     $all_in=[];
     // $term=[];
      //  return $department_plans;
 //    return  $user->terms()->get();
    //  if ($user->terms()->pivot->draft_visiblity) {}
            // return $user->pivot;
            $term=null;
-
+       //return $user_activities;
      foreach ($user_activities as  $ua) {
 
       // return   $dp->user_activities;
-     // return $ua;
-
+     //return $ua;
      if($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed){
         $term= $ua->term_activity->term;
+        //return $term;
 
         $dep_plan_id=$ua->department_plan_id;
         $dp=DepartmentPlan::find($dep_plan_id);
@@ -939,7 +954,21 @@ class UserController extends Controller
         $dps['quality_weight']=$dp->quality_weight;
         $dps['year']=$dp->department_card->year;
 
-        foreach ($dp->user_activities as $ua) {
+        $dps['time_result_scale']=$ua->time_result_scale;
+        $dps['quality_result_scale']=$ua->quality_result_scale;
+        $dps['quantity_result_scale_']=$ua->quantity_result_scale;
+
+        $dps['time_result']=$ua->time_result;
+        $dps['quality_result']=$ua->quality_result;
+        $dps['quantity_result']=$ua->quantity_result;
+        $dps['is_accepted']=$ua->is_accepted;
+
+
+
+
+       // return $dp->user_activities ;
+
+        // foreach ($dp->user_activities as $ua) {
             // return $ua;
 
 
@@ -970,6 +999,7 @@ class UserController extends Controller
                 //->term_id ;
                 if($usa){
                     $dps['user_activity_id']= $usa->user_activity_id;
+
                  }
 
 
@@ -1045,21 +1075,30 @@ class UserController extends Controller
             $time[]=['low'=>$tlow ,'enough'=>$tenough ,'high'=>$thigh , 'excellent'=>$texcellent];
             $quantity[]=['low'=>$qlow ,'enough'=>$qenough ,'high'=>$qhigh , 'excellent'=>$qexcellent];
             $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
+
             $all[]=$dps;
 
-        }
+           //  return $all;
+           //array_push( $all_terms, $term,$all);
 
+        //}
+          //array_push($all_in,$all_terms) ;
+        //   $all_in=$all_terms;
+       // return $all;
     }
+    // array_push( $all_terms, $all);
+    // return $all;
 
-     // return $all;
 
      }
-    // return $all;
-     return response()->json([
-               'term'=>$term,
-               'termPlan'=>$all,
+     array_push($all_in,$term,$all);
+    return $all_in;
+    // return $all_terms;
+    //  return response()->json([
+    //            'term'=>$term,
+    //            'termPlan'=>$all,
 
-     ]);
+    //  ]);
 
 
 
@@ -1101,7 +1140,7 @@ class UserController extends Controller
 
         $dep_plan_id=$ua->department_plan_id;
         $dp=DepartmentPlan::find($dep_plan_id);
-         return $dp;
+         //return $dp;
         if($dp->departmen_card->department_card_id==request()->department_card_id){
            continue ;
         }
@@ -1223,6 +1262,7 @@ class UserController extends Controller
     }
 
   }
+  return   $all;
 
 
 }

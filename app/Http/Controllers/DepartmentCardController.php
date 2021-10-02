@@ -125,17 +125,16 @@ function splitDates($from, $to, $parts, $output = "Y-m-d") {
                // return collect($term_sub_activities)->values()->load('term_activity');
         }
         $dep_plan=[];
-        $visblity['departemnet_card_visiblity']=$departmentCard->make_visible;
-        $visblity['is_completeed']=$departmentCard->is_completed;
+       // $visblity['departemnet_card_visiblity']=$departmentCard->make_visible;
+        //$visblity['is_completeed']=$departmentCard->is_completed;
 
-        array_push($dep_plan,$visblity);
-        array_push($dep_plan,$department_plans->load('perspective:id,title'));
+       // array_push($dep_plan,$visblity);
+      $dep_plan=$department_plans->load('perspective:id,title');
         // return $dep_plan;
 
 
         return response()->json([
             'department_plans'=>$dep_plan,
-
             'term_activitis'=> $term_activities,
             'yearly_plans'=> $yearly_plans,
             'term_sub_activities'=> $term_sub_activities,
