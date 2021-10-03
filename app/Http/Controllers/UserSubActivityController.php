@@ -174,21 +174,22 @@ class UserSubActivityController extends Controller
      }
     }
      public function giveBehaviorResult(){
-
+          //return request()->all();
         foreach (request()->datas as  $data) {
-     //return $data;
+
             $term_id=$data['term_id'];
            // return request()->datas;
             $department_card_id=$data['department_card_id'];
 
             $behavior= Behavior::find($data['behavior_id']);
-            return $behavior;
+           // return $behavior;
            $user= User::find($data['user_id']);
-         //  return $user;
+           //return $user;
             $result_scale=$data['result_scale'];
           // $result_scales[]=$result_scale;
            $result=$result_scale * $behavior->weight;
-
+           $x= $user->behaviors;
+           return $x;
            $user->behaviors()->attach($data['behavior_id'],[
             'result_scale'=>$result_scale,
             'result'=>$result,
@@ -338,6 +339,8 @@ class UserSubActivityController extends Controller
         $user_result=[];
         $terms=[];
         $terms2=[];
+        $term_id=null;
+        $term_no=null;
 
         foreach ($dep_cards as $dep_card) {
          // return $dep_cards;
@@ -399,6 +402,9 @@ class UserSubActivityController extends Controller
                 if($current_dep_card_id==$dep_card->id && $current_term_id==$term->id){
                   $activity_result=$user_activity->term_activity->department_plan;
                   $term_activity_id=$user_activity->term_activity->id;
+                  $term_id=$term->id;
+                  $term_no=$term->term_no;
+
                   $user_activity=UserActivity::where('term_activity_id',$term_activity_id)->first();
                  // $var2=array($activity_result);
                  $activity_result['result']=$user_activity->result;
@@ -415,7 +421,7 @@ class UserSubActivityController extends Controller
               //array_push($term_result,$activity_result);
 
               //array_push($terms2,$term_result);
-              $user_result['terms']=array(array('termData'=>$term_data,'behaviorResult'=>$term_result['behaviorResult'],'activityResult'=>$term_result['activityResult']));
+              $user_result['terms']=array(array('term_id'=>$term_id,'term_no'=>$term_no,'behaviorResult'=>$term_result['behaviorResult'],'activityResult'=>$term_result['activityResult']));
 
           }
 
@@ -533,8 +539,9 @@ class UserSubActivityController extends Controller
               $term_result['activityResult']=$var2;
               //array_push($term_result,$activity_result);
 
+
               //array_push($terms2,$term_result);
-              $user_result['terms']=array(array('termData'=>$term_data,'behaviorResult'=>$term_result['behaviorResult'],'activityResult'=>$term_result['activityResult']));
+              $user_result['terms']=array(array('term_id'=>$term_data,'behaviorResult'=>$term_result['behaviorResult'],'activityResult'=>$term_result['activityResult']));
 
           }
 
@@ -542,6 +549,104 @@ class UserSubActivityController extends Controller
             return $user_result;
 
         //  return $terms2;
+
+      }
+
+    public function get_all_employee_efficiency($user_id){
+        $user=User::find($user_id);
+        $dep_id= $user->department_id;
+         $dep_cards=DepartmentCard::where('department_id',$dep_id)->get();
+        // return $dep_cards;
+        $user_result=[];
+        $terms=[];
+        $terms2=[];
+
+        foreach ($dep_cards as $dep_card) {
+         // return $dep_cards;
+           $terms=$dep_card->terms;
+           $term_result=[];
+           $var=[];
+           $var2=[];
+           $term_id=null;
+
+           $user_result['year']=$dep_card->year;
+           foreach ($terms as $term) {
+
+               $behavior_result=[];
+               $activity_result=[];
+             //  return $user->behaviors;
+               foreach ($user->behaviors as $behavior) {
+                 //return $behavior->pivot->department_card_id;
+                // return $term->id;
+               // $y='dream';
+                  $current_dep_card_id=$behavior->pivot->department_card_id;
+                  $current_term_id=$behavior->pivot->term_id;
+                 // return $current_dep_card_id==$dep_card->id ;
+                  //return $current_term_id;
+                  //return $term->id;
+                //  $x++;
+                  if($current_dep_card_id==$dep_card->id && $current_term_id==$term->id){
+
+
+                      //$behavior;
+                      //return $behavior_result;
+                    //  $var=array($behavior);
+
+                      array_push($var,$behavior);
+                    //   $term_data['term_no']=$term->term_no;
+                    //   $term_data['term_id']=$term->id;
+
+
+                  }
+                 //$var=array($behavior);
+                 //array_push($var,$behavior);
+
+
+
+
+
+               }
+               $term_result['behaviorResult']=$var;
+              // $term_result['term_id']=$current_term_id;
+              //  array_push($term_result,$behavior_result);
+             //  $term_result['behavior_result']=
+              // return $term_result;
+
+
+
+               foreach ($user->user_activities as $user_activity) {
+
+                $current_term_id=$user_activity->term_activity->term_id;
+                $current_dep_card_id=Term::find($current_term_id)->department_card_id;
+
+                if($current_dep_card_id==$dep_card->id && $current_term_id==$term->id){
+                    $term_id=$term->id;
+                  $activity_result=$user_activity->term_activity->department_plan;
+                  $term_activity_id=$user_activity->term_activity->id;
+                  $user_activity=UserActivity::where('term_activity_id',$term_activity_id)->first();
+                 // $var2=array($activity_result);
+                 $activity_result['result']=$user_activity->result;
+                //  $activity_result['time_result']=$user_activity->time_result;
+                //  $activity_result['quality_result']=$user_activity->quality_result;
+                //  $activity_result['quantity_result']=$user_activity->quantity_result;
+
+
+                 $activity_result['result']=$user_activity->result;
+                  array_push($var2,$activity_result);
+                }
+              }
+              $term_result['activityResult']=$var2;
+              //array_push($term_result,$activity_result);
+
+              //array_push($terms2,$term_result);
+              $user_result['terms']=array(array('term_id'=>$term_id,'behaviorResult'=>$term_result['behaviorResult'],'activityResult'=>$term_result['activityResult']));
+
+          }
+
+         array_push($terms2,$user_result);
+        }
+
+         return $terms2;
 
       }
 

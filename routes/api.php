@@ -72,6 +72,8 @@ Route::post('/make_term_completed/{id}',[TermController::class,'make_term_comple
 Route::post('/get_behavior_result_by_year/{id}',[UserSubActivityController::class,'get_behavior_result_by_year']);
 Route::post('/get_employee_efficiency/{id}',[UserSubActivityController::class,'get_employee_efficiency']);
 
+Route::get('/get_all_employee_efficiency/{id}',[UserSubActivityController::class,'get_all_employee_efficiency']);
+
 
 
 
