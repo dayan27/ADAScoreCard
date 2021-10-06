@@ -84,7 +84,7 @@ class UserController extends Controller
 
         //    return $user->terms()->get();
           // return $user->terms()->where('term_id',$term_id)->first()->pivot->draft_visiblity;
-           if ( $user->terms()->where('term_id',$term_id)->first()->pivot->draft_visiblity) {
+           if ( $user->terms()->first()->pivot->draft_visiblity) {
             $dep_plan_id=$ua->department_plan_id;
             //   return $dep_plan_id;
 
@@ -190,12 +190,24 @@ class UserController extends Controller
             ///////////////////////////
             $dps=[];
             $all=[];
-
+          //return $department_plans;
        foreach ($department_plans as $dp) {
 
-          //return $dp->term_activity->term->make_visible;
-        if ($dp->term_activity->term->make_visible && ! $dp->term_activity->term->is_completed ) {
+        //  return $dp->term_activity;
+        // if($dp->id==23){
+        //     return 23;
+        // }
 
+        foreach ($dp->term_activities as $term_activity) {
+            # code...
+
+          $make_visible=$term_activity->term->make_visible;
+          $is_completed=$term_activity->term->is_completed;
+        //   if($is_completed==1){
+        //     return $dp->term_activity;
+
+        //   }
+        if ( $make_visible && ! $is_completed  ) {
 
 
           $dps['id']=$dp->id;
@@ -207,13 +219,15 @@ class UserController extends Controller
 
            //$dps['term_activities']=['id'];
            // $tsas= $ta->term_sub_activities;
-           $dps['term_activities']=array('id'=>  $dp->term_activity->id);
+
+
+           $dps['term_activities']=array('id'=>  $term_activity->id);
 
            $quality=[];
            $quantity=[];
            $time=[];
 
-          foreach ($dp->term_activity->term_sub_activities as  $tsa) {
+          foreach ($term_activity->term_sub_activities as  $tsa) {
 
 
              if ( Str::lower( $tsa->measurment) ==  'quality') {
@@ -237,13 +251,18 @@ class UserController extends Controller
 
           $all[]=$dps;
 
+
            }else{
 
           }
 
-         $terms=$dp->term_activity->term;
-
+         $terms[]=$term_activity->term;
+        // if($dp->id==23){
+        //     return 45;
+        // }
        }
+
+    }
       // return $terms;
      // return $terms;
        //return $terms;
@@ -747,7 +766,8 @@ class UserController extends Controller
         // $department_plans=$department->department_plans;
         $dps=[];
         $all=[];
-        $term1=null;
+        $term=null;
+        $term_id=null;
        // $term=[];
         //  return $department_plans;
         // if ($user->pivot->draft_visiblity) {
@@ -793,12 +813,16 @@ class UserController extends Controller
 
 
             $term_activity_id=$ua->term_activity_id;
+            $term=TermActivity::find($term_activity_id)->term;
+
+            $term_id= $term->id;
         }
 
-        $term=TermActivity::find($term_activity_id)->term;
+            # code...
 
-        $term_id= $term->id;
-           $all[]=$dps;
+          if ($dps) {
+            $all[]=$dps;
+        }
 
 
         }

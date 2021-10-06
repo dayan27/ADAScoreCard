@@ -103,7 +103,10 @@ function splitDates($from, $to, $parts, $output = "Y-m-d") {
         // $term_sub_activities=
            // return $department_plans;
          foreach ($department_plans as  $department_plan) {
-            $activity=$department_plan->term_activity;
+
+            foreach ($department_plan->term_activities as $activity) {
+                # code...
+
             if($activity){
 
                 $term_activities[]=$activity;
@@ -124,6 +127,7 @@ function splitDates($from, $to, $parts, $output = "Y-m-d") {
 
                // return collect($term_sub_activities)->values()->load('term_activity');
         }
+    }
         $dep_plan=[];
        // $visblity['departemnet_card_visiblity']=$departmentCard->make_visible;
         //$visblity['is_completeed']=$departmentCard->is_completed;

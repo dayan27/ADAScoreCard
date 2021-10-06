@@ -33,7 +33,10 @@ class Term extends Model
     }
 
     public function users(){
-        
-        return $this->belongsToMany(User::class)->withPivot('user_id','term_id','draft_visiblity');
+
+        return $this->belongsToMany(User::class)->withPivot('user_id','term_id','draft_visiblity','is_accepted');
+    }
+    public function term_activities(){
+        return $this->hasMany(TermActivity::class);
     }
 }

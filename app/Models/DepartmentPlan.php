@@ -39,9 +39,9 @@ class DepartmentPlan extends Model
         return $this->belongsTo(DepartmentCard::class);
     }
 
-    public function term_activity(){
+    public function term_activities(){
 
-        return $this->hasOne(TermActivity::class);
+        return $this->hasMany(TermActivity::class);
     }
 
     public function user_activities(){

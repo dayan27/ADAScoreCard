@@ -75,21 +75,7 @@ Route::post('/get_employee_efficiency/{id}',[UserSubActivityController::class,'g
 Route::get('/get_all_employee_efficiency/{id}',[UserSubActivityController::class,'get_all_employee_efficiency']);
 
 
-
-
-
-
-
 Route::get('/check_break',[DepartmentController::class,'check_break']);
-
-
-
-
-
-
-
-
-
 
 
 Route::apiResource('/departments',DepartmentController::class);
@@ -119,11 +105,11 @@ Route::apiResource('/strategic_plans',StrategicPlanController::class);
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('/score_cards',ScoreCardController::class);
-    Route::apiResource('/yearly_plans',YearlyPlanController::class);
+Route::apiResource('/score_cards',ScoreCardController::class);
+Route::apiResource('/yearly_plans',YearlyPlanController::class);
 Route::apiResource('/department_plans',DepartmentPlanController::class);
 Route::apiResource('/year_cards',YearCardController::class);
 Route::post('/get_efficiency/{id}',[UserSubActivityController::class,'getEfficiency']);
-    Route::post('/logout',[AuthController::class,'logout']);
+Route::post('/logout',[AuthController::class,'logout']);
 
 });
