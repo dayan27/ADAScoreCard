@@ -557,12 +557,7 @@ class UserController extends Controller
                   $term_activity_id=TermSubActivity::find($usa->term_sub_activity_id)->term_activity_id;
                   $term_id= TermActivity::find($term_activity_id)->term->id;
                   $usa['term_id']=$term_id;
-                //  return $usa;
-
-                    //->term_id ;
-
-
-                     //     return $usa->term_sub_activity;
+     
                    if ( Str::lower($usa->term_sub_activity->measurment) == 'quality') {
 
                         if (Str::lower($usa->term_sub_activity->level) == 'low') {
@@ -577,19 +572,9 @@ class UserController extends Controller
                          $excellent[]=  $usa;
 
                         }
-
-
                    }
 
-
-
-
-
-
                    else if ( Str::lower( $usa->term_sub_activity->measurment) == 'time') {
-
-
-
 
                     if (Str::lower($usa->term_sub_activity->level) == 'low') {
                         $tlow[]= $usa;
@@ -603,14 +588,9 @@ class UserController extends Controller
                           $texcellent[]=  $usa;
 
                         }
-
-
                    }
 
                   else if (Str::lower( $usa->term_sub_activity->measurment) == 'quantity') {
-
-
-
 
                     if (Str::lower($usa->term_sub_activity->level) == 'low') {
                         $qlow[]= $usa;
@@ -623,10 +603,7 @@ class UserController extends Controller
                            // $qexcellent['excellent']=  $usa;
                            $qexcellent[]=  $usa;
 
-
                         }
-
-
                  }
                 }
 

@@ -35,6 +35,7 @@ class BehaviorController extends Controller
             );
 
          $behav= Behavior::create($request->all());
+        
          return $behav;
         // i
         // return response()->json($behavior,200);
