@@ -242,44 +242,22 @@ class UserController extends Controller
              $quantity[]=$tsa;
            }
 
-          }
-         $dps['term_activities']= array('term_sub_activity'=>array('quality'=>$quality,'quantity'=>$quantity,'time'=>$time));
-          //$dps['term_sub_activities']['term_sub_activities']=array('quality'=>$quality,'quantity'=>$quantity,'time'=>$time);
-           //   return $dps['term_activities']['term_sub_activities'];
+           }
+           $dps['term_activities']= array('term_sub_activity'=>array('quality'=>$quality,'quantity'=>$quantity,'time'=>$time));
+           $all[]=$dps;
 
-            //  return $dps;
-
-          $all[]=$dps;
-
-
-           }else{
+            }else{
 
           }
 
          $terms[]=$term_activity->term;
-        // if($dp->id==23){
-        //     return 45;
-        // }
+
        }
 
     }
-      // return $terms;
-     // return $terms;
-       //return $terms;
-     // return $all;
-       /////////////////
-
-        return response()->json([
-             'term'=>$terms,
-            'termActivity'=>$all,
-            //  'department_plans'=>$department_plans->where('department_card_id', $id)->values() ->makeHidden('department_card')
-
-            //  ->load('term_activity.term_sub_activities') ,
-           //  'department_cards'=>$department_cards,
-            //  'terms'=> array_filter($terms,function($term) use($id){
-            //      return $term['department_card_id']=$id;
-            //  }) ,
-
+    return response()->json([
+    'term'=>$terms,
+    'termActivity'=>$all,
      ]);
     }
 
@@ -557,7 +535,7 @@ class UserController extends Controller
                   $term_activity_id=TermSubActivity::find($usa->term_sub_activity_id)->term_activity_id;
                   $term_id= TermActivity::find($term_activity_id)->term->id;
                   $usa['term_id']=$term_id;
-     
+
                    if ( Str::lower($usa->term_sub_activity->measurment) == 'quality') {
 
                         if (Str::lower($usa->term_sub_activity->level) == 'low') {
@@ -803,119 +781,22 @@ class UserController extends Controller
 
 
         }
-  //  }
-//   return  $term1->id;
 
-      // return DepartmentPlanResource::collection($department_plans);
-     // $activities= $department_plans->user_sub_activities;
        return response()->json([
         'draft_visiblity'=>$user->terms()->where('term_id',$term_id)->first()->pivot->draft_visiblity,
-        //->pivot->draft_visiblity,
         'term'=>$term,
         'department_plans'=>$all
-        //'department_plans'=>$department_plans->load('user_activities.user_sub_activities')
-       // 'user_sub_activities'=>$user->user_sub_activities->load('term_sub_activity'),
-       //'department_plans'=>$department_plans,
-      // 'activities'=>$activities
+
     ]);
 }
-//     public function user_draft($id)
-//     {
-//         $user=User::find($id);
-//         $department=$user->department;
-//         $department_plans=$department->department_plans;
-//         $dps=[];
-//         $all=[];
-//         //  return $department_plans;
-//         // if ($user->pivot->draft_visiblity) {
-//               // return $user->pivot;
 
-//         foreach ($department_plans as  $dp) {
-//             $dps['id']=$dp->id;
-//             $dps['activity']=$dp->activity;
-//             $dps['quantity_weight']=$dp->quantity_weight;
-//             $dps['time_weight']=$dp->time_weight;
-//             $dps['quality_weight']=$dp->quality_weight;
-//          // return   $dp->user_activities;
-//             foreach ($dp->user_activities as $ua) {
-//               //  $dps['user_activity']=$dp->$ua;
-
-//               if ($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed) {
-
-
-//                  $quality=[];
-//                  $quantity=[];
-//                  $time=[];
-
-//                  if(!$ua->user_sub_activities->isempty()){
-//                      continue;
-//                  }
-
-//                     foreach ($ua->user_sub_activities as  $usa) {
-//                         // if(!$usa->term_sub_activity){
-
-//                         // }
-
-
-//                        if ( Str::lower($usa->term_sub_activity->measurment) == 'quality') {
-//                          $quality[]=$usa;
-//                        }
-
-//                       else if ( Str::lower( $usa->term_sub_activity->measurment) == 'time') {
-//                         $time[]=$usa;
-//                       }
-
-//                      else if (Str::lower( $usa->term_sub_activity->measurment) == 'quantity') {
-//                        $quantity[]=$usa;
-//                      }
-
-
-
-//                     }
-//                     $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
-
-
-
-
-
-
-//               //  $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
-
-
-//             }
-
-//             $term_activity_id=$ua->term_activity_id;
-
-
-//           }
-//          //  $term=TermActivity::find($term_activity_id)->term;
-
-//           $all[]=$dps;
-
-//         }
-//   //  }
-//         //return $all;
-
-//       // return DepartmentPlanResource::collection($department_plans);
-//      // $activities= $department_plans->user_sub_activities;
-//        return response()->json([
-//         'draft_visiblity'=>$user->terms()->first()->pivot->draft_visiblity,
-//        // 'term'=>$term,
-//         'department_plans'=>$all
-//         //'department_plans'=>$department_plans->load('user_activities.user_sub_activities')
-//        // 'user_sub_activities'=>$user->user_sub_activities->load('term_sub_activity'),
-//        //'department_plans'=>$department_plans,
-//       // 'activities'=>$activities
-//     ]);
-// }
 /**************
  *
  *
  *give activity result
  *
  *
- */
-/////////////////////////////////////////////////////
+ **************/
  public function give_activity_result($user_id){
     $user=User::find($user_id);
     $id=$user->id;
@@ -1019,19 +900,8 @@ class UserController extends Controller
                      $excellent[]=  $usa;
 
                     }
-
-
                }
-
-
-
-
-
-
                else if ( Str::lower( $usa->term_sub_activity->measurment) == 'time') {
-
-
-
 
                 if (Str::lower($usa->term_sub_activity->level) == 'low') {
                     $tlow[]= $usa;
@@ -1050,9 +920,6 @@ class UserController extends Controller
                }
 
               else if (Str::lower( $usa->term_sub_activity->measurment) == 'quantity') {
-
-
-
 
                 if (Str::lower($usa->term_sub_activity->level) == 'low') {
                     $qlow[]= $usa;

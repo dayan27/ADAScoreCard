@@ -34,14 +34,14 @@ class TermSubActivityController extends Controller
             'added_by'=>'required',
          ]);
 
-//         $termActivity=TermActivity::where('department_plan_id',$request->department_plan_id)->first();
+         $termActivity=TermActivity::where('department_plan_id',$request->department_plan_id)->first();
 
-       //  if(!$termActivity){
+         if(!$termActivity){
              $termActivity=new TermActivity();
              $termActivity->term_id=$request->term_id;
              $termActivity->department_plan_id=$request->department_plan_id;
              $termActivity->save();
-       //  }
+        }
 
          $data=$request->all();
          $data['term_activity_id']=$termActivity->id;

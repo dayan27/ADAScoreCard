@@ -101,7 +101,7 @@ function splitDates($from, $to, $parts, $output = "Y-m-d") {
         $department_plans=$departmentCard->department_plans;
         //return $department_plans;
         // $term_sub_activities=
-           // return $department_plans;
+         //   return $department_plans;
          foreach ($department_plans as  $department_plan) {
 
             foreach ($department_plan->term_activities as $activity) {

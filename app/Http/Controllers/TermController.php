@@ -88,6 +88,13 @@ class TermController extends Controller
     public function make_visible($id)
     {
         $term= Term::find($id);
+        $dep_card=$term->department_card;
+
+        foreach ($dep_card->terms as $term) {
+            if ($term->make_visible && ! $term->is_completed) {
+                return response()->json(['message'=>'there is un completed term']);
+            }
+        }
         $term->make_visible=request()->visiblity;
         $term->save();
         return $term;
