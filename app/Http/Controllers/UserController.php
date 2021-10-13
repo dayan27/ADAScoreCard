@@ -455,26 +455,7 @@ class UserController extends Controller
         $coll=[];
         $all_active=[];
 
-        // foreach ($dep_cards as $dep_card) {
-        //     $dep_card_id=$dep_card->id;
 
-        //   $dep_id= $user->department_id;
-        //   //return Term::all();
-
-        //     $terms=Term::all()->where('department_id','=',$dep_id)->where('department_card_id',$dep_card_id);
-        //  $term_coll = $terms->where('department_id',$dep_id)
-        //          ->where('department_card_id',$dep_card_id);
-        //          $coll['year']=$dep_card->year;
-        //          $coll['terms']=$term_coll;
-        //         array_push($all_coll,$coll) ;
-
-
-        // }
-        // return $all_coll;
-        /**
-         * to get the term number
-         */
-      //  return $user_activity;
         $trm=null;
         foreach($user_activity as $ua){
             if($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed){

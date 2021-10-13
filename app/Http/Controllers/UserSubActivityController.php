@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Behavior;
-use App\Models\BehaviorEmployeeResult;
 use App\Models\DepartmentCard;
 use App\Models\DepartmentPlan;
 use App\Models\Term;
@@ -11,8 +9,6 @@ use App\Models\TermActivity;
 use App\Models\User;
 use App\Models\UserActivity;
 use App\Models\UserSubActivity;
-use App\Models\YearCard;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Http\Request;
 
 class UserSubActivityController extends Controller
@@ -35,12 +31,6 @@ class UserSubActivityController extends Controller
      */
     public function store(Request $request)
     {
-    //   $request->validate([
-
-    //     'term_sub_activity_id'=>'required',
-    //     'user_id'=>'required',
-
-    //   ]);
 
     $saved=[];
     foreach ($request->datas as $data) {
