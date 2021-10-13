@@ -100,7 +100,7 @@ class UserController extends Controller
                $quantity=[];
                $time=[];
 
-                foreach ($ua->user_sub_activities as  $usa) {
+                foreach ($ua->user_sub_activities->where('user_id',$id) as  $usa) {
 
                   //     return $ua->user_sub_activities;
                     if ( Str::lower($usa->term_sub_activity->measurment) == 'quality') {
@@ -246,9 +246,7 @@ class UserController extends Controller
            $dps['term_activities']= array('term_sub_activity'=>array('quality'=>$quality,'quantity'=>$quantity,'time'=>$time));
            $all[]=$dps;
 
-            }else{
-
-          }
+            }
 
          $terms[]=$term_activity->term;
 
@@ -531,7 +529,7 @@ class UserController extends Controller
                  $tenough=array();
                  $thigh=array();
                  $texcellent=array();
-                foreach ($ua->user_sub_activities as  $usa) {
+                foreach ($ua->user_sub_activities->where('user_id',$id) as  $usa) {
                   $term_activity_id=TermSubActivity::find($usa->term_sub_activity_id)->term_activity_id;
                   $term_id= TermActivity::find($term_activity_id)->term->id;
                   $usa['term_id']=$term_id;
@@ -715,8 +713,8 @@ class UserController extends Controller
     {
          $user=User::find($id);
        // return UserActivity::all();
-        $user_activities= UserActivity::all()->where('user_id',$id);
-       // return $user_activities;
+        $user_activities= UserActivity::where('user_id',$id)->get();
+      //  return $user_activities;
         // $department=$user->department;
         // $department_plans=$department->department_plans;
         $dps=[];
@@ -730,8 +728,7 @@ class UserController extends Controller
 
         foreach ($user_activities as  $ua) {
 
-         // return   $dp->user_activities;
-        // return $ua;
+       //  return $user_activities;
 
          if ($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed) {
              $term1=$ua->term_activity->term;
@@ -748,8 +745,8 @@ class UserController extends Controller
            $quality=[];
            $quantity=[];
            $time=[];
-
-            foreach ($ua->user_sub_activities as  $usa) {
+   //return $ua->user_sub_activities->where('user_id',$id);
+            foreach ($ua->user_sub_activities->where('user_id',$id) as  $usa) {
 
               //     return $ua->user_sub_activities;
                 if ( Str::lower($usa->term_sub_activity->measurment) == 'quality') {
@@ -823,6 +820,8 @@ class UserController extends Controller
       // return   $dp->user_activities;
      //return $ua;
      if($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed){
+        if ( $user->terms()->first()->pivot->draft_visiblity && $user->terms()->first()->pivot->is_accepted) {
+
         $term= $ua->term_activity->term;
         //return $term;
 
@@ -874,7 +873,7 @@ class UserController extends Controller
              $tenough=array();
              $thigh=array();
              $texcellent=array();
-            foreach ($ua->user_sub_activities as  $usa) {
+            foreach ($ua->user_sub_activities->where('user_id',$id) as  $usa) {
               $term_activity_id=TermSubActivity::find($usa->term_sub_activity_id)->term_activity_id;
               $term_id= TermActivity::find($term_activity_id)->term->id;
               $usa['term_id']=$term_id;
@@ -954,6 +953,7 @@ class UserController extends Controller
         //   $all_in=$all_terms;
        // return $all;
     }
+}
     // array_push( $all_terms, $all);
     // return $all;
 

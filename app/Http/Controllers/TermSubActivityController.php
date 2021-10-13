@@ -34,7 +34,8 @@ class TermSubActivityController extends Controller
             'added_by'=>'required',
          ]);
 
-         $termActivity=TermActivity::where('department_plan_id',$request->department_plan_id)->first();
+         $termActivity=TermActivity::where('department_plan_id',$request->department_plan_id)
+         ->where('term_id', $request->term_id)->first();
 
          if(!$termActivity){
              $termActivity=new TermActivity();

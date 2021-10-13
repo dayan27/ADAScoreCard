@@ -90,11 +90,23 @@ class TermController extends Controller
         $term= Term::find($id);
         $dep_card=$term->department_card;
 
+        //condition to make invisible
+        if ($term->make_visible) {
+
+            $term->make_visible=request()->visiblity;
+            $term->save();
+            return $term;
+        }else{
+
         foreach ($dep_card->terms as $term) {
+
+            //condition to check weather there is incompleted term
             if ($term->make_visible && ! $term->is_completed) {
                 return response()->json(['message'=>'there is un completed term']);
             }
         }
+    }
+       //making term visible
         $term->make_visible=request()->visiblity;
         $term->save();
         return $term;

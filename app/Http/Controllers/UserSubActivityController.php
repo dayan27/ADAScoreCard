@@ -145,10 +145,7 @@ class UserSubActivityController extends Controller
      //  return request()->all();
      foreach (request()->datas as  $data) {
         $department_plan=DepartmentPlan::find($data['department_plan_id']);
-
-
         $userActivity=UserActivity::find($data['user_activity_id']);
-
         $given_time_result=isset($data['time_result']) ? $data['time_result']: 0.0;
         $given_quality_result=isset($data['quality_result']) ? $data['quality_result'] : 0.0;
         $given_quantity_result=isset($data['quantity_result']) ? $data['quantity_result'] : 0.0;
@@ -174,23 +171,16 @@ class UserSubActivityController extends Controller
      }
     }
      public function giveBehaviorResult(){
-          //return request()->all();
-        foreach (request()->datas as  $data) {
-
-            $term_id=$data['term_id'];
-           // return request()->datas;
-            $department_card_id=$data['department_card_id'];
-
+        //  return request()->all();
+          $term_id=request()->datas[0]['term_id'];
+          $user= User::find(request()->datas[0]['user_id']);
+          $department_card_id=request()->datas[0]['department_card_id'];
+        foreach (request()->datas[1] as  $data) {
             $behavior= Behavior::find($data['behavior_id']);
-           // return $behavior;
-           $user= User::find($data['user_id']);
-           //return $user;
+          //  return $behavior;
             $result_scale=$data['result_scale'];
-          // $result_scales[]=$result_scale;
            $result=$result_scale * $behavior->weight;
-           $x= $user->behaviors;
-           return $x;
-           $user->behaviors()->attach($data['behavior_id'],[
+              $user->behaviors()->attach($data['behavior_id'],[
             'result_scale'=>$result_scale,
             'result'=>$result,
             'term_id'=>$term_id,
@@ -413,7 +403,7 @@ class UserSubActivityController extends Controller
                  $activity_result['quantity_result']=$user_activity->quantity_result;
 
 
-                 $activity_result['result']=$user_activity->result;
+               //  $activity_result['result']=$user_activity->result;
                   array_push($var2,$activity_result);
                 }
               }
