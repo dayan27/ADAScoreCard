@@ -73,7 +73,7 @@ Route::post('/get_behavior_result_by_year/{id}',[UserSubActivityController::clas
 Route::post('/get_employee_efficiency/{id}',[UserSubActivityController::class,'get_employee_efficiency']);
 
 Route::get('/get_all_employee_efficiency/{id}',[UserSubActivityController::class,'get_all_employee_efficiency']);
-
+Route::get('/get_all_user_activity/{id}',[UserController::class,'get_all_user_activity']);
 
 Route::get('/check_break',[DepartmentController::class,'check_break']);
 
