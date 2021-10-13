@@ -665,26 +665,23 @@ class UserController extends Controller
      */
     public function accepet_current_term($user_id){
         $user=User::find($user_id);
-        $user->terms()->where('term_id',request()->term_id)->updateExistingPivot(request()->term_id,['is_accepted'=>request()->is_accepted]);
+        $term_id=request()->term_id;
+        $term=Term::find($term_id);
+        $user->terms()->where('term_id',$term_id)->updateExistingPivot(request()->term_id,['is_accepted'=>request()->is_accepted]);
         $user->terms()->first()->pivot->save();
+      //
 
-        //  if($user->terms()->where('term_id',request()->term_id)->first()->pivot->is_accepted){
-        //      $behaviors=Behavior::all();
-        //      //to add a user and behavior inpivot table of behavior_user pivot table
-        //      foreach ($behaviors as  $behavior) {
-        //          $user->behaviors->sync($behavior->id,['term_id'=>request()->term_id,
-        //         'department_card_id'=>request()->department_card_id]);
-        //      }
-        //     }
-        //    return  $user->behaviors>contains(request()->term_id);
+        foreach (Behavior::all() as  $behavior) {
+          //  return $behavior;
 
+          $user->behaviors()->attach($behavior->id,[
+            'result_scale'=>0,
+            'result'=>0.0,
+            'term_id'=>$term_id,
+            'department_card_id'=>$term->department_card_id,
 
-
-
-    //     if($user->terms()->where('term_id',$term_id)->first()->pivot->is_accepted)
-    //$user->terms()->where('term_id',request()->term_id)->first()->pivot->is_accepted
-
-
+             ]);
+            }
 
     }
 
@@ -763,21 +760,16 @@ class UserController extends Controller
            }
            $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
 
-
             $term_activity_id=$ua->term_activity_id;
             $term=TermActivity::find($term_activity_id)->term;
 
             $term_id= $term->id;
         }
 
-            # code...
-
           if ($dps) {
             $all[]=$dps;
         }
-
-
-        }
+    }
 
        return response()->json([
         'draft_visiblity'=>$user->terms()->where('term_id',$term_id)->first()->pivot->draft_visiblity,
@@ -790,7 +782,7 @@ class UserController extends Controller
 /**************
  *
  *
- *give activity result
+ *data for give activity result
  *
  *
  **************/
@@ -799,20 +791,13 @@ class UserController extends Controller
     $id=$user->id;
 
 
-    // return UserActivity::all();
      $user_activities= UserActivity::all()->where('user_id',$id);
-    // return $user_activities;
-     // $department=$user->department;
-     // $department_plans=$department->department_plans;
+
      $dps=[];
      $all=[];
      $all_terms=[];
      $all_in=[];
-    // $term=[];
-     //  return $department_plans;
-//    return  $user->terms()->get();
-   //  if ($user->terms()->pivot->draft_visiblity) {}
-           // return $user->pivot;
+
            $term=null;
        //return $user_activities;
      foreach ($user_activities as  $ua) {
@@ -843,16 +828,6 @@ class UserController extends Controller
         $dps['quality_result']=$ua->quality_result;
         $dps['quantity_result']=$ua->quantity_result;
         $dps['is_accepted']=$ua->is_accepted;
-
-
-
-
-       // return $dp->user_activities ;
-
-        // foreach ($dp->user_activities as $ua) {
-            // return $ua;
-
-
 
             $quality=[];
             $quantity=[];
@@ -915,9 +890,7 @@ class UserController extends Controller
 
                     }
 
-
                }
-
               else if (Str::lower( $usa->term_sub_activity->measurment) == 'quantity') {
 
                 if (Str::lower($usa->term_sub_activity->level) == 'low') {
@@ -931,13 +904,10 @@ class UserController extends Controller
                        // $qexcellent['excellent']=  $usa;
                        $qexcellent[]=  $usa;
 
-
                     }
-
 
              }
             }
-
             $quality[]=['low'=>$low ,'enough'=>$enough ,'high'=>$high , 'excellent'=>$excellent];
             $time[]=['low'=>$tlow ,'enough'=>$tenough ,'high'=>$thigh , 'excellent'=>$texcellent];
             $quantity[]=['low'=>$qlow ,'enough'=>$qenough ,'high'=>$qhigh , 'excellent'=>$qexcellent];
@@ -945,29 +915,13 @@ class UserController extends Controller
 
             $all[]=$dps;
 
-           //  return $all;
-           //array_push( $all_terms, $term,$all);
 
-        //}
-          //array_push($all_in,$all_terms) ;
-        //   $all_in=$all_terms;
-       // return $all;
     }
 }
-    // array_push( $all_terms, $all);
-    // return $all;
-
 
      }
      array_push($all_in,$term,$all);
     return $all_in;
-    // return $all_terms;
-    //  return response()->json([
-    //            'term'=>$term,
-    //            'termPlan'=>$all,
-
-    //  ]);
-
 
 
  }

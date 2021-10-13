@@ -179,8 +179,11 @@ class UserSubActivityController extends Controller
             $behavior= Behavior::find($data['behavior_id']);
           //  return $behavior;
             $result_scale=$data['result_scale'];
-           $result=$result_scale * $behavior->weight;
-              $user->behaviors()->attach($data['behavior_id'],[
+            $result=$result_scale * $behavior->weight;
+            $user->behaviors()
+            ->where('behavior_id',$data['behavior_id'])
+            ->where('term_id',$term_id)
+            ->updateExistingPivot($data['behavior_id'],[
             'result_scale'=>$result_scale,
             'result'=>$result,
             'term_id'=>$term_id,
