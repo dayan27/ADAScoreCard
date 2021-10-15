@@ -65,7 +65,7 @@ Route::get('/get_current_user_activity/{id}',[UserController::class,'get_current
 Route::get('/give_activity_result/{id}',[UserController::class,'give_activity_result']);
 Route::post('/accepet_current_term/{id}',[UserController::class,'accepet_current_term']);
 Route::post('/complet_department_card/{id}',[DepartmentCardController::class,'complete_dpartment_card']);
-Route::post('/get_user_activity_by_year/{id}',[UserController::class,'get_user_activity_by_year']);
+Route::get('/get_user_activity_by_year/{id}',[UserController::class,'get_user_activity_by_year']);
 Route::post('/get_department_cards',[DepartmentCardController::class,'get_department_card']);
 Route::get('/get_result/{id}',[UserSubActivityController::class,'get_result']);
 Route::post('/make_term_completed/{id}',[TermController::class,'make_term_completed']);
@@ -74,6 +74,7 @@ Route::post('/get_employee_efficiency/{id}',[UserSubActivityController::class,'g
 
 Route::get('/get_all_employee_efficiency/{id}',[UserSubActivityController::class,'get_all_employee_efficiency']);
 Route::get('/get_all_user_activity/{id}',[UserController::class,'get_all_user_activity']);
+Route::get('/get_user_department_card/{id}',[UserController::class,'get_user_department_card']);
 
 Route::get('/check_break',[DepartmentController::class,'check_break']);
 

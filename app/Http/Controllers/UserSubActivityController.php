@@ -332,28 +332,18 @@ class UserSubActivityController extends Controller
            $var=[];
            $var2=[];
            $term_data=[];
-           $user_result['year']=$dep_card->year;
+           $user_result=[];
            foreach ($terms as $term) {
 
                $behavior_result=[];
                $activity_result=[];
              //  return $user->behaviors;
                foreach ($user->behaviors as $behavior) {
-                 //return $behavior->pivot->department_card_id;
-                // return $term->id;
-               // $y='dream';
+
                   $current_dep_card_id=$behavior->pivot->department_card_id;
                   $current_term_id=$behavior->pivot->term_id;
-                 // return $current_dep_card_id==$dep_card->id ;
-                  //return $current_term_id;
-                  //return $term->id;
-                //  $x++;
+
                   if($current_dep_card_id==$dep_card->id && $current_term_id==$term->id){
-
-
-                      //$behavior;
-                      //return $behavior_result;
-                    //  $var=array($behavior);
 
                       array_push($var,$behavior);
                       $term_data['term_no']=$term->term_no;
@@ -361,12 +351,6 @@ class UserSubActivityController extends Controller
 
 
                   }
-                 //$var=array($behavior);
-                 //array_push($var,$behavior);
-
-
-
-
 
                }
                $term_result['behaviorResult']=$var;
@@ -402,13 +386,16 @@ class UserSubActivityController extends Controller
               }
               $term_result['activityResult']=$var2;
               //array_push($term_result,$activity_result);
+            //  $user_result['year']=$dep_card->year;
 
               //array_push($terms2,$term_result);
-              $user_result['terms']=array(array('term_id'=>$term_id,'term_no'=>$term_no,'behaviorResult'=>$term_result['behaviorResult'],'activityResult'=>$term_result['activityResult']));
+              if ($term_id) {
+                $user_result[]=  ['term_id'=>$term_id,'term_no'=>$term_no,'behaviorResult'=>$term_result['behaviorResult'],'activityResult'=>$term_result['activityResult']];
+            }
 
           }
 
-         array_push($terms2,$user_result);
+         $terms2[]=array('year'=>$dep_card->year,'terms'=>$user_result);
         }
 
          return $terms2;
@@ -545,57 +532,32 @@ class UserSubActivityController extends Controller
         $terms2=[];
 
         foreach ($dep_cards as $dep_card) {
-         // return $dep_cards;
+         // return $dep_cards->load('terms');
            $terms=$dep_card->terms;
            $term_result=[];
            $var=[];
            $var2=[];
            $term_id=null;
-
-           $user_result['year']=$dep_card->year;
+            $term_no=null;
+         //  $user_result['year']=$dep_card->year;
            foreach ($terms as $term) {
-
+           //   return $terms;
                $behavior_result=[];
                $activity_result=[];
              //  return $user->behaviors;
                foreach ($user->behaviors as $behavior) {
-                 //return $behavior->pivot->department_card_id;
-                // return $term->id;
-               // $y='dream';
+
                   $current_dep_card_id=$behavior->pivot->department_card_id;
                   $current_term_id=$behavior->pivot->term_id;
-                 // return $current_dep_card_id==$dep_card->id ;
-                  //return $current_term_id;
-                  //return $term->id;
-                //  $x++;
+
                   if($current_dep_card_id==$dep_card->id && $current_term_id==$term->id){
 
-
-                      //$behavior;
-                      //return $behavior_result;
-                    //  $var=array($behavior);
-
                       array_push($var,$behavior);
-                    //   $term_data['term_no']=$term->term_no;
-                    //   $term_data['term_id']=$term->id;
-
 
                   }
-                 //$var=array($behavior);
-                 //array_push($var,$behavior);
-
-
-
-
 
                }
                $term_result['behaviorResult']=$var;
-              // $term_result['term_id']=$current_term_id;
-              //  array_push($term_result,$behavior_result);
-             //  $term_result['behavior_result']=
-              // return $term_result;
-
-
 
                foreach ($user->user_activities as $user_activity) {
 
@@ -604,6 +566,7 @@ class UserSubActivityController extends Controller
 
                 if($current_dep_card_id==$dep_card->id && $current_term_id==$term->id){
                     $term_id=$term->id;
+                    $term_no=$term->term_no;
                   $activity_result=$user_activity->term_activity->department_plan;
                   $term_activity_id=$user_activity->term_activity->id;
                   $user_activity=UserActivity::where('term_activity_id',$term_activity_id)->first();
@@ -622,11 +585,13 @@ class UserSubActivityController extends Controller
               //array_push($term_result,$activity_result);
 
               //array_push($terms2,$term_result);
-              $user_result['terms']=array(array('term_id'=>$term_id,'behaviorResult'=>$term_result['behaviorResult'],'activityResult'=>$term_result['activityResult']));
+              if ($term_id) {
+                $user_result[]=(array('term_id'=>$term_id,'term_no'=>$term_no,'behaviorResult'=>$term_result['behaviorResult'],'activityResult'=>$term_result['activityResult']));
+            }
 
           }
 
-         array_push($terms2,$user_result);
+         array_push($terms2,array_values($user_result));
         }
 
          return $terms2;
