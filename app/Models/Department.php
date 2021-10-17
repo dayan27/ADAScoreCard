@@ -40,6 +40,9 @@ class Department extends Model
         return $this->hasMany(User::class);
     }
 
+    public function user(){
+        return $this->hasOne(User::class)->where('role','department head');
+    }
     public function department_plans(){
         return $this->hasMany(DepartmentPlan::class);
     }

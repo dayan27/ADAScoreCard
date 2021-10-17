@@ -10,8 +10,10 @@ use App\Models\TermSubActivity;
 use App\Models\User;
 use App\Models\UserActivity;
 use App\Models\UserSubActivity;
+use App\Notifications\EmployeeDraftShared;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -511,9 +513,12 @@ class UserController extends Controller
     public function make_visible($id)
     {
         $user= User::find($id);
+        $department_head_id= $user->department->user_id;
         $term_id=TermActivity::find(request()->term_activity_id)->term_id;
         $user->terms()->where('term_id',$term_id)->updateExistingPivot($term_id,['draft_visiblity'=>request()->visiblity]);
         $user->terms()->first()->pivot->save();
+        Notification::send(User::find($department_head_id),new EmployeeDraftShared($id));
+
         return $user->terms()->where('term_id',$term_id)->first();
 
     }
@@ -633,19 +638,15 @@ class UserController extends Controller
      $all=[];
      $all_in=[];
      $term=null;
-       //return $user_activities;
+
      foreach ($user_activities as  $ua) {
 
-      // return   $dp->user_activities;
-     //return $ua;
-     if($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed){
+      if($ua->term_activity->term->make_visible && ! $ua->term_activity->term->is_completed){
         $term_id= $ua->term_activity->term->id;
         if ( $user->terms()->having('pivot_term_id','=',$term_id)->first()->pivot->draft_visiblity &&
             $user->terms()->having('pivot_term_id','=',$term_id)->first()->pivot->is_accepted) {
 
         $term= $ua->term_activity->term;
-        //return $term;
-
         $dep_plan_id=$ua->department_plan_id;
         $dp=DepartmentPlan::find($dep_plan_id);
 
@@ -761,18 +762,19 @@ class UserController extends Controller
 
 
       $dep_id= $user->department_id;
-      $dep_card_id=22;
-      $dep_card=DepartmentCard::find($dep_card_id);
+      $dep_card_id=request('dep_card_id');
+    //   $dep_card_id=22;
+       $dep_card=DepartmentCard::find($dep_card_id);
         $terms=Term::where('department_id','=',$dep_id)->where('department_card_id',$dep_card_id)->get();
 
      $user_activities=UserActivity::where('user_id',$id)->get();
+    //    return $user_activities->load('department_plan');
+    $all_term=[];
 
    foreach ($terms as  $term) {
-       # code...
-       $all_term=[];
+    $one_term=[];
 
     foreach ($user_activities as $ua) {
-        $one_term=[];
 
     if($ua->term_activity->term->is_completed ){
 
@@ -786,8 +788,13 @@ class UserController extends Controller
             $dps['time_weight']=$dp->time_weight;
             $dps['quality_weight']=$dp->quality_weight;
             $dps['year']=$dp->department_card->year;
-
-            foreach ($dp->user_activities as $ua) {
+            $dps['result']=$ua->result;
+            $dps['time_result']=$ua->time_result;
+            $dps['quality_result']=$ua->quality_result;
+            $dps['quantity_result']=$ua->quantity_result;
+            $dps['quantity_result_scale']=$ua->quantity_result_scale;
+            $dps['quality_result_scale']=$ua->quality_result_scale;
+            $dps['time_result_scale']=$ua->time_result_scale;
 
                 $quality=[];
                 $quantity=[];
@@ -866,19 +873,28 @@ class UserController extends Controller
                 $dps['user_sub_activity']=['quality'=>$quality,'quantity'=>$quantity,'time'=>$time];
                 $one_term[]=$dps;
 
-        }
-        $all_term['id']=$term->id;
-        $all_term['termActivity']=$one_term;
+      //  }
+
     }
     }
 
   }
+  if ($one_term) {
+    $all_term['id']=$term->id;
+    $all_term['termActivity']=$one_term;
+  }
 
-  $all[]=$all_term;
+    //    array_push($all,$all_term);
+
+     //   return $all_term;
+     if ($all_term) {
+        $all[]=$all_term;
+     }
+
 //end of terms
 
 }
-  return  response()->json( array_values($all));
+  return  response()->json( $all);
 
 
 }
@@ -1015,4 +1031,19 @@ public function get_user_department_card($id){
 
     return response()->json(['department_cards'=>$dep_cards->load('terms')]);
 }
+
+public function get_notifications($id){
+
+   return User::find($id)->notifications;
+}
+
+public function get_unRead_notifications($id){
+
+    return User::find($id)->unReadNotifications;
+ }
+
+ public function mark_as_read($id){
+
+    return User::find($id)->notifications->markAsRead();
+ }
 }

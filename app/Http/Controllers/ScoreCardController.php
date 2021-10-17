@@ -11,8 +11,10 @@ use App\Models\ScoreCard;
 use App\Models\StrategicPlan;
 use App\Models\User;
 use App\Models\YearCard;
+use App\Notifications\StrategicPlanShared;
 use Illuminate\Http\Request;
 use PhpParser\ErrorHandler\Collecting;
+use Illuminate\Support\Facades\Notification;
 
 class ScoreCardController extends Controller
 {
@@ -189,8 +191,14 @@ class ScoreCardController extends Controller
     public function make_visible($id)
     {
        $scoreCard= ScoreCard::find($id);
+       if(request()->visiblity){
+          // $user->all()->notifications->delete();
+       }
        $scoreCard->make_visible=request()->visiblity;
        $scoreCard->save();
+       $users=User::all();
+      // return $users;
+       Notification::send($users,new StrategicPlanShared($id));
        return $scoreCard;
        //$scoreCard->update(['make_visible'=>request()->make_visible]);
     }

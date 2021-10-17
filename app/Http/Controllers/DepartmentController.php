@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -14,7 +15,8 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        return Department::all();
+       return Department::with('user')->get();
+
     }
 
     /**
@@ -93,8 +95,11 @@ class DepartmentController extends Controller
        $dept= Department::find($department_id);
     //    return $dept->user_id;
        $dept->user_id=request()->user_id;
+
         $dept->save();
-        return $dept;
+       $manager= User::find($dept->user_id);
+      return  $manager->first_name;
+       // return $dept;
     }
 
     // public function check_break(){

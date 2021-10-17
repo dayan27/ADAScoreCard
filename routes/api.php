@@ -58,14 +58,14 @@ Route::get('/deactivate_user/{id}',[UserController::class,'make_deactive']);
 Route::get('/get_user_activity/{id}',[UserController::class,'get_user_activity']);
 Route::post('/get_eff',[UserSubActivityController::class,'getEff']);
 Route::get('/user_draft/{id}',[UserController::class,'user_draft']);
-Route::post('/get_terms/{department_card_id}',[TermController::class,'get_terms']);
+Route::get('/get_terms/{department_card_id}',[TermController::class,'get_terms']);
 Route::get('/get_employees/{department_id}',[UserController::class,'get_user']);
 Route::post('/get_yearly_plans/{score_card_id}',[YearCardController::class,'get_yearly_plan']);
 Route::get('/get_current_user_activity/{id}',[UserController::class,'get_current_user_activity']);
 Route::get('/give_activity_result/{id}',[UserController::class,'give_activity_result']);
 Route::post('/accepet_current_term/{id}',[UserController::class,'accepet_current_term']);
 Route::post('/complet_department_card/{id}',[DepartmentCardController::class,'complete_dpartment_card']);
-Route::get('/get_user_activity_by_year/{id}',[UserController::class,'get_user_activity_by_year']);
+Route::post('/get_user_activity_by_year/{id}',[UserController::class,'get_user_activity_by_year']);
 Route::post('/get_department_cards',[DepartmentCardController::class,'get_department_card']);
 Route::get('/get_result/{id}',[UserSubActivityController::class,'get_result']);
 Route::post('/make_term_completed/{id}',[TermController::class,'make_term_completed']);
@@ -104,6 +104,8 @@ Route::apiResource('/term_sub_activities',TermSubActivityController::class);
 Route::apiResource('/terms',TermController::class);
 Route::apiResource('/strategic_plans',StrategicPlanController::class);
 
+Route::get('/notifications/{id}',[UserController::class,'get_notifications']);
+//Route::get('/notifications',[UserController::class,'get_notifications']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 Route::apiResource('/score_cards',ScoreCardController::class);
@@ -112,5 +114,6 @@ Route::apiResource('/department_plans',DepartmentPlanController::class);
 Route::apiResource('/year_cards',YearCardController::class);
 Route::post('/get_efficiency/{id}',[UserSubActivityController::class,'getEfficiency']);
 Route::post('/logout',[AuthController::class,'logout']);
+
 
 });
