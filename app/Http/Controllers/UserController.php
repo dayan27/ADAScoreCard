@@ -513,10 +513,14 @@ class UserController extends Controller
     public function make_visible($id)
     {
         $user= User::find($id);
-        $department_head_id= $user->department->user_id;
         $term_id=TermActivity::find(request()->term_activity_id)->term_id;
+       if ($user->terms()->where('term_id',$term_id)->pivot->make_visible) {
+           return ;
+       }
+
+        $department_head_id= $user->department->user_id;
         $user->terms()->where('term_id',$term_id)->updateExistingPivot($term_id,['draft_visiblity'=>request()->visiblity]);
-        $user->terms()->first()->pivot->save();
+        $user->terms()->where('term_id',$term_id)->pivot->save();
         Notification::send(User::find($department_head_id),new EmployeeDraftShared($id));
 
         return $user->terms()->where('term_id',$term_id)->first();
@@ -534,6 +538,15 @@ class UserController extends Controller
 
 
     }
+
+    public function accept_result($user_id){
+        $user=User::find($user_id);
+        $user->terms()->where('term_id',request()->term_id)->updateExistingPivot(request()->term_id,['result_accepted'=>request()->result_accepted]);
+        $user->terms()->first()->pivot->save();
+
+        return response()->json([],200);
+    }
+
 
 
     public function send_comment($id)
@@ -1034,16 +1047,14 @@ public function get_user_department_card($id){
 
 public function get_notifications($id){
 
-   return User::find($id)->notifications;
+   $new= User::find($id)->unReadNotifications;
+   return $new;
 }
 
-public function get_unRead_notifications($id){
-
-    return User::find($id)->unReadNotifications;
- }
 
  public function mark_as_read($id){
-
-    return User::find($id)->notifications->markAsRead();
+    $new= User::find($id)->unReadNotifications()->delete();
+    //$new->markAsRead();
+    return response()->json([],200);
  }
 }

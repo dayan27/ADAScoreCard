@@ -42,14 +42,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/login',[AuthController::class,'login']);
 
 
-//visiblity status changing methods
-Route::post('/change_score_card_visiblity/{id}',[ScoreCardController::class,'make_visible']);
-Route::post('/change_year_card_visiblity/{id}',[YearCardController::class,'make_visible']);
-Route::post('/change_department_card_visiblity/{id}',[DepartmentCardController::class,'make_visible']);
-Route::post('/change_term_visiblity/{id}',[TermController::class,'make_visible']);
 
 // user controller methods
-Route::apiResource('/users',UserController::class)->except('delete');
 Route::post('/share_to_department/{id}',[UserController::class,'make_visible']);
 Route::post('/send_comment/{id}',[UserController::class,'send_comment']);
 Route::post('/accept_activity',[UserController::class,'accept_activity']);
@@ -64,6 +58,8 @@ Route::post('/get_yearly_plans/{score_card_id}',[YearCardController::class,'get_
 Route::get('/get_current_user_activity/{id}',[UserController::class,'get_current_user_activity']);
 Route::get('/give_activity_result/{id}',[UserController::class,'give_activity_result']);
 Route::post('/accepet_current_term/{id}',[UserController::class,'accepet_current_term']);
+Route::post('/accept_result/{id}',[UserController::class,'accept_result']);
+
 Route::post('/complet_department_card/{id}',[DepartmentCardController::class,'complete_dpartment_card']);
 Route::post('/get_user_activity_by_year/{id}',[UserController::class,'get_user_activity_by_year']);
 Route::post('/get_department_cards',[DepartmentCardController::class,'get_department_card']);
@@ -99,13 +95,9 @@ Route::post('/give_employee_result',[ UserSubActivityController::class, 'giveAct
 Route::post('/give_behavior_result',[ UserSubActivityController::class, 'giveBehaviorResult']);
 
 
-Route::apiResource('/term_activities',TermActivityController::class);
-Route::apiResource('/term_sub_activities',TermSubActivityController::class);
-Route::apiResource('/terms',TermController::class);
-Route::apiResource('/strategic_plans',StrategicPlanController::class);
-
+//user notification
 Route::get('/notifications/{id}',[UserController::class,'get_notifications']);
-//Route::get('/notifications',[UserController::class,'get_notifications']);
+Route::get('/read_notifications/{id}',[UserController::class,'mark_as_read']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 Route::apiResource('/score_cards',ScoreCardController::class);
@@ -114,6 +106,18 @@ Route::apiResource('/department_plans',DepartmentPlanController::class);
 Route::apiResource('/year_cards',YearCardController::class);
 Route::post('/get_efficiency/{id}',[UserSubActivityController::class,'getEfficiency']);
 Route::post('/logout',[AuthController::class,'logout']);
+
+Route::apiResource('/term_activities',TermActivityController::class);
+Route::apiResource('/term_sub_activities',TermSubActivityController::class);
+Route::apiResource('/terms',TermController::class);
+Route::apiResource('/strategic_plans',StrategicPlanController::class);
+Route::apiResource('/users',UserController::class)->except('delete');
+
+//visiblity status changing methods
+Route::post('/change_score_card_visiblity/{id}',[ScoreCardController::class,'make_visible']);
+Route::post('/change_year_card_visiblity/{id}',[YearCardController::class,'make_visible']);
+Route::post('/change_department_card_visiblity/{id}',[DepartmentCardController::class,'make_visible']);
+Route::post('/change_term_visiblity/{id}',[TermController::class,'make_visible']);
 
 
 });

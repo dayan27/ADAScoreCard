@@ -11,7 +11,7 @@ class StrategicPlanShared extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public $id;
+    public $score_card_id;
     /**
      * Create a new notification instance.
      *
@@ -19,7 +19,7 @@ class StrategicPlanShared extends Notification implements ShouldQueue
      */
     public function __construct($id)
     {
-       $this->id=$id;
+       $this->score_card_id=$id;
     }
 
     /**
@@ -58,7 +58,7 @@ class StrategicPlanShared extends Notification implements ShouldQueue
         return [
         'message'=>'strategic plan shared',
         'number'=>1,
-        'score_card_id'=>$this->id
+        'score_card_id'=>$this->score_card_id
         ];
     }
 }

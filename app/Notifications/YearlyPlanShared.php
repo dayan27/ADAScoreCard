@@ -11,7 +11,7 @@ class YearlyPlanShared extends Notification
 {
     use Queueable;
 
-    public  $id;
+    public $year_card_id;
     /**
      * Create a new notification instance.
      *
@@ -19,7 +19,7 @@ class YearlyPlanShared extends Notification
      */
     public function __construct($id)
     {
-        $this->id=$id;
+        $this->year_card_id=$id;
     }
 
     /**
@@ -59,7 +59,7 @@ class YearlyPlanShared extends Notification
             //
             'message'=>'yearly plan shared',
             'number'=>2,
-            'year_card_id'=>$this->id
+            'year_card_id'=>$this->year_card_id
 
         ];
     }

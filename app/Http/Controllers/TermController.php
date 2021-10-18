@@ -90,12 +90,15 @@ class TermController extends Controller
 
     public function make_visible($id)
     {
+      return  auth()->user()->department_id;
         $term= Term::find($id);
         $dep_card=$term->department_card;
 
         //condition to make invisible
         if ($term->make_visible) {
-
+            foreach (User::where('department_id',$dep_card->department_id)->get() as $user) {
+                $user->notifications()->where('type','App\Notifications\TermPlanShared')->delete();
+            }
             $term->make_visible=request()->visiblity;
             $term->save();
             return $term;
@@ -112,9 +115,10 @@ class TermController extends Controller
        //making term visible
         $term->make_visible=request()->visiblity;
         $term->save();
-        Notification::send(User::all()
-        ->where('role','employee')
-        ->where('department_id', auth()->user()->department_id),new TermPlanShared());
+        $users=User::where('role','employee')
+        ->where('department_id', auth()->user()->department_id)->get();
+
+        Notification::send($users,new TermPlanShared());
 
         return $term;
 

@@ -135,7 +135,7 @@ class UserSubActivityController extends Controller
 
     public function giveActivityResult(){
      //  return request()->all();
-        $user_id;
+        $user_id=null;
      foreach (request()->datas as  $data) {
         $department_plan=DepartmentPlan::find($data['department_plan_id']);
         $userActivity=UserActivity::find($data['user_activity_id']);
@@ -161,7 +161,7 @@ class UserSubActivityController extends Controller
 
         $userActivity->save();
 
-       $user_id=$user_activity->user_id;
+       $user_id=$userActivity->user_id;
      }
      Notification::send(User::find($user_id),new EmployeeResultShared());
 
@@ -345,7 +345,7 @@ class UserSubActivityController extends Controller
                $activity_result=[];
              //  return $user->behaviors;
                foreach ($user->behaviors as $behavior) {
-
+            //    return
                   $current_dep_card_id=$behavior->pivot->department_card_id;
                   $current_term_id=$behavior->pivot->term_id;
 
@@ -387,7 +387,8 @@ class UserSubActivityController extends Controller
               $term_result['activityResult']=$var2;
 
               if ($term_id) {
-                $user_result[]=  ['term_id'=>$term_id,'term_no'=>$term_no,'behaviorResult'=>$term_result['behaviorResult'],'activityResult'=>$term_result['activityResult']];
+                $result_accepted= $user->terms->where('id',$term->id)->first()->pivot->result_accepted;
+                $user_result[]=  ['term_id'=>$term_id,'term_no'=>$term_no,'result_accepted'=>$result_accepted,'behaviorResult'=>$term_result['behaviorResult'],'activityResult'=>$term_result['activityResult']];
             }
 
           }

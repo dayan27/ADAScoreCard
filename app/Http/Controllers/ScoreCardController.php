@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\YearCard;
 use App\Notifications\StrategicPlanShared;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use PhpParser\ErrorHandler\Collecting;
 use Illuminate\Support\Facades\Notification;
 
@@ -94,52 +95,9 @@ class ScoreCardController extends Controller
 
         }
 
+       //DB::table('notifications')->where('id',request('notification_id'))->first()->markAsRead();
 
 
-        /*
-        $yearCard=[];
-        foreach($sps as $sp) {
-            foreach($sp->yearly_plans as $value) {
-
-                // if(!array_key_exists($value->year_card->id,$yearCard)){
-                //     $yearCard[]=$value->year_card;
-
-                // }
-                $yearCard[]=$value->year_card;
-
-            }
-        }
-        $yearCard= array_values(array_unique($yearCard));
-
-
-       // return $user;
-        ///////
-        $deptCard=[];
-         $dps=DepartmentPlan::where('department_id' ,$user->department_id)->get();
-        //  return $dps;
-            foreach($dps as $department) {
-
-                // if(!array_key_exists($value->year_card->id,$yearCard)){
-                //     $yearCard[]=$value->year_card;
-
-                // }
-                $deptCard[]=$department->department_card;
-
-
-        }
-        $deptCard= array_values(array_unique($deptCard));
-
-       // return $deptCard;
-
-        ///////
-
-      //  return $user->department_id;
-        // if($user->role='manager'){
-
-        //     $department_plans=DepartmentPlan::where('department_id',$user->department_id);
-        //     }
-       // $departments->makeHidden('id');
-       */
         return response()->json([
            'department_cards'=>$scoreCard->department_cards,
            'users'=>$user->role=='manager' ? User::where('department_id' ,$user->department_id)
@@ -191,12 +149,20 @@ class ScoreCardController extends Controller
     public function make_visible($id)
     {
        $scoreCard= ScoreCard::find($id);
-       if(request()->visiblity){
-          // $user->all()->notifications->delete();
+
+       if($scoreCard->make_visible){
+      // return request()->visiblity;
+        foreach (User::all() as $user) {
+            $user->notifications()->where('type','App\Notifications\StrategicPlanShared')->delete();
+        }
+
+        $scoreCard->make_visible=request()->visiblity;
+        $scoreCard->save();
+        return $scoreCard;
        }
        $scoreCard->make_visible=request()->visiblity;
        $scoreCard->save();
-       $users=User::all();
+       $users=User::where('id' ,'!=', request()->user()->id)->get();
       // return $users;
        Notification::send($users,new StrategicPlanShared($id));
        return $scoreCard;

@@ -94,20 +94,21 @@ class YearCardController extends Controller
 
     public function make_visible($id)
     {
-        if (request()->visiblity) {
+        $yearCard= YearCard::find($id);
+
+        if ($yearCard->make_visible) {
             foreach (User::all() as $user) {
-                $user->notifications->where('type','App\Notifications\YearlyPlanShared')->delete();
+                $user->notifications()->where('type','App\Notifications\YearlyPlanShared')->delete();
             }
-            
-            $yearCard= YearCard::find($id);
+
             $yearCard->make_visible=request()->visiblity;
             $yearCard->save();
             return $yearCard;
         }
-        $yearCard= YearCard::find($id);
         $yearCard->make_visible=request()->visiblity;
         $yearCard->save();
-        Notification::send(User::all(),new YearlyPlanShared($id));
+        $users=User::where('id' ,'!=', request()->user()->id)->get();
+        Notification::send($users,new YearlyPlanShared($id));
         return $yearCard;
 
     }
@@ -123,7 +124,6 @@ class YearCardController extends Controller
         $yp_final=[];
         $st_plans= StrategicPlan::where('score_card_id',$score_card_id)->get();
         foreach ($st_plans as $st_plan) {
-
            $st_departments= $st_plan->departments;
            foreach ($st_departments as $st_department) {
             if($st_department->id==request()->department_id){
