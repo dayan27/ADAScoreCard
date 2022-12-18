@@ -29,9 +29,9 @@ BSC Manager
 12.The system should enable bsc manager to add departments
 
 Department Head  
-1.The system should enable department head to add department plan
-2.The system should enable department head to approve employee’s plan
-3.The system should enable department head to share department plan to employee
+- The system should enable department head to add department plan
+- The system should enable department head to approve employee’s plan
+- The system should enable department head to share department plan to employee
 4.The system should enable department head to give result for employee’s action plan
 5.The system should enable department head to view employee’s action plan
 6.The system should enable department head to edit department plan
